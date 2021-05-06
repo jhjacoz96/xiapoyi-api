@@ -8,13 +8,19 @@ use Carbon\Carbon;
 use App\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidationQuestionRequest;
+use App\Services\PermissionService;
 use App\Models\Sanctum\PersonalAccessToken;
 use App\Http\Resources\UserResource;
-use App;
 use App\Utils\Enums\EnumResponse;
 
 class AuthController extends Controller
 {
+
+    function __construct(PermissionService $_PermissionService)
+    {
+        $this->service = $_PermissionService;
+    }
+
     public function signUp(Request $request)
     {
         $request->validate([
@@ -58,10 +64,14 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
+
+
         return response()->json([
+		     'title' => 'OK',
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'user' => new UserResource($user),
+            'permissions' => $this->service->index(),
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()

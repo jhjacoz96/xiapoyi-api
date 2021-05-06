@@ -17,7 +17,8 @@ class CreateZonesTable extends Migration
             $table->increments('id');
             $table->string('code')->unique();
             $table->string('name');
-            $table->integer('canton_id')->unsigned()->index();
+            $table->integer('province_id')->unsigned()->nullable();
+            $table->integer('canton_id')->unsigned()->nullable();
             $table->foreign('canton_id')->references('id')->on('cantons')->onDelete('cascade');
             $table->timestamps();
         });

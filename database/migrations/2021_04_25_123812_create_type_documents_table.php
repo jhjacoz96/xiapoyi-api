@@ -13,6 +13,12 @@ class CreateTypeDocumentsTable extends Migration
      */
     public function up()
     {
+        Schema::create('genders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('nombre');
+            $table->timestamps();
+        });
+
         Schema::create('type_documents', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
@@ -27,6 +33,7 @@ class CreateTypeDocumentsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('genders');
         Schema::dropIfExists('type_documents');
     }
 }

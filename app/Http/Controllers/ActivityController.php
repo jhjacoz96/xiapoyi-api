@@ -3,9 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ActivityStoreRequest;
+use App\Http\Requests\ActivityUpdateRequest;
+use App\Utils\Enums\EnumResponse;
+use App\Activity;
+use App\Http\Resources\ActivityResource;
+use App\Services\ActivityService;
 
 class ActivityController extends Controller
 {
+    function __construct(ActivityService $_ActivityService)
+    {
+        $this->service = $_ActivityService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +23,13 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $model = $this->service->index();
+            $data = ActivityResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
     }
 
     /**
@@ -22,9 +38,16 @@ class ActivityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ActivityStoreRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+            $model = $this->service->store($data);
+            $data = new ActivityResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+          } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+          }
     }
 
     /**
@@ -35,7 +58,20 @@ class ActivityController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $model = $this->service->show($id);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new ActivityResource($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.show');
+        }
     }
 
     /**
@@ -45,9 +81,23 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ActivityUpdateRequest $request, $id)
     {
-        //
+        try {
+            $data = $request->validated();
+            $model = $this->service->update($data, $id);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new ActivityResource($model);
+                return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+            }
+          } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.update');
+          }
     }
 
     /**
@@ -58,6 +108,21 @@ class ActivityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $model = $this->service->delete($id);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = [
+                    'message' => __('response.successfully_deleted')
+                ];
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.destroy');
+        }
     }
 }

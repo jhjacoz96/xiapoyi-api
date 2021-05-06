@@ -28,6 +28,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::SUCCESS:
 
                 return response()->json([
+                    'ok' => true,
                     'status' => \Illuminate\Http\Response::HTTP_OK,
                     'title' => __('response.success'),
                     'message' =>  __('response.success_long'),
@@ -40,6 +41,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::CREATE_SUCCESS:
             
                 return response()->json([
+                    'ok' => true,
                     'status' => \Illuminate\Http\Response::HTTP_CREATED,  
                     'title' =>  __('response.create_success'),
                     'message' => __('response.create_success_long'),
@@ -52,6 +54,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::ACCEPTED:
             
                 return response()->json([
+                    'ok' => true,
                     'status' => \Illuminate\Http\Response::HTTP_ACCEPTED ,
                     'title' => __('response.accepted'),
                     'message' => __('response.accepted_long'),
@@ -64,6 +67,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::NO_CONTENT:
             
                 return response()->json([
+                    'ok' => false,
                     'status' => \Illuminate\Http\Response::HTTP_NO_CONTENT ,
                     'title' => __('response.no_content'),
                     'message' => __('response.no_content_long')
@@ -75,6 +79,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::BAD_REQUEST:
                 \Log::error('BAD_REQUEST', ['exception'=>$data]);
                 return response()->json([
+                    'ok' => false,
                     'status' => \Illuminate\Http\Response::HTTP_BAD_REQUEST,
                     'title' => __('response.bad_request'),
                     'message' => __('response.bad_request_long'),
@@ -89,6 +94,7 @@ if (!function_exists('bodyResponseRequest')) {
                 \Log::error('DUPLICATE_ENTRY', ['exception'=>$data]);
 
                 return response()->json([
+                    'ok' => false,
                     'status'=>\Illuminate\Http\Response::HTTP_BAD_REQUEST,
                     'title'=> __('response.duplicate_entry'),
                     'message'=> __('response.duplicate_entry_long'),
@@ -101,6 +107,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::UNAUTHORIZED :
                 \Log::error('UNAUTHORIZED', ['exception'=>$data]);
                 return response()->json([
+                    'ok' => false,
                     'status' => \Illuminate\Http\Response::HTTP_UNAUTHORIZED ,
                     'title' => __('response.unauthorized'),
                     'message'=> __('response.unauthorized_long'),
@@ -113,6 +120,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::FORBIDDEN :
                 \Log::error('FORBIDDEN', ['exception'=>$data]);
                 return response()->json([
+                    'ok' => false,
                     'status' => \Illuminate\Http\Response::HTTP_FORBIDDEN ,
                     'title' => __('response.forbidden'),
                     'message'=> __('response.forbidden_long'),
@@ -125,6 +133,7 @@ if (!function_exists('bodyResponseRequest')) {
             case EnumResponse::NOT_FOUND :
                 \Log::error('NOT_FOUND', ['exception'=>$data]);
                 return response()->json([
+                    'ok' => false,
                     'status' => \Illuminate\Http\Response::HTTP_NOT_FOUND,
                     'title' => __('response.not_found'),
                     'message'=> __('response.not_found_long'),
@@ -138,6 +147,7 @@ if (!function_exists('bodyResponseRequest')) {
                 \Log::error('UNPROCESSABLE_ENTITY', ['exception'=>$data]);
 
                 return response()->json([
+                    'ok' => false,
                     'status'=>\Illuminate\Http\Response::HTTP_UNPROCESSABLE_ENTITY,
                     'title'=>__('response.unprocessable_entity'),
                     'message'=> __('response.unprocessable_entity_long'),
@@ -152,6 +162,7 @@ if (!function_exists('bodyResponseRequest')) {
                 \Log::error('INTERNAL_SERVER_ERROR', ['exception'=>$data]);
 
                 return response()->json([
+                    'ok' => false,
                     'status'=>\Illuminate\Http\Response::HTTP_INTERNAL_SERVER_ERROR,
                     'title'=>__('response.internal_server_error'),
                     'message'=> __('response.internal_server_error_long'),
@@ -165,6 +176,7 @@ if (!function_exists('bodyResponseRequest')) {
                 \Log::error('NOT_IMPLEMENTED', ['exception'=>$data]);
 
                 return response()->json([
+                    'ok' => false,
                     'status'=>\Illuminate\Http\Response::HTTP_NOT_IMPLEMENTED ,
                     'title'=>__('response.not_implemented'),
                     'message'=> __('response.not_implemented_long'),
@@ -178,6 +190,7 @@ if (!function_exists('bodyResponseRequest')) {
                 \Log::error('SERVICE_UNAVAILABLE', ['exception'=>$data]);
 
                 return response()->json([
+                    'ok' => false,
                     'status'=>\Illuminate\Http\Response::HTTP_SERVICE_UNAVAILABLE ,
                     'title'=>__('response.service_unavailable'),
                     'message'=> __('response.service_unavailable_long'),
@@ -190,6 +203,7 @@ if (!function_exists('bodyResponseRequest')) {
                 \Log::error('ERROR', ['exception'=>$data]);
 
                 return response()->json([
+                    'ok' => false,
                     'status'=>\Illuminate\Http\Response::HTTP_INTERNAL_SERVER_ERROR,
                     'title'=> __('response.error'),
                     'message'=> __('response.error_long'),

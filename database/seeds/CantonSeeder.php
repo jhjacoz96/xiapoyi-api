@@ -1,0 +1,132 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use App\Canton;
+use Illuminate\Support\Str;
+
+class CantonSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $cantons = [
+            ["name" => "Cuenca", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Camilo Ponce Enríquez", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Chordeleg", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "El Pan", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Girón", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Guachapala", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Gualaceo", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Nabón", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Oña", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Paute", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Pucará", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "San Fernando", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Santa Isabel", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Sevilla de Oro", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Sígsig", "code" => Str::random(4),"province_id" => 1],
+            ["name" => "Guaranda", "code" => Str::random(4),"province_id" => 2],
+            ["name" => "Caluma", "code" => Str::random(4),"province_id" => 2],
+            ["name" => "Chillanes", "code" => Str::random(4),"province_id" => 2],
+            ["name" => "Chimbo", "code" => Str::random(4),"province_id" => 2],
+            ["name" => "Echeandía", "code" => Str::random(4),"province_id" => 2],
+            ["name" => "Las Naves", "code" => Str::random(4),"province_id" => 2],
+            ["name" => "San Miguel", "code" => Str::random(4),"province_id" => 2],
+             ["name" => "Azogues", "code" => Str::random(4),"province_id" => 3],
+             ["name" => "Cantón Biblián", "code" => Str::random(4),"province_id" => 3],
+             ["name" => "Cañar", "code" => Str::random(4),"province_id" => 3],
+             ["name" => "Déleg", "code" => Str::random(4),"province_id" => 3],
+             ["name" => "El Tambo", "code" => Str::random(4),"province_id" => 3],
+             ["name" => "La Troncal", "code" => Str::random(4),"province_id" => 3],
+             ["name" => "Suscal", "code" => Str::random(4),"province_id" => 3],
+            ["name" => "Tulcán", "code" => Str::random(4),"province_id" => 4],
+            ["name" => "Bolívar", "code" => Str::random(4),"province_id" => 4],
+            ["name" => "Espejo", "code" => Str::random(4),"province_id" => 4],
+            ["name" => "Mira", "code" => Str::random(4),"province_id" => 4],
+            ["name" => "Montúfar", "code" => Str::random(4),"province_id" => 4],
+            ["name" => "Huaca", "code" => Str::random(4),"province_id" => 4],
+            ["name" => "Riobamba", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Alausí", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Chambo", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Chunchi", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Colta", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Cumandá", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Guamote", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Guano", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Pallatanga", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Penipe", "code" => Str::random(4),"province_id" => 5],
+            ["name" => "Latacunga", "code" => Str::random(4),"province_id" => 6],
+            ["name" => "La Maná", "code" => Str::random(4),"province_id" => 6],
+            ["name" => "Pangua", "code" => Str::random(4),"province_id" => 6],
+            ["name" => "Pujilí", "code" => Str::random(4),"province_id" => 6],
+            ["name" => "Salcedo", "code" => Str::random(4),"province_id" => 6],
+            ["name" => "Saquisilí", "code" => Str::random(4),"province_id" => 6],
+            ["name" => "Sigchos", "code" => Str::random(4),"province_id" => 6],
+             ["name" => "Machala", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Arenillas", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Atahualpa", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Balsas", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Chilla", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "El Guabo", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Huaquillas", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Las Lajas", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Marcabelí", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Pasaje", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Piñas", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Portovelo", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Santa Rosa", "code" => Str::random(4),"province_id" => 7],
+             ["name" => "Zaruma", "code" => Str::random(4),"province_id" => 7],
+              ["name" => "Esmeraldas", "code" => Str::random(4),"province_id" => 8],
+              ["name" => "Atacames", "code" => Str::random(4),"province_id" => 8],
+              ["name" => "Eloy Alfaro", "code" => Str::random(4),"province_id" => 8],
+              ["name" => "Muisne", "code" => Str::random(4),"province_id" => 8],
+              ["name" => "Quinindé", "code" => Str::random(4),"province_id" => 8],
+              ["name" => "Rioverde", "code" => Str::random(4),"province_id" => 8],
+              ["name" => "San Lorenzo", "code" => Str::random(4),"province_id" => 8],
+              ["name" => "San Cristóbal", "code" => Str::random(4),"province_id" => 9],
+              ["name" => "Isabela", "code" => Str::random(4),"province_id" => 9],
+              ["name" => "Santa Cruz", "code" => Str::random(4),"province_id" => 9],
+              ["name" => "Guayaquil", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Alfredo Baquerizo", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Balao", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Balzar", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Colimes", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Daule", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Durán", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "El Empalme", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "El Triunfo", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "General Antonio Elizalde", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Isidro Ayora", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Lomas de Sargentillo", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Marcelino Maridueña", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Milagro", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Naranjal", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Naranjito", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Nobol", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Palestina", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Pedro Carbo", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Playas", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Salitre", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Samborondón", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Santa Lucía", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Simón Bolívar", "code" => Str::random(4),"province_id" => 10],
+              ["name" => "Yaguachi", "code" => Str::random(4),"province_id" => 10],
+               ["name" => "Ibarra", "code" => Str::random(4),"province_id" => 11],
+               ["name" => "Antonio Ante", "code" => Str::random(4),"province_id" => 11],
+               ["name" => "Cotacachi", "code" => Str::random(4),"province_id" => 11],
+               ["name" => "Otavalo", "code" => Str::random(4),"province_id" => 11],
+               ["name" => "Pimampiro", "code" => Str::random(4),"province_id" => 11],
+               ["name" => "San Miguel de Urcuquí", "code" => Str::random(4),"province_id" => 11],
+               
+        ];
+        
+        foreach($cantons as $canton) {
+            Canton::create($canton);
+        };
+    }
+}

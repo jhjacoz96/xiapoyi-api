@@ -40,13 +40,31 @@ class RoleController extends Controller
      */
     public function store(RoleStoreRequest $request) {
       try {
-        
+        $data = $request->validated();
         $model = $this->service->store($data);
         $data = new RolResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
         return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
       }
+    }
+
+    public function assignPermission($request, $id)
+    {
+        try {
+            $model = $this->service->assignPermission($request, $id);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new RoleResource($model);
+                return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+            }
+          } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+          }
     }
 
     /**

@@ -37,12 +37,37 @@ class RoleService {
         }
     }
 
+    public function assignPermission ($data, $id) {
+        try {
+            DB::beginTransaction();
+            $model = Role::find($id);
+            if(!$model) return null;
+
+            $children = $model->permissions;
+            $permissionsItems = $data['permissions'];
+            $deletedIds = $children->filter(function ($child) use ($permissionsItems) {
+                return empty($permissionsItems->where('name', $child->name)->first());
+            })->map(function ($child) {
+                $name = $child->name;
+                $child->revokePermissionTo($child);
+                return $name;
+            });
+           
+            $model->syncPermissions($data);
+
+            DB::commit();
+            return  $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
     public function update ($data, $id) {
         try {
             DB::beginTransaction();
             $model = Role::find($id);
             if(!$model) return null;
-            $model;
             $model->update(["name" => $data["name"]]);
             DB::commit();
             return  $model;

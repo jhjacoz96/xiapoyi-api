@@ -1,11 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Role;
+use App\User;
+use App\Services\RoleService;
 
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
+    function __construct(RoleService $_RoleService)
+    {
+        $this->service = $_RoleService;
+    }
     /**
      * Display a listing of the resource.
      *

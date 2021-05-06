@@ -15,22 +15,22 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->string('cedula');
-            $table->string('sexo');
-            $table->string('edad');
-            $table->dateTime('fechaNacimiento');
+            $table->string('name');
+            $table->string('document');
             $table->string('phone');
-            $table->string('direccion');
-            $table->integer('canton_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->string('address');
+            $table->integer('canton_id')->unsigned()->nullable();
+            $table->integer('province_id');
+            $table->integer('user_id')->unsigned()->nullable();
             $table->integer('type_document_id')->unsigned();
-            $table->integer('type_employee_id')->unsigned();
-            $table->integer('specialty_id')->unsigned();
+            $table->integer('gender_id')->unsigned();
+            $table->integer('type_employee_id')->unsigned()->nullable();
+            $table->integer('specialty_id')->unsigned()->nullable();
             $table->timestamps();
         });
         Schema::table('employees', function($table) {
             $table->foreign('canton_id')->references('id')->on('cantons')->onDelete('cascade');
+            $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('type_document_id')->references('id')->on('type_documents')->onDelete('cascade');
             $table->foreign('type_employee_id')->references('id')->on('type_employees')->onDelete('cascade');
