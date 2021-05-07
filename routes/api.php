@@ -37,6 +37,7 @@ Route::group([
     'middleware' => 'auth:api'
   ], function() {
 
+      Route::get('role/permission', 'RoleController@permissionIndex');
       Route::ApiResource('role', 'RoleController');
       Route::put('role/assign-permissions/{id}', 'RoleController@assignPermission');
 
@@ -103,4 +104,23 @@ Route::group([
               'as' => 'api.employee.delete'
           ]);
       });
+  });
+
+  Route::group([
+    'prefix' => 'web'
+  ], function () {
+    Route::post('organization', 'ConfigWeb@organizationStore');
+    Route::get('organization', 'ConfigWeb@organizationIndex');
+    Route::post('up', 'ConfigWeb@upStore');
+    Route::get('up', 'ConfigWeb@upIndex');
+    Route::post('service', 'ConfigWeb@serviceStore');
+    Route::get('service', 'ConfigWeb@serviceIndex');
+    Route::post('older-adult', 'ConfigWeb@olderAdultStore');
+    Route::get('older-adult', 'ConfigWeb@olderAdultIndex');
+    Route::post('diabetic', 'ConfigWeb@diabeticStore');
+    Route::get('diabetic', 'ConfigWeb@diabeticIndex');
+    Route::post('subcription', 'ConfigWeb@subcriptionStore');
+    Route::get('subcription', 'ConfigWeb@subcriptionIndex');
+    Route::post('contact', 'ConfigWeb@contactStore');
+    Route::get('contact', 'ConfigWeb@contactIndex');
   });

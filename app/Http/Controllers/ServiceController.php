@@ -26,7 +26,7 @@ class ServiceController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = ServiceListResource::collection($model);
+            $data = ServiceResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;

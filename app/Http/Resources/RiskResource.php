@@ -14,6 +14,10 @@ class RiskResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "risk_classification_id" => $this->risk_classification_id,
+        ];
     }
 }

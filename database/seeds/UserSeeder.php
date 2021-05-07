@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Employee;
+use App\typeEmployee;
+
 
 class UserSeeder extends Seeder
 {
@@ -12,6 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
         $user = User::create([
             'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678'),

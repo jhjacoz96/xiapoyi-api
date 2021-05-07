@@ -18,7 +18,7 @@ class ServiceResource extends JsonResource
             "id" => $this->id,
             "nombre" => $this->nombre,
             "descripcion" => $this->descripcion,
-            "activies" => ActivityResource::collection($this->activities)
+            "activities" => ActivityResource::collection($this->activities)
         ];
     }
 }

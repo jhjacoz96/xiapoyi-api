@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProvinceSeeder::class);
         $this->call(CantonSeeder::class);
         $this->call(GenderSeeder::class);
-        $this->call(TypeDocumentSeeder::class);
         $this->call(ParameterFileSedeer::class);
         $this->call(UserSeeder::class);
     }

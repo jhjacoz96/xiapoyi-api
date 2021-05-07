@@ -10,4 +10,8 @@ class Presentation extends Model
         'name', 'description',
     ];
 
+    public function medicines () {
+        return $this->hasMany('App\Medicine', 'presentation_id', 'id');
+    }
+
 }

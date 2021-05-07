@@ -59,19 +59,19 @@ class EmployeeService {
             DB::beginTransaction();
             $modelEmployee = Employee::find($id);
             if(!$modelEmployee) return null;
-            $modelEmployee->province_id  = $data["province_id"] ?? null;
-            $modelEmployee->name = $data["name"] ?? null;
-            $modelEmployee->phone = $data["phone"] ?? null;
-            $modelEmployee->type_document_id = $data["type_document_id"] ?? null;
-            $modelEmployee->document = $data["document"] ?? null;
-            $modelEmployee->gender_id  = $data["gender_id"] ?? null;
-            $modelEmployee->canton_id = $data["canton_id"] ?? null;
-            $modelEmployee->address = $data["address"] ?? null;
-            $modelEmployee->type_employee_id = $data["type_employee_id"] ?? null;
-            $modelEmployee->specialty_id = $data["specialty_id"] ?? null;
+            if (isset($data["province_id"])) $modelEmployee->province_id  = $data["province_id"] ?? null;
+            if (isset($data["name"])) $modelEmployee->name = $data["name"] ?? null;
+            if (isset($data["phone"])) $modelEmployee->phone = $data["phone"] ?? null;
+            if (isset($data["type_document_id"])) $modelEmployee->type_document_id = $data["type_document_id"] ?? null;
+            if (isset($data["document"])) $modelEmployee->document = $data["document"] ?? null;
+            if (isset($data["gender_id"])) $modelEmployee->gender_id  = $data["gender_id"] ?? null;
+            if (isset($data["canton_id"])) $modelEmployee->canton_id = $data["canton_id"] ?? null;
+            if (isset($data["address"])) $modelEmployee->address = $data["address"] ?? null;
+            if (isset($data["type_employee_id"])) $modelEmployee->type_employee_id = $data["type_employee_id"] ?? null;
+            if (isset($data["specialty_id"])) $modelEmployee->specialty_id = $data["specialty_id"] ?? null;
 
             $modelEmployee->save();
-            if (!empty($data['role_id'] && !empty(\Auth::user()->roles))) {
+            if (!empty($data['role_id'] && empty(\Auth::user()->roles))) {
                 \Auth::user()->assignRole($data['role_id']);
             }
             DB::commit();

@@ -17,17 +17,17 @@ class Service extends Model
 
     public function assignActivities (array $activitiesItems) {
         $children = $this->activities;
-        $activitiesItems = collect($activitiesItems);
+        return $activitiesItems;
         $deletedIds = $children->filter(function ($child) use ($activitiesItems) {
-            return empty($activitiesItems->where('id', $child->id)->first());
+            return in_Array($activitiesItems, $child->id);
         })->map(function ($child) {
             $id = $child->id;
             $child->update(["service_id" => null]);
             return $id;
         });
        foreach ($activitiesItems as $item) {
-        $model = Activity::find($item["id"]);
-        $model->update(["service_id" => $item["service_id"]]);
+        $model = Activity::find($item);
+        $model->update(["service_id" => $id]);
        }
     }
 }

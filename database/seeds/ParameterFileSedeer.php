@@ -4,7 +4,9 @@ use Illuminate\Database\Seeder;
 use App\GestationWeek;
 use App\Relationship;
 use App\Scholarship;
+use App\TypeDocument;
 use App\Specialty;
+use App\typeEmployee;
 use App\Employee;
 
 class ParameterFileSedeer extends Seeder
@@ -114,9 +116,14 @@ class ParameterFileSedeer extends Seeder
            TypeDocument::create(["nombre" => $typeDocument]);
         }
 
-        $specialtys = ["Doctor", "Enfermera"];
+        $specialtys = ["Neonatología", "Obstetricia"];
         foreach ($specialtys as $specialty) {
             Specialty::create(["name" => $specialty]);
+        }
+
+        $tps = ["Doctor", "Enfermera"];
+        foreach ($tps as $tp) {
+            TypeEmployee::create(["name" => $tp]);
         }
 
         

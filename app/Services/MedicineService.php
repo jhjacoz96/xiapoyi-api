@@ -48,6 +48,7 @@ class MedicineService {
             $model->update([
               "name" => $data["name"],
               "description" => $data["description"],
+              "presentation_id" => $data["presentation_id"] ?? null
             ]);
             DB::commit();
             return  $model;

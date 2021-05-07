@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EmpoyeeStoreRequest extends FormRequest
 {
@@ -32,7 +33,13 @@ class EmpoyeeStoreRequest extends FormRequest
             "province_id"=> "required|integer",
             "canton_id"=> "required|integer",
             'address' => "required|string",
-            'email' => "required|string"
+            'email' => [
+                "required", "string",
+                 Rule::unique('users')
+                    ->where(function ($query) {
+                       return $query->where('email', $this->email);
+                    })
+             ]
         ];
     }
 }

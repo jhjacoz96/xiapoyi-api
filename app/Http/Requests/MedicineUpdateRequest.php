@@ -26,6 +26,7 @@ class MedicineUpdateRequest extends FormRequest
         return [
             "name" => "required|string",
             "description" => "nullable|string",
+            "presentation_id" => "sometimes|nullable|integer"
         ];
     }
 }

@@ -27,7 +27,7 @@ class EmployeeResource extends JsonResource
             "type_document_id" => $this->type_document_id,
             "type_employee_id" => $this->type_employee_id,
             "specialty_id" => $this->specialty_id,
-            "role_id" => $this->user->roles[0],
+            "role_id" => $this->user->roles[0]->name ?? null
         ];
     }
 }

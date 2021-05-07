@@ -8,6 +8,7 @@ use App\Http\Requests\RoleUpdateRequest;
 use App\Utils\Enums\EnumResponse;
 use App\Role;
 use App\Http\Resources\RolResource;
+use App\Http\Resources\PermissionResource;
 use App\Services\RoleService;
 
 class RoleController extends Controller
@@ -32,6 +33,17 @@ class RoleController extends Controller
         }
     }
 
+    public function permissionIndex()
+    {
+        try {
+            $model = $this->service->PermissionIndex();
+            $data = PermissionResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -49,7 +61,7 @@ class RoleController extends Controller
       }
     }
 
-    public function assignPermission($request, $id)
+    public function assignPermission(Request $request, $id)
     {
         try {
             $model = $this->service->assignPermission($request, $id);
@@ -59,7 +71,7 @@ class RoleController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new RoleResource($model);
+                $data = new RolResource($model);
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
           } catch (\Exception $e) {

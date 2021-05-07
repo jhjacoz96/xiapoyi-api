@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class RoleService {
 
@@ -19,6 +21,15 @@ class RoleService {
         try {
             
             $model = Role::All();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+    public function permissionIndex () {
+        try {
+            
+            $model = Permission::All();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -42,19 +53,20 @@ class RoleService {
             DB::beginTransaction();
             $model = Role::find($id);
             if(!$model) return null;
-
             $children = $model->permissions;
-            $permissionsItems = $data['permissions'];
+            $permissionsItems = Collect($data["permissions"]);
             $deletedIds = $children->filter(function ($child) use ($permissionsItems) {
-                return empty($permissionsItems->where('name', $child->name)->first());
+                foreach ($permissionsItems as $value) {
+                    if ($value == $child["name"]) return true;
+                    return false;
+                }
             })->map(function ($child) {
-                $name = $child->name;
-                $child->revokePermissionTo($child);
+                $name = $child["name"];
+                $child->revokePermissionTo($child["name"]);
                 return $name;
             });
            
-            $model->syncPermissions($data);
-
+            $model->syncPermissions($permissionsItems);
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

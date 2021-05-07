@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Service;
+use App\Activity;
 
 class ServiceService {
 
@@ -40,18 +41,21 @@ class ServiceService {
         try {
             $model = Service::find($data["id"]);
             if(!$model) return null;
-            $validar = $data['activities']  ?? null;
-            if (!is_null($validar)) {
-                $activities = [];
-                foreach ($data['activities'] as $item) {
-                    $activities[] = [
-                        "id" =>  $item["id"] ?? null,
-                        "nombre" =>  $item["nombre"],
-                        "service_id" => $data["id"]
-                    ];
-                }
-                $model->assignActivities($activities);
+            
+            $children = $model->activities;
+            $activitiesItems = $data["activities"];
+            $deletedIds = $children->filter(function ($child) use ($activitiesItems) {
+                return !in_array($child->id, $activitiesItems);
+            })->map(function ($child) {
+                $id = $child->id;
+                $child->update(["service_id" => null]);
+                return $id;
+            });
+            foreach ($activitiesItems as $item) {
+               $model = Activity::find($item);
+               $model->update(["service_id" => $id]);
             }
+            $model = Service::find($data["id"]);
             return $model;
         } catch (\Exception $e) {
             DB::rollback();
