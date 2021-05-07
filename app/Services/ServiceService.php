@@ -30,6 +30,7 @@ class ServiceService {
         try {
             DB::beginTransaction();
             $model = Service::create($data);
+            if ($data['image_service']) $model->assignImage($data['image_service']);
             DB::commit();
             return  $model;
         } catch (\Exception $e) {
@@ -69,6 +70,7 @@ class ServiceService {
             $model = Service::find($id);
             if(!$model) return null;
             $model->update($data);
+            if ($data['image_service']) $model->assignImage($data['image_service']);
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

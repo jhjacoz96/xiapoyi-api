@@ -15,6 +15,10 @@ class Service extends Model
         return $this->hasMany('App\Activity', 'service_id', 'id');
     }
 
+    public function image(){
+        return $this->morphOne('App\Image','imageable');
+    }
+
     public function assignActivities (array $activitiesItems) {
         $children = $this->activities;
         return $activitiesItems;
@@ -29,5 +33,15 @@ class Service extends Model
         $model = Activity::find($item);
         $model->update(["service_id" => $id]);
        }
+    }
+
+    public function assignImage (object $data) {
+        $imagen = $data;
+        $nombre = 'image_service'.$imagen->getClientOriginalName();
+        $ruta = public_path().'/imagenWeb';
+        $imagen->move($ruta, $nombre);
+        
+        $urlImagen['url']='/imagenWeb/'.$nombre;
+        $this->image()->create($urlImagen);
     }
 }

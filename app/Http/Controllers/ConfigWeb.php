@@ -195,6 +195,20 @@ class ConfigWeb extends Controller
                 'description1' => $request['description1'],
                 'description2' => $request['description2'],
             ]);
+
+            if ($request->file('image_diabetic')) {
+
+                $imagenDiabetic = $request->file('image_diabetic');
+                $nombreDiabetic = 'image_diabetic'.$imagenDiabetic->getClientOriginalName();
+                $rutaDiabetic = public_path().'/imagenWeb';
+                $imagenDiabetic->move($rutaDiabetic , $nombreDiabetic);
+                
+                $urlImagenDiabetic['url']='/imagenWeb/'.$nombreDiabetic;
+                $m = $data->image()->create($urlImagenDiabetic);
+            }
+
+            $data = Diabetic::with('image')->find(1);
+
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -276,6 +290,14 @@ class ConfigWeb extends Controller
                 [
                 'description1' => $request['description1'],
                 'description2' => $request['description2'],
+                'email' => $request['email'],
+                'descripcion_phone1' => $request['descripcion_phone1'],
+                'descripcion_phone2' => $request['descripcion_phone2'],
+                'phone1' => $request['phone1'],
+                'pone' => $request['pone'],
+                'twitter' => $request['twitter'],
+                'facebook' => $request['facebook'],
+                'instagram' => $request['instagram'],
             ]);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
