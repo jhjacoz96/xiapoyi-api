@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServiceUpdateRequest extends FormRequest
+class PublicationStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,13 @@ class ServiceUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            "nombre" => "required|string",
-            "descripcion" => "sometimes|nullable|string",
-            "image_service" => "sometimes|nullable|file",
-            "view_web" => "required|boolean",
+            "name" => "required|string",
+            "description" => "required|string",
+            "filter_three_publication_id" => "sometimes|nullable|integer",
+            "filter_two_publication_id" => "required|integer",
+            "filter_one_publication_id" => "required|integer",
+            "image_mini" => "required|file",
+            "resources" => "required|string",
         ];
     }
 }

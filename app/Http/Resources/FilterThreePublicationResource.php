@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServiceResource extends JsonResource
+class FilterThreePublicationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,8 @@ class ServiceResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "nombre" => $this->nombre,
-            "descripcion" => $this->descripcion,
-            "view_web" => $this->view_web,
-            "activities" => ActivityResource::collection($this->activities),
-            "image" => $this->image
+            "name" => $this->name,
+            "filter_two_publication_id" => new FilterTwoPublicationResource($this->filterTwoPublication),
         ];
     }
 }

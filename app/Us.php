@@ -11,6 +11,8 @@ class Us extends Model
     ];
 
     public function image(){
-        return $this->morphMany('App\Image','imageable');
+        return $this->morphOne('App\Image','imageable');
     }
+
+    
 }

@@ -82,6 +82,15 @@ Route::group([
       Route::get('gestation-week', 'OtherParameterController@GestationWeekIndex');
       Route::get('scholarship', 'OtherParameterController@ScholarshipIndexIndex');
 
+      Route::ApiResource('filter-one-publication', 'FilterOnePublicationController');
+      Route::ApiResource('filter-two-publication', 'FilterTwoPublicationController');
+      Route::get('filter-two-publication/filter/{id}', 'FilterTwoPublicationController@indexFilter');
+      Route::ApiResource('filter-three-publication', 'FilterThreePublicationController');
+      Route::get('filter-three-publication/filter/{id}', 'FilterThreePublicationController@indexFilter');
+      Route::ApiResource('resource', 'ResourceController');
+      Route::ApiResource('publication', 'PublicationController');
+      Route::ApiResource('carrusel', 'CarruselController');
+
       Route::prefix('employee')->group(function () {
           Route::post('', [
               'uses' => 'EmployeeController@store',
@@ -104,6 +113,23 @@ Route::group([
               'as' => 'api.employee.delete'
           ]);
       });
+
+
+      Route::post('organization', 'ConfigWeb@organizationStore');
+      Route::get('organization', 'ConfigWeb@organizationIndex');
+      Route::post('us', 'ConfigWeb@upStore');
+      Route::get('us', 'ConfigWeb@upIndex');
+      Route::post('service', 'ConfigWeb@serviceStore');
+      Route::get('service', 'ConfigWeb@serviceIndex');
+      Route::post('older-adult', 'ConfigWeb@olderAdultStore');
+      Route::get('older-adult', 'ConfigWeb@olderAdultIndex');
+      Route::post('diabetic', 'ConfigWeb@diabeticStore');
+      Route::get('diabetic', 'ConfigWeb@diabeticIndex');
+      Route::post('subcription', 'ConfigWeb@subcriptionStore');
+      Route::get('subcription', 'ConfigWeb@subcriptionIndex');
+      Route::post('contact', 'ConfigWeb@contactStore');
+      Route::get('contact', 'ConfigWeb@contactIndex');
+
   });
 
   Route::group([
@@ -123,4 +149,5 @@ Route::group([
     Route::get('subcription', 'ConfigWeb@subcriptionIndex');
     Route::post('contact', 'ConfigWeb@contactStore');
     Route::get('contact', 'ConfigWeb@contactIndex');
+
   });

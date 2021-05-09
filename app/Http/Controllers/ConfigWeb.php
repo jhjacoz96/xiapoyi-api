@@ -67,18 +67,56 @@ class ConfigWeb extends Controller
     {
         try {
             $id = 1;
-            $data = Us::updateOrCreate(
-                [
-                  'id' => $id,
-                ],
-                [
-                'description1' => $request['description1'],
-                'description2' => $request['description2'],
-                'mission' => $request['mission'],
-                'vision' => $request['vision'],
-                'objective' => $request['objective'],
-                'value' => $request['value'],
-            ]);
+            if (!empty( $request['description1'] || $request['description2']))  {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ],
+                    [
+                    'description1' => $request['description1'],
+                    'description2' => $request['description2'],
+                ]);
+            }
+
+            if (!empty($request['mission']))  {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ],
+                    [
+                    'mission' => $request['mission'],
+                ]);
+            }
+
+            if (!empty($request['vision']))  {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ],
+                    [
+                    'vision' => $request['vision'],
+                ]);
+            }
+
+            if (!empty($request['objective']))  {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ],
+                    [
+                    'objective' => $request['objective'],
+                ]);
+            }
+
+            if (!empty($request['value']))  {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ],
+                    [
+                    'value' => $request['value'],
+                ]);
+            }
 
             if ($request->file('image_mission')) {
 
@@ -88,8 +126,12 @@ class ConfigWeb extends Controller
                 $imagenMission->move($rutaMission , $nombreMission);
                 
                 $urlImagenMission['url']='/imagenWeb/'.$nombreMission;
-                $m = $data->image()->create($urlImagenMission);
-                $data->image_mission = $m->url;
+                if (!empty($data->image_mission)) {
+                    $data->image_mission = $urlImagenMission['url'];
+                } else {
+                    $m = $data->image()->create($urlImagenMission);
+                    $data->image_mission = $m->url;
+                }
                 $data->save();
             }
             if ($request->file('image_vision')) {
@@ -99,21 +141,27 @@ class ConfigWeb extends Controller
                 $imagenVision->move($rutavVision , $nombreVision);
                 
                 $urlImagenVision['url']='/imagenWeb/'.$nombreVision;
-                $v = $data->image()->create($urlImagenVision);
-
-                $data->image_vision = $v->url;
+                if (!empty($data->image_vision)) {
+                    $data->image_vision = $urlImagenVision['url'];
+                } else {
+                    $v = $data->image()->create($urlImagenVision);
+                    $data->image_vision = $v->url;
+                }
                 $data->save();
             }
             if ($request->file('image_objective')) {
                 $imagenObjetive = $request->file('image_objective');
-                $nombreObjetive = 'image_objective'.$imageObjetive->getClientOriginalName();
+                $nombreObjetive = 'image_objective'.$imagenObjetive->getClientOriginalName();
                 $rutaObjetive = public_path().'/imagenWeb';
-                $imagenObjetive->move($rutavObjetive , $nombreObjetive);
+                $imagenObjetive->move($rutaObjetive , $nombreObjetive);
                 
-                $urlImagenObjetive['url']='/imagenWeb/'.$nombrObjetive;
-                $o = $data->image()->create($urlImagenObjetive);
-                
-                $data->image_objetive = $o->url;
+                $urlImagenObjetive['url']='/imagenWeb/'.$nombreObjetive;
+                if (!empty($data->image_objetive)) {
+                    $data->image_objective = $urlImagenObjetive['url'];
+                } else {
+                    $o = $data->image()->create($urlImagenObjetive);
+                    $data->image_objective = $o->url;
+                }
                 $data->save();
             }
             if ($request->file('image_value')) {
@@ -121,11 +169,13 @@ class ConfigWeb extends Controller
                 $nombreValue = 'image_value'.$imagenValue->getClientOriginalName();
                 $rutaValue = public_path().'/imagenWeb';
                 $imagenValue->move($rutaValue , $nombreValue);
-                
                 $urlImagenValue['url']='/imagenWeb/'.$nombreValue;
-                $v = $data->image()->create($urlImagenValue);
-
-                $data->image_value = $v->url;
+                if (!empty($data->image_value)) {
+                    $data->image_value = $urlImagenValue['url'];
+                } else {
+                   $v = $data->image()->create($urlImagenValue);
+                   $data->image_value = $v->url;
+                }
                 $data->save();
             }
             if ($request->file('image_us')) {
@@ -175,7 +225,7 @@ class ConfigWeb extends Controller
 
     public function diabeticIndex() {
         try {
-            $data = Diabetic::find(1);
+            $data = Diabetic::with('image')->find(1);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -196,15 +246,20 @@ class ConfigWeb extends Controller
                 'description2' => $request['description2'],
             ]);
 
-            if ($request->file('image_diabetic')) {
+            if (isset($request['image'])) {
 
-                $imagenDiabetic = $request->file('image_diabetic');
+                $imagenDiabetic = $request['image'];
                 $nombreDiabetic = 'image_diabetic'.$imagenDiabetic->getClientOriginalName();
                 $rutaDiabetic = public_path().'/imagenWeb';
                 $imagenDiabetic->move($rutaDiabetic , $nombreDiabetic);
                 
                 $urlImagenDiabetic['url']='/imagenWeb/'.$nombreDiabetic;
-                $m = $data->image()->create($urlImagenDiabetic);
+                if (!empty($data->image())) {
+                    $data->image->url = $urlImagenDiabetic['url'];
+                    $data->push();
+                } else {
+                    $data->image()->create($urlImagenDiabetic);
+                }
             }
 
             $data = Diabetic::with('image')->find(1);
