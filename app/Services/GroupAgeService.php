@@ -49,7 +49,7 @@ class GroupAgeService {
             $model->update([
               "name" => $data["name"],
               "description" => $data["description"],
-              "rank" => $data["rank"],l
+              "rank" => $data["rank"],
             ]);
             DB::commit();
             return  $model;

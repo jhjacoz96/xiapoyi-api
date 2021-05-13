@@ -53,7 +53,7 @@ Route::group([
       Route::ApiResource('activity', 'ActivityController');
 
       
-
+      Route::ApiResource('zone', 'ZoneController');
       Route::get('zone-by-canton/{id}', 'ZoneController@zoneFind');
       Route::get('province', 'ZoneController@provinceFind');
       Route::get('canton/{id}', 'ZoneController@cantonFind');
@@ -80,7 +80,7 @@ Route::group([
       Route::get('relationship', 'OtherParameterController@relationshipIndex');
       Route::get('psyshotrophic', 'OtherParameterController@psyshotrophicIndex');
       Route::get('gestation-week', 'OtherParameterController@GestationWeekIndex');
-      Route::get('scholarship', 'OtherParameterController@ScholarshipIndexIndex');
+      Route::get('scholarship', 'OtherParameterController@ScholarshipIndex');
 
       Route::ApiResource('filter-one-publication', 'FilterOnePublicationController');
       Route::ApiResource('filter-two-publication', 'FilterTwoPublicationController');
@@ -90,6 +90,8 @@ Route::group([
       Route::ApiResource('resource', 'ResourceController');
       Route::ApiResource('publication', 'PublicationController');
       Route::ApiResource('carrusel', 'CarruselController');
+
+      Route::ApiResource('file-family', 'FileFamilyController');
 
       Route::prefix('employee')->group(function () {
           Route::post('', [

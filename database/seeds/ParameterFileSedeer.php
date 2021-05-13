@@ -38,9 +38,6 @@ class ParameterFileSedeer extends Seeder
 
         $scholarships = [
             [
-                "name" => "Sin escolaridad",
-            ],
-            [
                 "name" => "Básica",
             ],
             [

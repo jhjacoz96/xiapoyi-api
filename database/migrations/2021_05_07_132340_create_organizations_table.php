@@ -21,6 +21,10 @@ class CreateOrganizationsTable extends Migration
             $table->integer('canton_id')->unsigned()->nullable();
             $table->foreign('canton_id')->references('id')->on('cantons')->onDelete('cascade');
             $table->string('address')->nullable();
+            $table->integer('institution_id')->unsigned();
+            $table->foreign('institution_id')->references('id')->on('institutions')->onDelete('cascade');
+            $table->string('code_uo');
+            $table->string('parroquia');
             $table->timestamps();
         });
     }

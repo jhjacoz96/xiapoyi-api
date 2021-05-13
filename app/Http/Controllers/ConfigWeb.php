@@ -26,7 +26,7 @@ class ConfigWeb extends Controller
 
     public function organizationIndex() {
         try {
-            $data = Organization::find(1); 
+            $data = Organization::with('province', 'institution', 'canton')->find(1); 
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -45,7 +45,11 @@ class ConfigWeb extends Controller
                 'name' => $request['name'],
                 'province_id' => $request['province_id'],
                 'canton_id' => $request['canton_id'],
-                'address' => $request['address']
+                'address' => $request['address'],
+                'institution_id' => $request['institution_id'],
+                'code_uo' => $request['code_uo'],
+                'parroquia' => $request['parroquia'],
+
             ]);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
@@ -349,7 +353,7 @@ class ConfigWeb extends Controller
                 'descripcion_phone1' => $request['descripcion_phone1'],
                 'descripcion_phone2' => $request['descripcion_phone2'],
                 'phone1' => $request['phone1'],
-                'pone' => $request['pone'],
+                'pone2' => $request['pone2'],
                 'twitter' => $request['twitter'],
                 'facebook' => $request['facebook'],
                 'instagram' => $request['instagram'],
