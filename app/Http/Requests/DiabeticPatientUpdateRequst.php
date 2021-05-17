@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PublicationStoreRequest extends FormRequest
+class DiabeticPatientUpdateRequst extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class PublicationStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -25,12 +25,7 @@ class PublicationStoreRequest extends FormRequest
     {
         return [
             "name" => "required|string",
-            "description" => "required|string",
-            "filter_three_publication_id" => "sometimes|nullable",
-            "filter_two_publication_id" => "required|integer",
-            "filter_one_publication_id" => "required|integer",
-            "image_mini" => "required|file",
-            "resources" => "required|string",
+            "description" => "nullable|string",
         ];
     }
 }

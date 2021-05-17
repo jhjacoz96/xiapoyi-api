@@ -91,8 +91,36 @@ Route::group([
       Route::ApiResource('publication', 'PublicationController');
       Route::ApiResource('carrusel', 'CarruselController');
 
-      Route::ApiResource('file-family', 'FileFamilyController');
+      Route::prefix('control-diabetic')->group(function () {
+            Route::get('', [
+                'uses' => 'DiabeticPatientController@index',
+                'as' => 'api.controlDiabetic.index'
+            ]);
+            Route::put('{id}', [
+                'uses' => 'DiabeticPatientController@update',
+                'as' => 'api.controlDiabetic.update'
+            ]);
+            Route::post('{id}/register-glucose', [
+                'uses' => 'DiabeticPatientController@registerGlucose',
+                'as' => 'api.controlDiabetic.registerGlocose.post'
+            ]);
+            Route::get('{id}/register-glucose', [
+                'uses' => 'DiabeticPatientController@indexRegisterGlucose',
+                'as' => 'api.controlDiabetic.registerGlocose.index'
+            ]);
+            Route::post('{id}/register-weight', [
+                'uses' => 'DiabeticPatientController@registerWeight',
+                'as' => 'api.controlDiabetic.registerWeight.post'
+            ]);
+            Route::get('{id}/register-weight', [
+                'uses' => 'DiabeticPatientController@indexRegisterWeight',
+                'as' => 'api.controlDiabetic.registerWeight.index'
+            ]);
+      });
 
+      Route::post('file-family/search', 'FileFamilyController@search');
+      Route::post('file-family/filter', 'FileFamilyController@filter');
+      Route::ApiResource('file-family', 'FileFamilyController');
       Route::prefix('employee')->group(function () {
           Route::post('', [
               'uses' => 'EmployeeController@store',
@@ -121,16 +149,16 @@ Route::group([
       Route::get('organization', 'ConfigWeb@organizationIndex');
       Route::post('us', 'ConfigWeb@upStore');
       Route::get('us', 'ConfigWeb@upIndex');
-      Route::post('service', 'ConfigWeb@serviceStore');
-      Route::get('service', 'ConfigWeb@serviceIndex');
+      Route::post('service-web', 'ConfigWeb@serviceStore');
+      Route::get('service-web', 'ConfigWeb@serviceIndex');
       Route::post('older-adult', 'ConfigWeb@olderAdultStore');
       Route::get('older-adult', 'ConfigWeb@olderAdultIndex');
-      Route::post('diabetic', 'ConfigWeb@diabeticStore');
       Route::get('diabetic', 'ConfigWeb@diabeticIndex');
       Route::post('subcription', 'ConfigWeb@subcriptionStore');
       Route::get('subcription', 'ConfigWeb@subcriptionIndex');
       Route::post('contact', 'ConfigWeb@contactStore');
       Route::get('contact', 'ConfigWeb@contactIndex');
+
 
   });
 

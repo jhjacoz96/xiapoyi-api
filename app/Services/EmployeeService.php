@@ -71,8 +71,9 @@ class EmployeeService {
             if (isset($data["specialty_id"])) $modelEmployee->specialty_id = $data["specialty_id"] ?? null;
 
             $modelEmployee->save();
-            if (!empty($data['role_id'] && empty(\Auth::user()->roles))) {
-                \Auth::user()->assignRole($data['role_id']);
+            if (!empty($data['role_id'])) {
+                $user = User::find($modelEmployee->user_id);
+               $user->assignRole($data['role_id']);
             }
             DB::commit();
             return  $modelEmployee;

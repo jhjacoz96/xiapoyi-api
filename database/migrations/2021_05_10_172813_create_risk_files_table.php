@@ -17,7 +17,7 @@ class CreateRiskFilesTable extends Migration
             $table->increments('id');
             $table->integer('risk_id')->unsigned();
             $table->foreign('risk_id')->references('id')->on('risks')->onDelete('cascade');
-            $table->integer('')->unsigned();
+            $table->integer('file_family_id')->unsigned();
             $table->foreign('file_family_id')->references('id')->on('file_families')->onDelete('cascade');
             
             $table->integer('evolution_risk_id')->unsigned()->nullable();

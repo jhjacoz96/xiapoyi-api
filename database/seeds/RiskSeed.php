@@ -107,7 +107,7 @@ class RiskSeed extends Seeder
 
         foreach ($risks as $value) {
         	Risk::create($value);
-        }*/
+        }
 
         $levelRisks = [
         	[

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// use App\Http\Requests\FileFamilyStoreRequest;
+use App\Http\Requests\FileFamilyStoreRequest;
 // use App\Http\Requests\FileFamilyUpdateRequest;
 use App\Utils\Enums\EnumResponse;
 use App\FileFamily;
@@ -42,7 +42,6 @@ class FileFamilyController extends Controller
       try {
         // $data = $request->validated();
         $model = $this->service->store($request);
-        return $model;
         $data = new FileFamilyResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
@@ -105,6 +104,28 @@ class FileFamilyController extends Controller
             }
         } catch (\Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    public function search(Request $request)
+    {
+      try {
+            $model = $this->service->search($request);
+            $data = FileFamilyResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function filter(Request $request)
+    {
+      try {
+            $model = $this->service->filter($request);
+            $data = FileFamilyResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
         }
     }
 

@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\FileFamily;
 use App\Pregnant;
+use App\Pathology;
 use App\Member;
+use App\User;
+use App\DiabeticPatient;
 
 class FileFamilyService {
 
@@ -21,6 +24,34 @@ class FileFamilyService {
         try {
             
             $model = FileFamily::All();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function search ($data) {
+        try {
+            $filter = $data['filter'];
+            $search = $data['search'];
+            if ($filter == "Número de história") {
+                $model = FileFamily::where('numero_historia','like','%'.$search .'%')->get();
+            } else {
+                $model = FileFamily::whereHas('members', function ($query) use ($search) {
+                    $query->where('cedula', 'like','%'.$search .'%');
+                })->get();
+            }
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function filter ($data) {
+        try {
+            $zones = $data["zone_id"];
+            $level_totals = $data["level_total_id"];
+            $model = FileFamily::whereIn('level_total_id', $level_totals)->whereIn('zone_id', $zones)->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -43,7 +74,6 @@ class FileFamilyService {
                 "zone_id" => $data["zone_id"],
                 "cultural_group_id" => $data["cultural_group_id"],
             ]);
-
             $validar = $data['miembros']  ?? null;
             if (!is_null($validar)) {
                 $miembros = [];
@@ -58,6 +88,7 @@ class FileFamilyService {
                         "ocupacion" => $item['ocupacion'],
                         "fecha_nacimiento" => $item['fecha_nacimiento'],
                         "vacunacion" => $item['vacunacion'],
+                        "group_age_id" => $item['groupAge']['id'],
                         "salud_bucal" => $item['salud_bucal'],
                         "embarazo" => $item['embarazo'],
                         "scholarship_id" => $item['scholarship_id'],
@@ -66,10 +97,8 @@ class FileFamilyService {
                         "file_family_id" => $model->id
                     ];
                 }
-
                 $children = $model->members;
                 $miembros_items = collect($miembros);
-        
                 $deleted_ids = [];
                 if (count($children) > 0) {
                     $deleted_ids = $children->filter(function ($child) use ($miembros_items) {
@@ -98,6 +127,7 @@ class FileFamilyService {
                             "correo" => $model['correo'],
                             "ocupacion" => $model['ocupacion'],
                             "fecha_nacimiento" => $model['fecha_nacimiento'],
+                            "group_age_id" => $model['group_age_id'],
                             "vacunacion" => $model['vacunacion'],
                             "salud_bucal" => $model['salud_bucal'],
                             "embarazo" => $model['embarazo'],
@@ -130,6 +160,7 @@ class FileFamilyService {
                     $m->ocupacion = $member['ocupacion'];
                     $m->fecha_nacimiento = $member['fecha_nacimiento'];
                     $m->vacunacion = $member['vacunacion'];
+                    $m->group_age_id = $member['groupAge']["id"];
                     $m->salud_bucal = $member['salud_bucal'];
                     $m->embarazo = $member['embarazo'];
                     $m->scholarship_id = $member['scholarship_id'];
@@ -138,6 +169,20 @@ class FileFamilyService {
                     $m->file_family_id = $model->id;
                     $m->save();
 
+                    //captar pacientes con diabetes
+                    foreach ($member["patologias"] as  $pathology) {
+                        $query = Pathology::find($pathology);
+                        if ($query->capture) {
+                            $user = User::create([
+                                "email" => $m["correo"],
+                                "password" => "12345678",
+                            ]);
+                            $diabetic_patient = DiabeticPatient::create([
+                                "user_id" => $user["id"],
+                                "member_id" => $m["id"],
+                            ]);
+                        }
+                    }
                     //asignar patologias
 
                     $m->pathologies()->sync($member["patologias"]);
@@ -147,6 +192,7 @@ class FileFamilyService {
                     $m->disabilities()->sync($member["discapacidades"]);
 
                     //asignar mujeres embarazadas
+
 
                     if ($m['embarazo']) {
                        $prenatal = $member["prenatal"];
@@ -180,7 +226,6 @@ class FileFamilyService {
                     }
                 }
             }
-
             $validar1 = $data['mortalidad']  ?? null;
             if (!is_null($validar1)) {
                 $mortalidad = [];
@@ -199,7 +244,6 @@ class FileFamilyService {
                 $model->assignMortalities($mortalidad);
 
             }
-
             $validar2 = $data['riesgos']  ?? null;
             if (!is_null($validar2)) {
                 $riesgos = [];
@@ -208,44 +252,28 @@ class FileFamilyService {
                 }
                 $model->risks()->sync($riesgos);
             }
-
-            $validar2 = $data['riesgos']  ?? null;
             
             $model->update([
                 "total_risk" => $data["total_risk"],
                 "level_total_id" => $data["level_total_id"],
             ]);
-
-            $validar3 = $data['evolucion']  ?? null;
+            
+            $validar3 = $data['evaluacion']  ?? null;
             if (!is_null($validar3)) {
                 $evolucion = [];
-                foreach ($data['evolucion'] as $item) {
-                        $evolucion[$item["id"]] = [ 
-                            "compromiso_familiar" => $item["compromiso_familiar"]  ?? null,
-                            "compromiso_equipo" => $item["compromiso_equipo"]  ?? null,
-                            "cumplio" => $item["cumplio"] ?? null,
-                            "causas" => $item["causas"]  ?? null,
-                        ];
+                foreach ($data['evaluacion'] as $item) {
+                    $model->risks()->updateExistingPivot(
+                        $item["id"], [
+                        "compromiso_familiar" => $item["compromiso_familiar"]  ?? null,
+                        "compromiso_equipo" => $item["compromiso_equipo"]  ?? null,
+                        "cumplio" => $item["cumplio"] ?? null,
+                        "causas" => $item["causas"]  ?? null,
+                    ]);
                 }
-                $model->risks()->sync($evolucion);
+
             }
 
         
-            $validar4 = $data['contaminacion']  ?? null;
-            if (!is_null($validar4)) {
-                $contaminacion = [];
-                foreach ($data['contaminacion'] as $item) {
-                    $contaminacion[] = [
-                        "id" => $item['id'] ?? null,
-                        "tipo_contaminación" => $item['tipo_contaminacion'],
-                        "causas" => $item['causas'],
-                        "file_famyly_id" => $model->id
-                    ];
-                }
-                
-                $model->assignContamination($contaminacion);
-            }
-
             $validar4 = $data['contaminacion']  ?? null;
             if (!is_null($validar4)) {
                 $contaminacion = [];
@@ -275,10 +303,10 @@ class FileFamilyService {
                 $model->assignSite($tratamiento);
             }
 
-
+            $modell = FileFamily::find($model->id); 
 
             DB::commit();
-            return  $model;
+            return  $modell;
         } catch (\Exception $e) {
             DB::rollback();
             return $e;

@@ -7,27 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = [
-        'nombre', 'apellido', 'cedula', 'correo', 'ocupacion', 'fecha_nacimiento', 'vacunacion', 'salud_bucal', 'edad', 'embarazo', 'scholarship_id', 'relationship_id', 'gender_id', 'type_document_id', 'file_famyly_id'
+        'nombre', 'apellido', 'cedula', 'correo', 'ocupacion', 'fecha_nacimiento', 'vacunacion', 'salud_bucal', 'edad', 'embarazo', 'scholarship_id', 'relationship_id', 'gender_id', 'type_document_id', 'file_famyly_id', 'group_age_id',
     ];
 
     public function fileFamily () {
-        return $this->belognsTo('App\FileFamily', 'file_family_id', 'id');
+        return $this->belongsTo('App\FileFamily', 'file_family_id', 'id');
     }
 
     public function scholarship () {
-        return $this->belognsTo('App\Scholarship', 'scholarship_id', 'id');
+        return $this->belongsTo('App\Scholarship', 'scholarship_id', 'id');
+    }
+
+    public function groupAge () {
+        return $this->belongsTo('App\GroupAge', 'group_age_id', 'id');
     }
 
     public function relationship () {
-        return $this->belognsTo('App\Relationship', 'relationship_id', 'id');
+        return $this->belongsTo('App\Relationship', 'relationship_id', 'id');
     }
 
     public function gender () {
-        return $this->belognsTo('App\Gender', 'gender_id', 'id');
+        return $this->belongsTo('App\Gender', 'gender_id', 'id');
     }
 
     public function typeDocument () {
-        return $this->belognsTo('App\TypeDocument', 'type_document_id', 'id');
+        return $this->belongsTo('App\TypeDocument', 'type_document_id', 'id');
     }
 
     public function disabilities () {
@@ -40,6 +44,10 @@ class Member extends Model
 
     public function pregnant () {
         return $this->hasOne('App\Pregnant','member_id', 'id');
+    }
+
+    public function diabeticPatient () {
+        return $this->hasOne('App\DiabeticPatient', 'member_id', 'id');
     }
 
     public function assignPathologies (array $data) {

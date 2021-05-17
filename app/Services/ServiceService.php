@@ -34,6 +34,7 @@ class ServiceService {
             $model->save();
             if (isset($data['image_service'])) $model->assignImage($data['image_service']);
             DB::commit();
+            return $model;
         } catch (\Exception $e) {
             DB::rollback();
             return $e;

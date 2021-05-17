@@ -11,6 +11,9 @@ class Mortality extends Model
     ];
 
     public function fileFamily () {
-       return $this->belognsTo('App\FileFamily', 'file_famyly_id', 'id');
+       return $this->belongsTo('App\FileFamily', 'file_famyly_id', 'id');
+    }
+    public function relationship () {
+       return $this->belongsTo('App\Relationship', 'relationship_id', 'id');
     }
 }

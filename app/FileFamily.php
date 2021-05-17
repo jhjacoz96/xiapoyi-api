@@ -13,13 +13,13 @@ class FileFamily extends Model
     ];
 
     public function zone () {
-        return $this->belognsTo('App\Zone', 'zone_id', 'id');
+        return $this->belongsTo('App\Zone', 'zone_id', 'id');
     }
     public function levelTotal () {
-        return $this->belognsTo('App\LevelTotal', 'zone_id', 'id');
+        return $this->belongsTo('App\LevelTotal', 'level_total_id', 'id');
     }
     public function culturalGroup () {
-        return $this->belognsTo('App\CulturalGroup', 'cultural_group_id', 'id');
+        return $this->belongsTo('App\CulturalGroup', 'cultural_group_id', 'id');
     }
 
     public function risks () {
