@@ -33,6 +33,7 @@ class MemberResource extends JsonResource
             "discapacidades" => DisabilityResource::collection($this->disabilities),
             "embarazo" => $this->embarazo,
             "prenatal" => new PregnantResource($this->pregnant) ?? null,
+            "file_family_id" => $this->file_family_id,
             "diabetic_patient" => new DiabeticPatientResource($this->diabeticPatient) ?? null,
         ];
     }

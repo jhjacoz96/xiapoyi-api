@@ -49,7 +49,7 @@ class FileFamily extends Model
         $deleted_ids = [];
         if (count($children) > 0) {
             $deleted_ids = $children->filter(function ($child) use ($site_items) {
-                return in_array($site_items, $child->id);
+                return empty($site_items->where('id', $child->id)->first());
             })->map(function ($child) {
                 $id = $child->id;
                 $child->delete();
@@ -62,7 +62,7 @@ class FileFamily extends Model
         $updates = $site_items->filter(function ($model) {
             return isset($model['id']);
         })->map(function ($model) {
-            $model->mortalities->map(function ($c) use ($model) {
+            $this->mortalities->map(function ($c) use ($model) {
                 $c->updateOrCreate([
                     'id' => $model['id'],
                   
@@ -95,7 +95,7 @@ class FileFamily extends Model
         $deleted_ids = [];
         if (count($children) > 0) {
             $deleted_ids = $children->filter(function ($child) use ($site_items) {
-                return in_array($site_items, $child->id);
+                return empty($site_items->where('id', $child->id)->first());
             })->map(function ($child) {
                 $id = $child->id;
                 $child->delete();
@@ -108,14 +108,14 @@ class FileFamily extends Model
         $updates = $site_items->filter(function ($model) {
             return isset($model['id']);
         })->map(function ($model) {
-            $model->contaminationPoints->map(function ($c) use ($model) {
+            $this->contaminationPoints->map(function ($c) use ($model) {
                 $c->updateOrCreate([
                     'id' => $model['id'],
                   
                 ],[
                     "tipo_contaminación" => $model['tipo_contaminación'],
                     "causas" => $model['causas'],
-                    "file_famyly_id" => $model['file_family_id'],
+                    "file_famyly_id" => $model['file_famyly_id'],
              ]);
             });
         });
@@ -137,7 +137,7 @@ class FileFamily extends Model
         $deleted_ids = [];
         if (count($children) > 0) {
             $deleted_ids = $children->filter(function ($child) use ($site_items) {
-                return in_array($site_items, $child->id);
+                return empty($site_items->where('id', $child->id)->first());
             })->map(function ($child) {
                 $id = $child->id;
                 $child->delete();
@@ -150,13 +150,13 @@ class FileFamily extends Model
         $updates = $site_items->filter(function ($model) {
             return isset($model['id']);
         })->map(function ($model) {
-            $model->treatmentSites->map(function ($c) use ($model) {
+            $this->treatmentSites->map(function ($c) use ($model) {
                 $c->updateOrCreate([
                     'id' => $model['id'],
                   
                 ],[
                     "lugar" => $model['lugar'],
-                    "file_famyly_id" => $model['file_family_id'],
+                    "file_famyly_id" => $model['file_famyly_id'],
              ]);
             });
         });

@@ -8,6 +8,9 @@ use App\TypeDocument;
 use App\Specialty;
 use App\typeEmployee;
 use App\Employee;
+use App\Vaccine;
+use App\PsychotrophicSubstance;
+use App\ExamRoutine;
 
 class ParameterFileSedeer extends Seeder
 {
@@ -123,6 +126,20 @@ class ParameterFileSedeer extends Seeder
             TypeEmployee::create(["name" => $tp]);
         }
 
+        $s = ["Tosferina", "Difteria ", "Tétanos "];
+        foreach ($s as $ss) {
+            Vaccine::create(["name" => $ss]);
+        }
+
+        $p = ["Alcohol", "Drogas ", "Tabaco", "Opiáceos"];
+        foreach ($p as $pp) {
+            PsychotrophicSubstance::create(["name" => $pp]);
+        }
+
+        $e = ["Hemograma/ Hto-Hb", "Urocultivo y orina completa ", "Grupo sanguíneo Rh/Coombs indirecto ", "VDRL-RPR", "VIH", "Papanicolau (Citología cervical)", "Ultrasonido (ecografía) por indicación", "Examen de Chagas en zonas endémicas"];
+        foreach ($e as $ee) {
+            ExamRoutine::create(["name" => $ee]);
+        }
         
     }
 }

@@ -35,7 +35,7 @@ class PublicationService {
                 'employee_id' => Employee::where('user_id', \Auth()->user()->id)->first()->id,
                 'filter_two_publication_id' => $data['filter_two_publication_id'],
                 'filter_one_publication_id' => $data['filter_one_publication_id'],
-                'filter_three_publication_id' => $data['filter_three_publication_id'],
+                'filter_three_publication_id' => $data['filter_three_publication_id'] ?? null,
             ]);
             $resources = json_decode(($data["resources"]), true);
             $model->assingImageMini($data['image_mini']);
@@ -80,7 +80,7 @@ class PublicationService {
                 'employee_id' => Employee::where('user_id', \Auth()->user()->id)->first()->id,
                 'filter_two_publication_id' => $data['filter_two_publication_id'],
                 'filter_one_publication_id' => $data['filter_one_publication_id'],
-                'filter_three_publication_id' => $data['filter_three_publication_id'],
+                'filter_three_publication_id' => $data['filter_three_publication_id'] ?? null,
             ]);
             $resources = json_decode(($data["resources"]), true);
             $model->assingImageMini($data['image_mini']);

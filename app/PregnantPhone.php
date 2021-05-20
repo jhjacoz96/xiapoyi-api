@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PsychotrophicSubstance extends Model
+class PregnantPhone extends Model
 {
     protected $fillable = [
-        'name'
+        'nombre', 'telefono', 'relationship_id',
     ];
 }

@@ -15,9 +15,6 @@ class CreateActivityTreatmentsTable extends Migration
     {
         Schema::create('activity_treatments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('actividad');
-            $table->string('duracion');
-            $table->string('hora');
             $table->integer('diabetic_patient_id')->unsigned();
             $table->foreign('diabetic_patient_id')->references('id')->on('diabetic_patients')->onDelete('cascade');
             $table->timestamps();

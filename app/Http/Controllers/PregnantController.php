@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\FileFamilyStoreRequest;
-// use App\Http\Requests\FileFamilyUpdateRequest;
+use App\Http\Requests\PregnantStoreRequest;
+use App\Http\Requests\PregnantUpdateRequest;
 use App\Utils\Enums\EnumResponse;
-use App\FileFamily;
-use App\Http\Resources\FileFamilyResource;
-use App\Services\FileFamilyService;
+use App\Pregnant;
+use App\Http\Resources\PregnantResource;
+use App\Http\Resources\FileClinicalObstetricResource;
+use App\Services\PregnantService;
 
-class FileFamilyController extends Controller
+class PregnantController extends Controller
 {
-    function __construct(FileFamilyService $_FileFamilyService)
+    function __construct(PregnantService $_PregnantService)
     {
-        $this->service = $_FileFamilyService;
+        $this->service = $_PregnantService;
     }
     /**
      * Display a listing of the resource.
@@ -25,7 +26,7 @@ class FileFamilyController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = FileFamilyResource::collection($model);
+            $data = FileClinicalObstetricResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -38,11 +39,11 @@ class FileFamilyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(PregnantStoreRequest $request) {
       try {
-        // $data = $request->validated();
-        $model = $this->service->store($request);
-        $data = new FileFamilyResource($model);
+        $data = $request->validated();
+        $model = $this->service->store($data);
+        $data = new FileClinicalObstetricResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
         return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
@@ -66,7 +67,6 @@ class FileFamilyController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // $data = $request->validated();
             $model = $this->service->update($request, $id);
             if (!$model) {
                 $data = [
@@ -74,7 +74,7 @@ class FileFamilyController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new FileFamilyResource($model);
+                $data = new FileClinicalObstetricResource($model);
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
           } catch (\Exception $e) {
@@ -99,7 +99,7 @@ class FileFamilyController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new FileFamilyResource($model);
+                $data =  new FileClinicalObstetricResource($model);
                 return bodyResponseRequest(EnumResponse::SUCCESS, $data);
             }
         } catch (\Exception $e) {
@@ -107,25 +107,21 @@ class FileFamilyController extends Controller
         }
     }
 
-    public function search(Request $request)
+    public function check($cedula)
     {
-      try {
-            $model = $this->service->search($request);
-            $data = FileFamilyResource::collection($model);
-            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-        } catch (Exception $e) {
-            return $e;
-        }
-    }
-
-    public function filter(Request $request)
-    {
-      try {
-            $model = $this->service->filter($request);
-            $data = FileFamilyResource::collection($model);
-            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-        } catch (Exception $e) {
-            return $e;
+        try {
+            $model = $this->service->check($cedula);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new FileClinicalObstetricResource($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
         }
     }
 

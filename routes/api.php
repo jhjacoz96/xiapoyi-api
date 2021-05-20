@@ -118,6 +118,10 @@ Route::group([
             ]);
       });
 
+      
+      Route::get('file-clinical-obstetric/check/{cedula}', 'PregnantController@check');
+      Route::ApiResource('file-clinical-obstetric', 'PregnantController');
+
       Route::post('file-family/search', 'FileFamilyController@search');
       Route::post('file-family/filter', 'FileFamilyController@filter');
       Route::ApiResource('file-family', 'FileFamilyController');
@@ -167,8 +171,8 @@ Route::group([
   ], function () {
     Route::post('organization', 'ConfigWeb@organizationStore');
     Route::get('organization', 'ConfigWeb@organizationIndex');
-    Route::post('up', 'ConfigWeb@upStore');
-    Route::get('up', 'ConfigWeb@upIndex');
+    Route::post('us', 'ConfigWeb@upStore');
+    Route::get('us', 'ConfigWeb@upIndex');
     Route::post('service', 'ConfigWeb@serviceStore');
     Route::get('service', 'ConfigWeb@serviceIndex');
     Route::post('older-adult', 'ConfigWeb@olderAdultStore');

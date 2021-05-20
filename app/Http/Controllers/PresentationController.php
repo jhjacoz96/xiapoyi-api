@@ -63,11 +63,10 @@ class PresentationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PresentationUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
         try {
-            $data = $request->validated();
-            $model = $this->service->update($data, $id);
+            $model = $this->service->update($request, $id);
             if (!$model) {
                 $data = [
                     'message' => __('response.bad_request_long')
