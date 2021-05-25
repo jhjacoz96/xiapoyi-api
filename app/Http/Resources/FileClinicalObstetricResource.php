@@ -66,6 +66,7 @@ class FileClinicalObstetricResource extends JsonResource
             "type_blood_id" => $this->type_blood_id ?? null,
             "estado_civil" => $this->estado_civil ?? null,
             "vive_con" => $this->vive_con ?? null,
+            "descripcion_gestacion" => $this->descripcion_gestacion ?? null,
             "antecentedes_paternos" => $this->antecentedes_paternos ?? null,
             "antecentedes_maternos" => $this->antecentedes_maternos ?? null,
             "antecentedes_prenatales" => $this->antecentedes_prenatales ?? null,

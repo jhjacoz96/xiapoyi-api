@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pregnant extends Model
 {
     protected $fillable = [
-        'fum', 'fpp', 'antecedentes_patologicos', 'semana_gestacion', 'gestas', 'partos', 'abortos', 'cesarias', 'member_id',
+        'fum', 'fpp', 'antecedentes_patologicos', 'semana_gestacion', 'gestas', 'partos', 'abortos', 'cesarias', 'member_id', 'created_at',
         'type_blood_id',
         'estado_civil',
         'vive_con',
@@ -16,6 +16,7 @@ class Pregnant extends Model
         'antecentedes_prenatales',
         'medicamentos',
         'embarazo_planificado',
+        'descripcion_gestacion',
         'causa_embarazo',
         'ayuda_violacion',
         'ayuda_anticoceptivo',
@@ -78,6 +79,11 @@ class Pregnant extends Model
     public function examRoutines () {
         return  $this->belongsToMany('App\ExamRoutine','exam_pregnants','pregnant_id','exam_routine_id');
     }
+
+    public function fileClinicalNeonatology () {
+        return  $this->hasMany('App\FileClinicalNeonatology','file_clinical_neonatology_id', 'id');
+    }
+
 
     public function assignPhones (array $data) {
         $children = $this->pregnantPhones;

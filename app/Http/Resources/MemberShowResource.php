@@ -7,7 +7,7 @@ use App\MemberPathology;
 use App\MemberDisability;
 use App\Pregnant;
 
-class MemberResource extends JsonResource
+class MemberShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -26,11 +26,15 @@ class MemberResource extends JsonResource
             return $query->disability_id;
         });
         $prenatal = Pregnant::where('member_id', $this->id)->get();
+         $fileFamily = $this->fileFamily;
         return [
+            "zone_id" => $fileFamily->zone,
+            "cultural_group_id" =>  $fileFamily->culturalGroup,
+            "direccion_habitual" => $fileFamily->direccion_habitual,
             "id" => $this->id,
             "apellido" => $this->apellido,
             "nombre" => $this->nombre,
-            "type_document_id" =>$this->type_document_id,
+            "type_document_id" =>$this->typeDocument,
             "cedula" => $this->cedula,
             "correo" => $this->correo,
             "ocupacion" => $this->ocupacion,
@@ -38,8 +42,8 @@ class MemberResource extends JsonResource
             "groupAge" => new GroupAgeResource($this->GroupAge),
             "vacunacion" => $this->vacunacion,
             "salud_bucal" => $this->salud_bucal,
-            "scholarship_id" => $this->scholarship_id,
-            "relationship_id" => $this->relationship_id,
+            "scholarship_id" => $this->scholarship,
+            "relationship_id" => $this->relationship,
             "gender_id" => $this->gender_id,
             "patologias" => $arrayPathologies,
             "discapacidades" => $arrayDisability,

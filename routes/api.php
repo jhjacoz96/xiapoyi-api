@@ -118,7 +118,10 @@ Route::group([
             ]);
       });
 
-      
+      Route::ApiResource('file-clinical-neonatology', 'FileClinicalNeonatologyController');
+
+      Route::post('file-clinical-obstetric/search', 'PregnantController@search');
+      Route::post('file-clinical-obstetric/filter', 'PregnantController@filter');
       Route::get('file-clinical-obstetric/check/{cedula}', 'PregnantController@check');
       Route::ApiResource('file-clinical-obstetric', 'PregnantController');
 

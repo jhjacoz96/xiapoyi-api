@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\RiskFile;
 
-class FileFamilyResource extends JsonResource
+class FileFamilyListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +14,7 @@ class FileFamilyResource extends JsonResource
      */
     public function toArray($request)
     {
-        $risks = RiskFile::where('file_family_id', $this->id)->get();
-         return [
+       return [
             "id" => $this->id,
             "manzana" => $this->manzana,
             "direccion_habitual" => $this->direccion_habitual,
@@ -25,13 +23,13 @@ class FileFamilyResource extends JsonResource
             "numero_historia" => $this->numero_historia,
             "numero_telefono" => $this->numero_telefono,
             "numero_casa" => $this->numero_casa,
-            "zone_id" => $this->zone_id,
-            "cultural_group_id" => $this->cultural_group_id,
+            "zone_id" => $this->zone,
+            "cultural_group_id" => $this->culturalGroup,
             "miembros" => MemberResource::collection($this->members),
             "mortalidad" => MortalityResource::collection($this->mortalities),
             "riesgos" => RiskFileFamilyResource::collection($this->risks),
             "total_risk" => $this->total_risk,
-            "level_total_id" => $this->level_total_id,
+            "level_total_id" => $this->levelTotal,
             "contaminacion" => $this->contaminationPoints,
             "sitios_tratamiento" => $this->treatmentSites,
         ];  

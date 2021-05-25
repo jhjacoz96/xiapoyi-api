@@ -20,7 +20,7 @@ class MortalityResource extends JsonResource
             "apellido" => $this->apellido,
             "edad" => $this->edad,
             "causa" => $this->causa,
-            "relationship_id" => new $this->relationship,
+            "relationship_id" => $this->relationship_id,
         ];
     }
 }

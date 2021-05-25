@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\FileFamilyStoreRequest;
-// use App\Http\Requests\FileFamilyUpdateRequest;
 use App\Utils\Enums\EnumResponse;
-use App\FileFamily;
-use App\Http\Resources\FileFamilyResource;
-use App\Http\Resources\FileFamilyListResource;
-use App\Services\FileFamilyService;
+use App\FileClinicalNeonatology;
+use App\Http\Resources\FileClincalNeonatologyResource;
+use App\Services\FileClinicalNeonatologyService;
 
-class FileFamilyController extends Controller
+class FileClinicalNeonatologyController extends Controller
 {
-    function __construct(FileFamilyService $_FileFamilyService)
+    function __construct(FileClinicalNeonatologyService $_FileClinicalNeonatologyService)
     {
-        $this->service = $_FileFamilyService;
+        $this->service = $_FileClinicalNeonatologyService;
     }
     /**
      * Display a listing of the resource.
@@ -26,7 +23,7 @@ class FileFamilyController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = FileFamilyListResource::collection($model);
+            $data = FileClincalNeonatologyResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -43,7 +40,8 @@ class FileFamilyController extends Controller
       try {
         // $data = $request->validated();
         $model = $this->service->store($request);
-        $data = new FileFamilyResource($model);
+        return $model;
+        $data = new FileClincalNeonatologyResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
         return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
@@ -75,11 +73,11 @@ class FileFamilyController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new FileFamilyResource($model);
+                $data = new FileClincalNeonatologyResource($model);
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
           } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.update');
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
           }
     }
 
@@ -100,33 +98,11 @@ class FileFamilyController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new FileFamilyResource($model);
+                $data = new FileClincalNeonatologyResource($model);
                 return bodyResponseRequest(EnumResponse::SUCCESS, $data);
             }
         } catch (\Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
-        }
-    }
-
-    public function search(Request $request)
-    {
-      try {
-            $model = $this->service->search($request);
-            $data = FileFamilyListResource::collection($model);
-            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-        } catch (Exception $e) {
-            return $e;
-        }
-    }
-
-    public function filter(Request $request)
-    {
-      try {
-            $model = $this->service->filter($request);
-            $data = FileFamilyListResource::collection($model);
-            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-        } catch (Exception $e) {
-            return $e;
         }
     }
 
