@@ -3,8 +3,8 @@
 use Illuminate\Database\Seeder;
 use App\User;
 use App\Employee;
-use App\typeEmployee;
-
+use App\TypeEmployee;
+use App\Especialty;
 
 class UserSeeder extends Seeder
 {
@@ -15,6 +15,35 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        $typeEmployees = [
+            [
+                "name" => "Médico",
+                "description" => "description test",
+            ],
+             [
+                "name" => "Enfermera",
+                "description" => "description test",
+            ],
+        ];
+
+        foreach ( $typeEmployees as  $typeEmployee) {
+            TypeEmployee::create($typeEmployee);
+        }
+
+        $especialties = [
+             [
+                "name" => "Pediatra",
+                "description" => "description test",
+            ],
+             [
+                "name" => "Fisiatra",
+                "description" => "description test",
+            ],
+        ];
+
+        foreach ( $especialties as  $especialty) {
+            Especialty::create($especialty);
+        }
 
         $user = User::create([
             'email' => 'admin@gmail.com',

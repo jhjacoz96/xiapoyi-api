@@ -24,6 +24,8 @@ class CreateMembersTable extends Migration
             $table->boolean('vacunacion')->default(false);
             $table->boolean('salud_bucal')->default(false);
             $table->string('edad')->nullable();
+            $table->integer('group_age_id')->unsigned()->nullable();
+            $table->foreign('group_age_id')->references('id')->on('group_ages')->onDelete('cascade');
             $table->boolean('embarazo')->default(false);
             $table->integer('scholarship_id')->unsigned()->nullable();
             $table->foreign('scholarship_id')->references('id')->on('scholarships')->onDelete('cascade');

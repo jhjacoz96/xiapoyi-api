@@ -56,7 +56,11 @@ class ParameterFileSedeer extends Seeder
             ],
         ];
         foreach ($gestations as $gestation) {
-            GestationWeek::create(['name' => $gestation["name"], "rank" => $gestation["name"]]);
+            GestationWeek::create([
+                'name' => $gestation["name"],
+                "rank" => $gestation["rank"],
+                "color" => $gestation["color"],
+            ]);
         }
 
         $scholarships = [
