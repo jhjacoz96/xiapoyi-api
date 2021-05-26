@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use App\User;
 use App\Employee;
 use App\TypeEmployee;
-use App\Especialty;
+use App\Specialty;
 
 class UserSeeder extends Seeder
 {
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
         ];
 
         foreach ( $especialties as  $especialty) {
-            Especialty::create($especialty);
+            Specialty::create($especialty);
         }
 
         $user = User::create([

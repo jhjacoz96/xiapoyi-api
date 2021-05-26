@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(ParameterFileSedeer::class);
         $this->call(ProvinceSeeder::class);
         $this->call(CantonSeeder::class);
         $this->call(GenderSeeder::class);
@@ -18,7 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(RoleHasPermissionSeeder::class);
-        $this->call(ParameterFileSedeer::class);
         $this->call(UserSeeder::class);
         $this->call(RiskSeed::class);
     }
