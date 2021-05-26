@@ -41,6 +41,8 @@ class FileClinicalNeonatologyService {
                 "group_age_id" => 1,
             ]);
 
+            $gestationWeek = GestatationWeek::where('nombre',  $pregnant['descripcion_gestacion'])->first();
+
             $model = FileClinicalNeonatology::create([
                 'numero_historia' => $data["numero_historia"],
                 'lugar_naciento' => $data["lugar_naciento"],
@@ -49,7 +51,7 @@ class FileClinicalNeonatologyService {
                 'type_boold_mother_id' => $data["type_boold_mother_id"],
                 'type_boold_father_id' => $data["type_boold_father_id"],
                 'edad_gestacional' => $data["edad_gestacional"],
-                'gestation_week_id' => $data["gestation_week_id"],
+                'gestation_week_id' => $gestationWeek["id"],
                 'alimentacion_neonato' => $data["alimentacion_neonato"],
                 'aplicacion_vitamina' => $data["aplicacion_vitamina"],
                 'alergina_leche_materna' => $data["alergina_leche_materna"],

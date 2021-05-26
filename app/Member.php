@@ -9,6 +9,7 @@ class Member extends Model
     protected $fillable = [
         'nombre', 'apellido', 'cedula', 'correo', 'ocupacion', 'fecha_nacimiento', 'vacunacion', 'salud_bucal', 'edad', 'embarazo', 'scholarship_id', 'relationship_id', 'gender_id', 'type_document_id', 'file_family_id', 'group_age_id', 'created_at',
     ];
+    
 
     public function fileFamily () {
         return $this->belongsTo('App\FileFamily', 'file_family_id', 'id');
@@ -45,11 +46,6 @@ class Member extends Model
     public function pregnant () {
         return $this->hasMany('App\Pregnant','member_id', 'id');
     }
-
-    public function diabeticPatient () {
-        return $this->hasOne('App\DiabeticPatient', 'member_id', 'id');
-    }
-
     public function fileClinicalObstetric () {
         return $this->hasOne('App\FileClinicalNeonatology','member_id', 'id');
     }

@@ -22,6 +22,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', 'AuthController@login');
+    Route::post('login-diabetic', 'AuthController@loginDiabetic');
     Route::post('signup', 'AuthController@signUp');
 
     Route::group([
@@ -76,6 +77,11 @@ Route::group([
       Route::ApiResource('level-total', 'LevelTotalController');
       Route::ApiResource('vaccine', 'VaccineController');
       Route::ApiResource('exam-routine', 'ExamRoutineController');
+
+      Route::get('reflex', 'OtherParameterController@reflexIndex');
+      Route::get('alteration-pregnant', 'OtherParameterController@alterationPregnantIndex');
+      Route::get('pathology-neonatal', 'OtherParameterController@pathologyNeonatalIndex');
+      Route::get('pathology-pregnant', 'OtherParameterController@pathologyPregnantIndex');
 
       Route::get('relationship', 'OtherParameterController@relationshipIndex');
       Route::get('psyshotrophic', 'OtherParameterController@psyshotrophicIndex');

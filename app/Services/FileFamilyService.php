@@ -82,7 +82,7 @@ class FileFamilyService {
         try {
             DB::beginTransaction();
 
-
+            $f = FileFamily::All()->count();
             $model = FileFamily::create([
                 "manzana" => $data["manzana"],
                 "direccion_habitual" => $data["direccion_habitual"],
@@ -194,7 +194,7 @@ class FileFamilyService {
                         if ($query->capture) {
                             $user = User::create([
                                 "email" => $m["correo"],
-                                "password" => "12345678",
+                                "password" =>  bcrypt("12345678")
                             ]);
                             $diabetic_patient = DiabeticPatient::create([
                                 "user_id" => $user["id"],
@@ -430,7 +430,7 @@ class FileFamilyService {
                         if ($query->capture && empty($existe)) {
                             $user = User::create([
                                 "email" => $m["correo"],
-                                "password" => "12345678",
+                                "password" => bcrypt("12345678"),
                             ]);
                             $diabetic_patient = DiabeticPatient::create([
                                 "user_id" => $user["id"],

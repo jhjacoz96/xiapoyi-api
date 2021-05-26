@@ -12,7 +12,7 @@ class DiabeticPatient extends Model
 
 
     public function user () {
-        return $this->hasOne('App\User', 'user_id', 'id');
+        return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
     public function medicines () {
@@ -25,6 +25,10 @@ class DiabeticPatient extends Model
 
     public function registerGlucose () {
         return $this->hasMany('App\RegisterGlucose', 'diabetic_patient_id', 'id');
+    }
+
+    public function member () {
+        return $this->belongsTo('App\Member', 'member_id', 'id');
     }
 
     public function assignTratamientoNoFarmacologico (array $data) {

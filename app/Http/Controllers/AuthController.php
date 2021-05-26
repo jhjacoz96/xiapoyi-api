@@ -11,7 +11,10 @@ use App\Http\Requests\ValidationQuestionRequest;
 use App\Services\PermissionService;
 use App\Models\Sanctum\PersonalAccessToken;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\MemberResource;
 use App\Utils\Enums\EnumResponse;
+use App\DiabeticPatient;
+use App\Member;
 
 class AuthController extends Controller
 {
@@ -64,8 +67,6 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
-
-
         return response()->json([
 		     'title' => 'OK',
             'access_token' => $tokenResult->accessToken,
@@ -76,6 +77,46 @@ class AuthController extends Controller
                 $tokenResult->token->expires_at
             )->toDateTimeString()
         ]);
+    }
+
+    public function loginDiabetic(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+            'remember_me' => 'boolean'
+        ]);
+        $credentials = request(['email', 'password']);
+
+        if (!Auth::attempt($credentials)) {
+            $data = [
+                'message' => __('auth.failed') 
+            ];
+            return bodyResponseRequest( EnumResponse::UNAUTHORIZED, $data);
+        }
+        $user = User::where('email', $request["email"])->has('DiabeticPatient')->first();
+        if (!empty($user)) {
+            $tokenResult = $user->createToken('Personal Access Token');
+            $token = $tokenResult->token;
+            if ($request->remember_me)
+                $token->expires_at = Carbon::now()->addWeeks(1);
+            $token->save();
+
+                return response()->json([
+                 'title' => 'OK',
+                'access_token' => $tokenResult->accessToken,
+                'token_type' => 'Bearer',
+                'member' => new MemberResource($user->diabeticPatient->member),
+                'expires_at' => Carbon::parse(
+                    $tokenResult->token->expires_at
+                )->toDateTimeString()
+            ]);
+        } else {
+             $data = [
+                'message' => __('auth.failed') 
+            ];
+            return bodyResponseRequest( EnumResponse::UNAUTHORIZED, $data);
+        }
     }
 
     /**

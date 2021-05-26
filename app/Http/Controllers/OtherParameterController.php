@@ -8,6 +8,11 @@ use App\Relationship;
 use App\PsychotrophicSubstance;
 use App\GestationWeek;
 use App\Scholarship;
+use App\AlterationPregnant;
+use App\PathologyNeonatal;
+use App\PathologyPregnant;
+use App\Reflex;
+use App\Pathology;
 
 class OtherParameterController extends Controller
 {
@@ -16,6 +21,46 @@ class OtherParameterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function reflexIndex()
+    {
+        try {
+            $model = Reflex::All();
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function pathologyPregnantIndex()
+    {
+        try {
+            $model = PathologyPregnant::All();
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function pathologyNeonatalIndex()
+    {
+        try {
+            $model = PathologyNeonatal::All();
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function alterationPregnantIndex()
+    {
+        try {
+            $model = AlterationPregnant::All();
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     public function relationshipIndex()
     {
         try {

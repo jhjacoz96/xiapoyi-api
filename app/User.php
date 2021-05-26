@@ -38,4 +38,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function diabeticPatient () {
+        return $this->hasOne('App\DiabeticPatient', 'user_id', 'id');
+    }
 }
