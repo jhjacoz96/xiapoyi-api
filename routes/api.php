@@ -124,6 +124,25 @@ Route::group([
             ]);
       });
 
+      Route::prefix('movil-diabetic')->group(function () {
+            Route::post('register-glucose', [
+                'uses' => 'DiabeticPatientController@registerGlucoseMovil',
+                'as' => 'api.controlDiabetic.registerGlocoseMovil.post'
+            ]);
+            Route::get('register-glucose', [
+                'uses' => 'DiabeticPatientController@indexRegisterGlucoseMovil',
+                'as' => 'api.controlDiabetic.registerGlocoseMovil.index'
+            ]);
+            Route::post('register-weight', [
+                'uses' => 'DiabeticPatientController@registerWeightMovil',
+                'as' => 'api.controlDiabetic.registerWeightMovil.post'
+            ]);
+            Route::get('register-weight', [
+                'uses' => 'DiabeticPatientController@indexRegisterWeightMovil',
+                'as' => 'api.controlDiabetic.registerWeightMovil.index'
+            ]);
+      });
+
       Route::ApiResource('file-clinical-neonatology', 'FileClinicalNeonatologyController');
 
       Route::post('file-clinical-obstetric/search', 'PregnantController@search');

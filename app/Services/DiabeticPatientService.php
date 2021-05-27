@@ -178,6 +178,79 @@ class DiabeticPatientService {
         }
     }
 
+    // dibites movil //----------------------------------------
+
+        public function registerGlucoseMovil ($data) {
+        try {
+            DB::beginTransaction();
+            $model = \Auth::user()->diabeticPatient;
+            if(!$model) return null;
+            $model->update([
+              "nivel_glusemia" => $data["nivel_glusemia"],
+            ]);
+            $date = Carbon::now()->toDateTimeString();
+            $diabetic = RegisterGlucose::create([
+                "fecha" => $data["fecha"]  ?? $date,
+                "nivel_glusemia" => $data["nivel_glusemia"],
+                "diabetic_patient_id" => $model->id,
+            ]);
+            
+            DB::commit();
+            return $diabetic;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function RegisterWeightMovil ($data) {
+        try {
+            DB::beginTransaction();
+            $model = \Auth::user()->diabeticPatient;
+            if(!$model) return null;
+            $model->update([
+              "peso" => $data["peso"],
+            ]);
+            $date = Carbon::now()->toDateTimeString();
+            $diabetic = RegisterwWight::create([
+                "fecha" => $data["fecha"]  ?? $date,
+                "peso" => $data["peso"],
+                "diabetic_patient_id" => $model->id,
+            ]);
+            
+            DB::commit();
+            return $diabetic;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function indexRegisterGlucoseMovil () {
+        try {
+            $patient = \Auth::user()->diabeticPatient;
+            if(!$patient) return null;
+            $model = RegisterGlucose::where('diabetic_patient_id',  $patient["id"])->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexRegisterWeightMovil () {
+        try {
+            $patient = \Auth::user()->diabeticPatient;
+            if(!$patient) return null;
+            $model = RegisterwWight::where('diabetic_patient_id',  $patient["id"])->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+
+        // dibites movil //----------------------------------------
+
     public function show ($id) {
         try {
             DB::beginTransaction();

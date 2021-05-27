@@ -104,13 +104,74 @@ class DiabeticPatientController extends Controller
       try {
         // $data = $request->validated();
         $model = $this->service->registerWeight($request);
-        return $model;
         $data = new RegisterWightResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
         return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
       }
     }
+
+    // movil //-----------------------------------------------
+
+    public function registerGlucoseMovil(Request $request) {
+      try {
+        // $data = $request->validated();
+        $model = $this->service->registerGlucoseMovil($request);
+        $data = new RegisterGlucoseResource($model);
+        return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+      } catch (\Exception $e) {
+        return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+      }
+    }
+    
+    public function registerWeightMovil(Request $request) {
+      try {
+        // $data = $request->validated();
+        $model = $this->service->registerWeightMovil($request);
+        $data = new RegisterWightResource($model);
+        return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+      } catch (\Exception $e) {
+        return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+      }
+    }
+
+    public function indexRegisterGlucoseMovil()
+    {
+        try {
+            $model = $this->service->indexRegisterGlucoseMovil();
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = RegisterGlucoseResource::collection($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    public function indexRegisterWeightMovil()
+    {
+        try {
+            $model = $this->service->indexRegisterWeightMovil();
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = RegisterWightResource::collection($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    // movil //-----------------------------------------------
 
     /**
      * Display the specified resource.
