@@ -18,7 +18,7 @@ use App\Reflex;
 use App\Pathology;
 use App\Typeblood;
 use App\CulturalGroup;
-
+use App\Disability;
 class ParameterFileSedeer extends Seeder
 {
     /**
@@ -268,6 +268,7 @@ class ParameterFileSedeer extends Seeder
         }
 
         $pathologys = [
+            "Diabetes"
             "Hipertension",
             "Cardiovasculares",
             "Renales",
@@ -277,6 +278,20 @@ class ParameterFileSedeer extends Seeder
 
         foreach ($pathologys as $pathology) {
             Pathology::create(["name" => $pathology]);
+        }
+
+        $disabilities = [
+            "Física",
+            "Visual",
+            "Auditiva",
+            "Intelectual".
+            "Lenguaje",
+            "Psicosocial",
+            "Múltiple",
+        ];
+
+        foreach ($disabilities as $disability) {
+            Disability::create(["name" => $disability]);
         }
 
     }
