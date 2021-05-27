@@ -15,12 +15,12 @@ class CreateUsTable extends Migration
     {
         Schema::create('us', function (Blueprint $table) {
             $table->id();
-            $table->string('description1')->nullable();
-            $table->string('description2')->nullable();
-            $table->string('mission')->nullable();
-            $table->string('vision')->nullable();
-            $table->string('objective')->nullable();
-            $table->string('value')->nullable();
+            $table->text('description1')->nullable();
+            $table->text('description2')->nullable();
+            $table->text('mission')->nullable();
+            $table->text('vision')->nullable();
+            $table->text('objective')->nullable();
+            $table->text('value')->nullable();
             $table->string('image_vision')->nullable();
             $table->string('image_mission')->nullable();
             $table->string('image_objective')->nullable();

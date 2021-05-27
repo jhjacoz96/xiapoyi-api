@@ -16,8 +16,8 @@ class CreateOlderAdultsTable extends Migration
         Schema::create('older_adults', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('description1')->nullable();
-            $table->string('description2')->nullable();
+            $table->text('description1')->nullable();
+            $table->text('description2')->nullable();
             $table->timestamps();
         });
     }

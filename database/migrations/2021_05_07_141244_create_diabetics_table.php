@@ -16,8 +16,8 @@ class CreateDiabeticsTable extends Migration
         Schema::create('diabetics', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('description1')->nullable();
-            $table->string('description2')->nullable();
+            $table->text('description1')->nullable();
+            $table->text('description2')->nullable();
             $table->timestamps();
         });
     }

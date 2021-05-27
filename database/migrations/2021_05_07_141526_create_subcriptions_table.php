@@ -15,8 +15,8 @@ class CreateSubcriptionsTable extends Migration
     {
         Schema::create('subcriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('description1')->nullable();
-            $table->string('description2')->nullable();
+            $table->text('description1')->nullable();
+            $table->text('description2')->nullable();
             $table->timestamps();
         });
     }

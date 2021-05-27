@@ -51,7 +51,7 @@ class ParameterFileSedeer extends Seeder
             ],
             [
                 "name" => "Prematuro extremo",
-                "rank" => "[20, 32]",
+                "rank" => "[10, 32]",
                 "color" => "pink",
             ],
         ];
