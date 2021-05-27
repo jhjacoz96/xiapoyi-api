@@ -80,7 +80,6 @@ class DiabeticPatientController extends Controller
     public function store(Requret $request) {
       try {
         // $data = $request->validated();
-        return $request;
         $model = $this->service->store($request);
         $data = new DiabeticPatientResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);

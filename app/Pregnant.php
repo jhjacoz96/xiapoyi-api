@@ -11,6 +11,7 @@ class Pregnant extends Model
         'type_blood_id',
         'estado_civil',
         'vive_con',
+        'numero_historia',
         'antecentedes_paternos',
         'antecentedes_maternos',
         'antecentedes_prenatales',

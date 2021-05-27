@@ -16,6 +16,7 @@ class PregnantResource extends JsonResource
     {
        return [
             "id" => $this->id,
+            "numero_historia" => $this->numero_historia,
             "fum" => $this->fum ?? null,
             "fpp" => $this->fpp ?? null,
             "antecedentes_patologicos" => $this->antecedentes_patologicos ?? null,

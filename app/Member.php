@@ -43,6 +43,10 @@ class Member extends Model
         return  $this->belongsToMany('App\Pathology','member_pathologies','member_id','pathology_id');
     }
 
+    public function diabeticPatient () {
+        return $this->hasOne('App\DiabeticPatient','member_id', 'id');
+    }
+
     public function pregnant () {
         return $this->hasMany('App\Pregnant','member_id', 'id');
     }

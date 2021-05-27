@@ -41,7 +41,7 @@ class FileClinicalNeonatologyService {
                 "group_age_id" => 1,
             ]);
 
-            $gestationWeek = GestatationWeek::where('nombre',  $pregnant['descripcion_gestacion'])->first();
+            // $gestationWeek = GestatationWeek::where('nombre',  $pregnant['descripcion_gestacion'])->first();
 
             $model = FileClinicalNeonatology::create([
                 'numero_historia' => $data["numero_historia"],
@@ -51,7 +51,7 @@ class FileClinicalNeonatologyService {
                 'type_boold_mother_id' => $data["type_boold_mother_id"],
                 'type_boold_father_id' => $data["type_boold_father_id"],
                 'edad_gestacional' => $data["edad_gestacional"],
-                'gestation_week_id' => $gestationWeek["id"],
+                'gestation_week_id' => $data["gestation_week_id"],
                 'alimentacion_neonato' => $data["alimentacion_neonato"],
                 'aplicacion_vitamina' => $data["aplicacion_vitamina"],
                 'alergina_leche_materna' => $data["alergina_leche_materna"],
@@ -150,13 +150,10 @@ class FileClinicalNeonatologyService {
             DB::beginTransaction();
             $model = FileClinicalNeonatology::find($id);
             if(!$model) return null;
-
             $member = Member::find($model->member->id);
             if(!$member) return null;
-
             $pregnant = Pregnant::find($model->pregnant->id);
             if(!$pregnant) return null;
-
             $model->update([
                 'numero_historia' => $data["numero_historia"],
                 'lugar_naciento' => $data["lugar_naciento"],
@@ -249,7 +246,6 @@ class FileClinicalNeonatologyService {
             if (!is_null($validar6)) {
                 $model->reflexes()->sync($data["reflejos"]);
             }
-
             $member->update([
                 "nombre" => $data["nombre"],
                 "apellido" => $data["apellido"],
@@ -258,8 +254,7 @@ class FileClinicalNeonatologyService {
                 "file_family_id" =>   intval($pregnant->member->fileFamily->id),
                 "group_age_id" => 1,
             ]);
-
-
+            
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

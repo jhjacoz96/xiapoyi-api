@@ -54,6 +54,7 @@ class FileClincalNeonatologyResource extends JsonResource
         });
 
         return [
+            "id" => $this->id,
             "nombre" => $member["nombre"],
             "apellido" => $member["apellido"],
             "fecha_nacimiento" => $member["fecha_nacimiento"],
@@ -62,6 +63,7 @@ class FileClincalNeonatologyResource extends JsonResource
             "numero_historia" => $this->numero_historia,
             "lugar_naciento" => $this->lugar_naciento,
             "pregnant_id" => $this->pregnant_id,
+            "file_family_id" => $this->member->fileFamily->id,
             "member_id" => $this->member_id,
             "type_boold_mother_id" => $this->type_boold_mother_id,
             "type_boold_father_id" => $this->type_boold_father_id,
@@ -122,6 +124,7 @@ class FileClincalNeonatologyResource extends JsonResource
             "patologias_embarazo" =>  $arrayPathologyPregnant,
             "patologias_paternas" => $arrayPathologyFather,
             "reflejos" =>  $arrayReflex,
+            "pregnant_cedula" => $this->pregnant->member->cedula
         ];
     }
 }

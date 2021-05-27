@@ -52,6 +52,7 @@ class FileClinicalObstetricResource extends JsonResource
             "scholarship_id" => $miembro->scholarship,
             "ocupacion" => $miembro->ocupacion,
             "disability_id" => $arrayDiscapacidades,
+            "numero_historia" => $this->numero_historia,
             "id" => $this->id,
             "member_id" =>$this->member_id,
             "fum" => $this->fum ?? null,

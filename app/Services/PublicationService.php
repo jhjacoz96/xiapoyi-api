@@ -38,27 +38,23 @@ class PublicationService {
                 'filter_three_publication_id' => $data['filter_three_publication_id'] ?? null,
             ]);
             $resources = json_decode(($data["resources"]), true);
-            $model->assingImageMini($data['image_mini']);
-            $resourcess = [];
-            foreach ($resources as $resource) {
-                if ($resource["type_resource"] == 'image') {
-                    $image = $model->assingResource($resource["url"]);
-                    $resourcess[] = [
-                        "id" => $resource['id'] ?? null,
-                        "type_resource" => $resource["type_resource"],
-                        "url" => $image,
-                        "publication_id" =>  $model->id,
-                    ];
-                } else {
-                    $resourcess[] = [
-                        "id" => $resource['id'] ?? null,
-                        "type_resource" => $resource["type_resource"],
-                        "url" => $resource["url"],
-                        "publication_id" =>  $model->id,
-                    ];
-                }
+            if (!empty($data['image_mini'])) $model->assingImageMini($data['image_mini']);
+            if ($resource["type_resource"] == 'image') {
+                $image = $model->assingResource($resource["url"]);
+                $resourcess[] = [
+                    "id" => $resource['id'] ?? null,
+                    "type_resource" => $resource["type_resource"],
+                    "url" => $image,
+                    "publication_id" =>  $model->id,
+                ];
+            }  {
+                $resourcess[] = [
+                    "id" => $resource['id'] ?? null,
+                    "type_resource" => $resource["type_resource"],
+                    "url" => $resource["url"],
+                    "publication_id" =>  $model->id,
+                ];
             }
-            $model->assingResources($resourcess);
             $modell = Publication::find($model->id);
             DB::commit();
             return  $modell;

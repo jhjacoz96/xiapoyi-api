@@ -30,6 +30,7 @@ class PregnantService {
         try {
             DB::beginTransaction();
             $model = Pregnant::create([
+                "numero_historia" => $data["numero_historia"],
                 "antecedentes_patologicos" => $data["antecedentes_patologicos"],
                 "semana_gestacion" => $data["semana_gestacion"],
                 "gestas" => $data["gestas"],
@@ -210,6 +211,7 @@ class PregnantService {
             $model = Pregnant::find($id);
             if(!$model) return null;
             $model->update([
+                "numero_historia" => $data["numero_historia"],
                 "antecedentes_patologicos" => $data["antecedentes_patologicos"],
                 "semana_gestacion" => $data["semana_gestacion"],
                 "gestas" => $data["gestas"],

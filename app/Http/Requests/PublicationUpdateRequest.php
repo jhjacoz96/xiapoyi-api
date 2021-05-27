@@ -26,11 +26,11 @@ class PublicationUpdateRequest extends FormRequest
         return [
             "name" => "required|string",
             "description" => "required|string",
-            "filter_three_publication_id" => "sometimes|nullable|integer",
+            "filter_three_publication_id" => "sometimes|nullable",
             "filter_two_publication_id" => "required|integer",
             "filter_one_publication_id" => "required|integer",
-            "image_mini" => "required|file",
-            "resources" => "required|string",
+            "image_mini" => "sometimes|nullable|file",
+            "resources" => "required",
         ];
     }
 }

@@ -40,7 +40,6 @@ class FileClinicalNeonatologyController extends Controller
       try {
         // $data = $request->validated();
         $model = $this->service->store($request);
-        return $model;
         $data = new FileClincalNeonatologyResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
