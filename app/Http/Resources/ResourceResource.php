@@ -19,6 +19,7 @@ class ResourceResource extends JsonResource
             "type_resource" => $this->type_resource,
             "url" => $this->url,
             "publication_id" => $this->publication_id,
+            "resource" => $this->image
         ];
     }
 }

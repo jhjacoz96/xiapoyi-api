@@ -18,8 +18,8 @@ class Publication extends Model
         return $this->belongsTo('App\Employee', 'employee_id', 'id');
     }
 
-    public function resources () {
-        return $this->hasMany('App\Resource', 'publication_id', 'id');
+    public function resource () {
+        return $this->hasOne('App\Resource', 'publication_id', 'id');
     }
 
     public function filterTwoPublication () {

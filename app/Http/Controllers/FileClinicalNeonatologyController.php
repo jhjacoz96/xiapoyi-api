@@ -30,6 +30,18 @@ class FileClinicalNeonatologyController extends Controller
         }
     }
 
+    public function search(Request $request)
+    {
+        try {
+            $model = $this->service->search($request);
+            $data = FileClincalNeonatologyResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *

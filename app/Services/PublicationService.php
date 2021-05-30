@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Publication;
 use App\Employee;
+use App\Resource;
 
 class PublicationService {
 
@@ -32,28 +33,28 @@ class PublicationService {
             $model = Publication::create([
                 'name' => $data['name'],
                 'description' => $data['description'],
-                'employee_id' => Employee::where('user_id', \Auth()->user()->id)->first()->id,
+                'employee_id' => \Auth::User()->employee->id,
                 'filter_two_publication_id' => $data['filter_two_publication_id'],
                 'filter_one_publication_id' => $data['filter_one_publication_id'],
-                'filter_three_publication_id' => $data['filter_three_publication_id'] ?? null,
+                'filter_three_publication_id' => $data['filter_three_publication_id'] != "null" ? $data['filter_three_publication_id'] : null,
             ]);
-            $resources = json_decode(($data["resources"]), true);
             if (!empty($data['image_mini'])) $model->assingImageMini($data['image_mini']);
-            if ($resource["type_resource"] == 'image') {
-                $image = $model->assingResource($resource["url"]);
-                $resourcess[] = [
-                    "id" => $resource['id'] ?? null,
-                    "type_resource" => $resource["type_resource"],
-                    "url" => $image,
-                    "publication_id" =>  $model->id,
-                ];
-            }  {
-                $resourcess[] = [
-                    "id" => $resource['id'] ?? null,
-                    "type_resource" => $resource["type_resource"],
-                    "url" => $resource["url"],
-                    "publication_id" =>  $model->id,
-                ];
+            if ($data["type_resource"] == 'image' || $data["type_resource"] == 'document') {
+                $resource = Resource::create([
+                    'type_resource' => $data['type_resource'],
+                    'url'  => 'kkk',
+                    'publication_id' => $model["id"],
+                ]);
+                $resources = $resource->assingResource($data['resource']);
+                $resource->update([
+                    'url'  => $resources["url"],
+                ]);
+            } else {
+                 $resource = Resource::create([
+                    'type_resource' => $data['type_resource'],
+                    'url'  => $data['resource'],
+                    'publication_id' => $model["id"],
+                ]);
             }
             $modell = Publication::find($model->id);
             DB::commit();
@@ -69,37 +70,35 @@ class PublicationService {
             DB::beginTransaction();
              $model = Publication::find($id);
             if(!$model) return null;
-
-            $model = Publication::update([
+            $model->update([
                 'name' => $data['name'],
                 'description' => $data['description'],
-                'employee_id' => Employee::where('user_id', \Auth()->user()->id)->first()->id,
+                'employee_id' => \Auth::User()->employee->id,
                 'filter_two_publication_id' => $data['filter_two_publication_id'],
                 'filter_one_publication_id' => $data['filter_one_publication_id'],
-                'filter_three_publication_id' => $data['filter_three_publication_id'] ?? null,
+                'filter_three_publication_id' => $data['filter_three_publication_id'] != "null" ? $data['filter_three_publication_id'] : null
             ]);
-            $resources = json_decode(($data["resources"]), true);
-            $model->assingImageMini($data['image_mini']);
-            $resourcess = [];
-            foreach ($resources as $resource) {
-                if ($resource["type_resource"] == 'image') {
-                    $image = $model->assingResource($resource["url"]);
-                    $resourcess[] = [
-                        "id" => $resource['id'] ?? null,
-                        "type_resource" => $resource["type_resource"],
-                        "url" => $image,
-                        "publication_id" =>  $model->id,
-                    ];
+            /*if  (!empty($data['image_mini']) && !empty($data['resource'])) {
+                if (!empty($data['image_mini'])) $model->assingImageMini($data['image_mini']);
+                if ($data["type_resource"] == 'image' || $data["type_resource"] == 'document') {
+                    $model->resource->update([
+                        'type_resource' => $data['type_resource'],
+                        'url'  => 'kkk',
+                        'publication_id' => $model["id"],
+                    ]);
+                    $resources = $resource->assingResource($data['resource']);
+                    $resource->update([
+                        'url'  => $resources["url"],
+                    ]);
                 } else {
-                    $resourcess[] = [
-                        "id" => $resource['id'] ?? null,
-                        "type_resource" => $resource["type_resource"],
-                        "url" => $resource["url"],
-                        "publication_id" =>  $model->id,
-                    ];
+                    $model->resource->update([
+                        'type_resource' => $data['type_resource'],
+                        'url'  => $data['resource'],
+                        'publication_id' => $model["id"],
+                    ]);
                 }
-            }
-            $model->assingResources($resourcess);
+            }*/
+    
             $modell = Publication::find($model->id);
             DB::commit();
             return  $modell;

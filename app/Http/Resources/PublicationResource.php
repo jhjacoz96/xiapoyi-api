@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Resource;
 
 class PublicationResource extends JsonResource
 {
@@ -13,18 +14,20 @@ class PublicationResource extends JsonResource
      * @return array
      */
     public function toArray($request)
-    {
+    {;
+        $resource = Resource::where('publication_id', $this->id)->first();
         return [
             "id" => $this->id,
             "name" => $this->name,
             "description" => $this->description,
             "employee" => new EmployeeResource($this->employee),
             "created_at" => $this->created_at,
-            "filter_two_publication_id" => new FilterTwoPublicationResource($this->filterTwoPublication),
-            "filter_one_publication_id" => new FilterOnePublicationResource($this->filterOnePublication),
-            "filter_three_publication_id" => new FilterThreePublicationResource($this->filterThreePublication),
-            "resources" => ResourceResource::collection($this->resources),
-            "image_mini" => $this->image,
+            "filter_two_publication_id" => $this->filter_two_publication_id,
+            "filter_one_publication_id" => $this->filter_one_publication_id,
+            "filter_three_publication_id" => $this->filter_three_publication_id ?? null,
+            "resource" => $resource["url"] ?? null,
+            "type_resource" => $resource["type_resource"] ?? null,
+            "image_mini" => $this->image ?? null,
         ];
     }
 }

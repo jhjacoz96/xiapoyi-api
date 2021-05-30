@@ -26,11 +26,12 @@ class PublicationStoreRequest extends FormRequest
         return [
             "name" => "required|string",
             "description" => "required|string",
-            "filter_three_publication_id" => "sometimes|nullable",
+            "filter_three_publication_id" => "nullable",
             "filter_two_publication_id" => "required|integer",
             "filter_one_publication_id" => "required|integer",
-            "image_mini" => "sometimes|nullable|file",
-            "resources" => "required",
+            "image_mini" => "required",
+            "resource" => "required",
+            "type_resource" => "required|string"
         ];
     }
 }

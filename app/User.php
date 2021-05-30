@@ -42,4 +42,8 @@ class User extends Authenticatable
     public function diabeticPatient () {
         return $this->hasOne('App\DiabeticPatient', 'user_id', 'id');
     }
+
+    public function employee () {
+        return $this->hasOne('App\Employee', 'user_id', 'id');
+    }
 }

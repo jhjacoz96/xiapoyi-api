@@ -142,16 +142,16 @@ class FileFamilyService {
                         ],[
                             "nombre" => $model['nombre'],
                             "apellido" => $model['apellido'],
-                            "type_document_id" => $model['type_document_id'],
-                            "cedula" => $model['cedula'],
-                            "correo" => $model['correo'],
-                            "ocupacion" => $model['ocupacion'],
+                            "type_document_id" => $model['type_document_id'] ?? null,
+                            "cedula" => $model['cedula'] ?? null,
+                            "correo" => $model['correo'] ?? null,
+                            "ocupacion" => $model['ocupacion'] ?? null,
                             "fecha_nacimiento" => $model['fecha_nacimiento'],
                             "group_age_id" => $model['group_age_id'],
                             "vacunacion" => $model['vacunacion'],
                             "salud_bucal" => $model['salud_bucal'],
                             "embarazo" => $model['embarazo'],
-                            "scholarship_id" => $model['scholarship_id'],
+                            "scholarship_id" => $model['scholarship_id'] ?? null,
                             "relationship_id" => $model['relationship_id'],
                             "gender_id" => $model['gender_id'],
                      ]);
@@ -173,16 +173,16 @@ class FileFamilyService {
                     $m = new  Member();
                     $m->nombre = $member['nombre'];
                     $m->apellido = $member['apellido'];
-                    $m->type_document_id = $member['type_document_id'];
-                    $m->cedula = $member['cedula'];
-                    $m->correo = $member['correo'];
-                    $m->ocupacion = $member['ocupacion'];
+                    $m->type_document_id = $member['type_document_id'] ?? null;
+                    $m->cedula = $member['cedula'] ?? null;
+                    $m->correo = $member['correo'] ?? null;
+                    $m->ocupacion = $member['ocupacion'] ?? null;
                     $m->fecha_nacimiento = $member['fecha_nacimiento'];
                     $m->vacunacion = $member['vacunacion'];
                     $m->group_age_id = $member['groupAge']["id"];
                     $m->salud_bucal = $member['salud_bucal'];
                     $m->embarazo = $member['embarazo'];
-                    $m->scholarship_id = $member['scholarship_id'];
+                    $m->scholarship_id = $member['scholarship_id'] ?? null;
                     $m->relationship_id = $member['relationship_id'];
                     $m->gender_id = $member['gender_id'];
                     $m->file_family_id = $model->id;
@@ -211,9 +211,10 @@ class FileFamilyService {
                     $m->disabilities()->sync($member["discapacidades"]);
 
                     //asignar mujeres embarazadas
-                    if ($m['embarazo'] && $member['ficha_obstetric']) {
+                    if ($m['embarazo']) {
                         $prenatal = $member["prenatal"];
                         $s = new Pregnant();
+                        $s->numero_historia  = $prenatal["numero_historia"];
                         $s->fum = $prenatal["fum"];
                         $s->antecedentes_patologicos = $prenatal["antecedentes_patologicos"];
                         $s->fpp = $prenatal["fpp"] ?? null;
@@ -447,9 +448,9 @@ class FileFamilyService {
 
                     //asignar mujeres embarazadas
 
-                    if ($m['embarazo'] && $member['ficha_obstetric']) {
+                    if ($m['embarazo']) {
                         $prenatal = $member["prenatal"];
-                        // if (isset($prenatal["id"]))  $s = Pregnant::find($prenatal["id"]);
+                        if (isset($prenatal["id"]))  $s = Pregnant::find($prenatal["id"]);
                         $s = new Pregnant();
                         $s->fum = $prenatal["fum"];
                         $s->antecedentes_patologicos = $prenatal["antecedentes_patologicos"];
@@ -557,6 +558,32 @@ class FileFamilyService {
         try {
             DB::beginTransaction();
             $model = FileFamily::find($id);
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function verifyDocument ($data) {
+        try {
+            DB::beginTransaction();
+            $model = Member::where('cedula', $data)->first();
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function verifyEmail ($data) {
+        try {
+            DB::beginTransaction();
+            $model = Member::where('correo', $data)->first();
             if(!$model) return null;
             DB::commit();
             return $model;

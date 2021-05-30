@@ -7,8 +7,10 @@ use App\Http\Requests\FileFamilyStoreRequest;
 // use App\Http\Requests\FileFamilyUpdateRequest;
 use App\Utils\Enums\EnumResponse;
 use App\FileFamily;
+use App\Member;
 use App\Http\Resources\FileFamilyResource;
 use App\Http\Resources\FileFamilyListResource;
+use App\Http\Resources\MemberResource;
 use App\Services\FileFamilyService;
 
 class FileFamilyController extends Controller
@@ -101,6 +103,42 @@ class FileFamilyController extends Controller
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
                 $data = new FileFamilyResource($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    public function verifyDocument($document)
+    {
+        try {
+            $model = $this->service->verifyDocument($document);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new MemberResource($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    public function verifyEmail($email)
+    {
+        try {
+            $model = $this->service->verifyEmail($email);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new MemberResource($model);
                 return bodyResponseRequest(EnumResponse::SUCCESS, $data);
             }
         } catch (\Exception $e) {

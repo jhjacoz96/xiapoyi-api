@@ -143,6 +143,8 @@ Route::group([
             ]);
       });
 
+      Route::post('file-clinical-neonatology/search', 'FileClinicalNeonatologyController@search');
+      Route::post('file-clinical-neonatology/filter', 'FileClinicalNeonatologyController@filter');
       Route::ApiResource('file-clinical-neonatology', 'FileClinicalNeonatologyController');
 
       Route::post('file-clinical-obstetric/search', 'PregnantController@search');
@@ -152,7 +154,10 @@ Route::group([
 
       Route::post('file-family/search', 'FileFamilyController@search');
       Route::post('file-family/filter', 'FileFamilyController@filter');
+      Route::get('file-family/member/verify-document/{cedula}', 'FileFamilyController@verifyDocument');
+      Route::get('file-family/member/verify-email/{email}', 'FileFamilyController@verifyEmail');
       Route::ApiResource('file-family', 'FileFamilyController');
+
       Route::prefix('employee')->group(function () {
           Route::post('', [
               'uses' => 'EmployeeController@store',
@@ -211,5 +216,6 @@ Route::group([
     Route::get('subcription', 'ConfigWeb@subcriptionIndex');
     Route::post('contact', 'ConfigWeb@contactStore');
     Route::get('contact', 'ConfigWeb@contactIndex');
-
+    Route::get('service-all', 'ServiceController@index');
+    Route::get('carrusel', 'CarruselController@index');
   });

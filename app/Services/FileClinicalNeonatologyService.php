@@ -28,6 +28,23 @@ class FileClinicalNeonatologyService {
         }
     }
 
+    public function search ($data) {
+        try {
+            $search = $data['search'];
+            $model = FileClinicalNeonatology::where('lugar_naciento','like','%'.$search .'%')
+            ->orWhere('numero_historia','like','%'.$search .'%')
+            ->orWhereHas('member', function ($query) use ($search) {
+                $query->where('nombre','like','%'.$search .'%');
+                $query->orWhere('apellido','like','%'.$search .'%');
+            })
+            ->get();
+
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
     public function store ($data) {
         try {
             DB::beginTransaction();

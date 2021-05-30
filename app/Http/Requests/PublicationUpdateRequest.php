@@ -29,8 +29,6 @@ class PublicationUpdateRequest extends FormRequest
             "filter_three_publication_id" => "sometimes|nullable",
             "filter_two_publication_id" => "required|integer",
             "filter_one_publication_id" => "required|integer",
-            "image_mini" => "sometimes|nullable|file",
-            "resources" => "required",
         ];
     }
 }
