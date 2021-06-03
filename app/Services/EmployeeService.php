@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Employee;
 use App\TypeDocument;
+use Illuminate\Support\Facades\Mail;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,9 +32,10 @@ class EmployeeService {
     public function store ($data) {
         try {
             DB::beginTransaction();
+            $password = \Str::random(10);
             $modelUser = User::create([
                 "email" => $data["email"],
-                'password' => bcrypt('12345678'),
+                'password' => bcrypt($password),
             ]);
             $modelEmployee = new Employee();
             $modelEmployee->province_id  = $data["province_id"];
@@ -46,6 +48,13 @@ class EmployeeService {
             $modelEmployee->address = $data["address"];
             $modelEmployee->user_id = $modelUser->id;
             $modelEmployee->save();
+            $datosMensaje = [
+                "usuario" => $modelEmployee,
+                "password" =>  $password,
+            ];
+            Mail::send('correos.registroEmpleado', $datosMensaje,function($mensaje) use($m){
+                $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
+            });
             DB::commit();
             return  $modelEmployee;
         } catch (\Exception $e) {

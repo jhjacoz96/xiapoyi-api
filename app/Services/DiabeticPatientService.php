@@ -102,6 +102,7 @@ class DiabeticPatientService {
                             "dosis" => $item["dosis"],
                             "hora" => $item["hora"],
                             "measure_id" => $item["measure_id"],
+                            "presentation_id" => $item["presentation_id"],
                         ];
                 }
                 $model->medicines()->sync($tratamiento_farmacologico);

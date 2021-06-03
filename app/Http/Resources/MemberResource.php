@@ -44,7 +44,7 @@ class MemberResource extends JsonResource
             "patologias" => $arrayPathologies,
             "discapacidades" => $arrayDisability,
             "embarazo" => $this->embarazo,
-            "prenatal" => count( $prenatal) > 0 ? new PregnantResource($prenatal->last()->first()) : null ,
+            "prenatal" => count( $prenatal) > 0 ? new PregnantResource($prenatal->last()) : null ,
             "prenatal_todos" => count( $prenatal) > 0 ? PregnantResource::collection($prenatal) : null,
             "file_family_id" => $this->file_family_id,
             "diabetic_patient" => new DiabeticPatientResource($this->diabeticPatient) ?? null,

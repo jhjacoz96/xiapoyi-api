@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Service;
 
-class ZoneResource extends JsonResource
+class ServicesAllWebResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,13 +15,12 @@ class ZoneResource extends JsonResource
      */
     public function toArray($request)
     {
+        $service = Service::All();
         return [
             "id" => $this->id,
-            "name" => $this->name,
-            "code" => $this->code,
-            "activities" => $this->activities,
-            "canton_id" => $this->canton_id,
-            "province_id" => $this->province_id,
+            "description1" => $this->description1,
+            "description2" => $this->description2,
+            "services" =>  ServiceResource::collection($service),
         ];
     }
 }

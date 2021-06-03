@@ -9,9 +9,15 @@ use App\Diabetic;
 use App\WebService;
 use App\Subcription;
 use App\Us;
+use App\Zone;
 use App\Contact;
+use App\Publication;
 use App\Utils\Enums\EnumResponse;
-
+use App\Http\Resources\ServicesWebResource;
+use App\Http\Resources\OldAdultResource;
+use App\Http\Resources\PublicationAllResource;
+use App\Http\Resources\PublicationPaginateResource;
+use App\Http\Resources\ServicesAllWebResource;
 class ConfigWeb extends Controller
 {
     /**
@@ -22,6 +28,85 @@ class ConfigWeb extends Controller
     public function index()
     {
         //
+    }
+
+    public function publicationIndex(Request $request) {
+        try {
+            $model = Publication::paginate(6);
+            $data = new PublicationPaginateResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function publicationSearch(Request $request) {
+        try {
+            $model = Publication::where('name','like','%'.$request["search"] .'%')->paginate(6);
+            $data = new PublicationPaginateResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function publicationFilter(Request $request) {
+         try {
+            if (!empty($request["filter_one_publication_id"])) {
+                if (!empty($request["type_resource"])) {
+                    $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])
+                    ->whereHas("resource", function ($query) use($request) {
+                        $query->where("type_resource", $request["type_resource"]);
+                    })  
+                    ->paginate(6);
+                } else {
+                    $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])->paginate(6);
+                }
+            }
+            if (!empty($request["filter_two_publication_id"])) {
+                 if (!empty($request["type_resource"])) {
+                    $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])
+                    ->where("filter_two_publication_id", $request["filter_two_publication_id"])
+                    ->whereHas("resource", function ($query) use($request) {
+                        $query->where("type_resource", $request["type_resource"]);
+                    })
+                    ->paginate(6);
+                 } else {
+                    $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])
+                    ->where("filter_two_publication_id", $request["filter_two_publication_id"])
+                    ->paginate(6); 
+                 }
+            }
+            if (!empty($request["filter_three_publication_id"])) {
+                if (!empty($request["type_resource"])) {
+                    $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])
+                    ->where("filter_two_publication_id", $request["filter_two_publication_id"])
+                    ->where("filter_three_publication_id", $request["filter_three_publication_id"])
+                   ->whereHas("resource", function ($query) use($request) {
+                         $query->where("type_resource", $request["type_resource"]);
+                    })
+                    ->paginate(6);
+                } else {
+                    $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])
+                    ->where("filter_two_publication_id", $request["filter_two_publication_id"])
+                    ->where("filter_three_publication_id", $request["filter_three_publication_id"])
+                    ->paginate(6);
+                }
+            }
+            if (empty($request["filter_three_publication_id"]) && empty($request["filter_one_publication_id"]) && empty($request["filter_two_publication_id"])) {
+                if (!empty($request["type_resource"])) {
+                    $model = Publication::whereHas("resource", function ($query) use($request) { 
+                        $query->where("type_resource", $request["type_resource"]);
+                    })->paginate(6);
+                } else {
+                    $model = Publication::paginate(6);
+                }
+            }
+            $data = new PublicationPaginateResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.publicationFilter');
+        }
     }
 
     public function organizationIndex() {
@@ -71,7 +156,7 @@ class ConfigWeb extends Controller
     {
         try {
             $id = 1;
-            if (!empty( $request['description1'] || $request['description2']))  {
+            if (!empty($request['description1']) || !empty($request['description2']))  {
                 $data = Us::updateOrCreate(
                     [
                       'id' => $id,
@@ -123,7 +208,11 @@ class ConfigWeb extends Controller
             }
 
             if ($request->file('image_mission')) {
-
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ]
+                );
                 $imagenMission = $request->file('image_mission');
                 $nombreMission = 'image_mission'.$imagenMission->getClientOriginalName();
                 $rutaMission = public_path().'/imagenWeb';
@@ -139,6 +228,11 @@ class ConfigWeb extends Controller
                 $data->save();
             }
             if ($request->file('image_vision')) {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ]
+                );
                 $imagenVision = $request->file('image_vision');
                 $nombreVision = 'image_vision'.$imagenVision->getClientOriginalName();
                 $rutavVision = public_path().'/imagenWeb';
@@ -154,6 +248,11 @@ class ConfigWeb extends Controller
                 $data->save();
             }
             if ($request->file('image_objective')) {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ]
+                );
                 $imagenObjetive = $request->file('image_objective');
                 $nombreObjetive = 'image_objective'.$imagenObjetive->getClientOriginalName();
                 $rutaObjetive = public_path().'/imagenWeb';
@@ -162,13 +261,18 @@ class ConfigWeb extends Controller
                 $urlImagenObjetive['url']='/imagenWeb/'.$nombreObjetive;
                 if (!empty($data->image_objetive)) {
                     $data->image_objective = $urlImagenObjetive['url'];
-                } else {
+                } else {    
                     $o = $data->image()->create($urlImagenObjetive);
                     $data->image_objective = $o->url;
                 }
                 $data->save();
             }
             if ($request->file('image_value')) {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ]
+                );
                 $imagenValue = $request->file('image_value');
                 $nombreValue = 'image_value'.$imagenValue->getClientOriginalName();
                 $rutaValue = public_path().'/imagenWeb';
@@ -183,6 +287,11 @@ class ConfigWeb extends Controller
                 $data->save();
             }
             if ($request->file('image_us')) {
+                $data = Us::updateOrCreate(
+                    [
+                      'id' => $id,
+                    ]
+                );
                 $imagenUs = $request->file('image_us');
                 $nombreUs = 'image_us'.$imagenUs->getClientOriginalName();
                 $rutaUs = public_path().'/imagenWeb';
@@ -202,7 +311,18 @@ class ConfigWeb extends Controller
 
     public function serviceIndex() {
         try {
-            $data = WebService::find(1);
+            $zoneWeb = WebService::find(1);
+            $data = new ServicesWebResource($zoneWeb);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function serviceAllIndex() {
+        try {
+            $zoneWeb = WebService::find(1);
+            $data = new ServicesAllWebResource($zoneWeb);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -258,7 +378,7 @@ class ConfigWeb extends Controller
                 $imagenDiabetic->move($rutaDiabetic , $nombreDiabetic);
                 
                 $urlImagenDiabetic['url']='/imagenWeb/'.$nombreDiabetic;
-                if (!empty($data->image())) {
+                if (!empty($data->image)) {
                     $data->image->url = $urlImagenDiabetic['url'];
                     $data->push();
                 } else {
@@ -275,6 +395,16 @@ class ConfigWeb extends Controller
     }
 
     public function olderAdultIndex() {
+        try {
+            $data = OlderAdult::find(1);
+            $data1 = new OldAdultResource($data);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data1);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function olderAdultAllIndex() {
         try {
             $data = OlderAdult::find(1);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
@@ -299,6 +429,23 @@ class ConfigWeb extends Controller
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
+        }
+    }
+
+    public function dowloandFile (Request $request) {
+        try {
+            /* $file=public_path().$request["resource"];
+            $header=array(
+                'Content-Type: application/xlsx',
+            );
+            return \Response::download($file,"productos.xlsx",$header);*/
+             $file_path = public_path().$request["resource"];
+             $header=array(
+                'Content-Type: application/odt',
+            );
+            return  response()->download($file_path, "productos.odt", $header);
+        } catch (Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.dowloandFile');
         }
     }
 

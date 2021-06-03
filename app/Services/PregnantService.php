@@ -165,8 +165,11 @@ class PregnantService {
                     $query->where('name', 'like','%'.$search .'%');
                 })
                 ->orWhereHas('Zone', function ($query) use ($search) {
-                $query->where('name', 'like','%'.$search .'%');
+                    $query->where('name', 'like','%'.$search .'%');
                 });
+            })
+            ->orWhereHas('pregnant', function ($query) use($search) {
+                $query->where('numero_historia', 'like','%'.$search .'%');
             })
             ->get();
 
@@ -267,7 +270,7 @@ class PregnantService {
 
             if ($model["observacion_parto"] !== '') {
                 $updateMember->update([
-                    "embarazo" => true,
+                    "embarazo" => false,
                 ]);
             }
             

@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\FileFamily;
 use App\Pregnant;
@@ -192,14 +193,22 @@ class FileFamilyService {
                     foreach ($member["patologias"] as  $pathology) {
                         $query = Pathology::find($pathology);
                         if ($query->capture) {
+                            $password = \Str::random(10);
                             $user = User::create([
                                 "email" => $m["correo"],
-                                "password" =>  bcrypt("12345678")
+                                "password" =>  bcrypt($password)
                             ]);
                             $diabetic_patient = DiabeticPatient::create([
                                 "user_id" => $user["id"],
                                 "member_id" => $m["id"],
                             ]);
+                            $datosMensaje = [
+                                "usuario" => 'fffffffff',
+                            ];
+                            Mail::send('correos.registroDiabetico', $datosMensaje,function($mensaje) use($m){
+                                $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
+                            });
+                           
                         }
                     }
                     //asignar patologias
@@ -371,6 +380,7 @@ class FileFamilyService {
                         return $id;
                     });
                 }
+                
                 $updates = $miembros_items->filter(function ($miembros) use($model) {
                     return isset($miembros['id']);
                 })->map(function ($miembros) use ($model) {
@@ -397,6 +407,7 @@ class FileFamilyService {
                      ]);
                     });
                 });
+
                 $attachments = $miembros_items->filter(function ($model) {
                     return !isset($model['id']);
                 })->map(function ($model) use ($deleted_ids) {
@@ -406,8 +417,8 @@ class FileFamilyService {
                 // $members = $this->members()->createMany($attachments);
 
                 foreach ($miembros_items as $member) {
-                    // if (isset($member['id'])) $m = Member::find($member['id']);
-                    $m = new  Member();
+                    if (isset($member['id'])) $m = Member::find($member['id']);
+                    else $m = new  Member();
                     $m->nombre = $member['nombre'];
                     $m->apellido = $member['apellido'];
                     $m->type_document_id = $member['type_document_id'];
@@ -424,19 +435,29 @@ class FileFamilyService {
                     $m->gender_id = $member['gender_id'];
                     $m->file_family_id = $model->id;
                     $m->save();
+
                     //captar pacientes con diabetes
                     foreach ($member["patologias"] as  $pathology) {
                         $query = Pathology::find($pathology);
                         $existe = DiabeticPatient::where('member_id', $m["id"])->first();
                         if ($query->capture && empty($existe)) {
+                            $password = \Str::random(10);
                             $user = User::create([
                                 "email" => $m["correo"],
-                                "password" => bcrypt("12345678"),
+                                "password" => bcrypt($password),
                             ]);
                             $diabetic_patient = DiabeticPatient::create([
                                 "user_id" => $user["id"],
                                 "member_id" => $m["id"],
                             ]);
+                             $correo=$user->email;
+                             $datosMensaje = [
+                                "usuario" => $m,
+                                "password" =>  $password,
+                            ];
+                            Mail::send('correos.registroDiabetico', $datosMensaje,function($mensaje) use($m){
+                                $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
+                            });
                         }
                     }
                     //asignar patologias
@@ -450,7 +471,7 @@ class FileFamilyService {
 
                     if ($m['embarazo']) {
                         $prenatal = $member["prenatal"];
-                        if (isset($prenatal["id"]))  $s = Pregnant::find($prenatal["id"]);
+                        if (isset($member['id']))  $s = Pregnant::find($prenatal["id"]);
                         $s = new Pregnant();
                         $s->fum = $prenatal["fum"];
                         $s->antecedentes_patologicos = $prenatal["antecedentes_patologicos"];
@@ -466,7 +487,6 @@ class FileFamilyService {
                     }
                 }
             }
-
             $validar1 = $data['mortalidad']  ?? null;
             if (!is_null($validar1)) {
                 $mortalidad = [];

@@ -197,6 +197,12 @@ Route::group([
       Route::get('contact', 'ConfigWeb@contactIndex');
 
 
+       Route::prefix('dashboard')->group(function () {
+          Route::get('', [
+              'uses' => 'ReportStadisticController@dashboard',
+          ]);
+       });
+
   });
 
   Route::group([
@@ -206,16 +212,25 @@ Route::group([
     Route::get('organization', 'ConfigWeb@organizationIndex');
     Route::post('us', 'ConfigWeb@upStore');
     Route::get('us', 'ConfigWeb@upIndex');
+    Route::get('zone', 'ZoneController@index');
     Route::post('service', 'ConfigWeb@serviceStore');
     Route::get('service', 'ConfigWeb@serviceIndex');
+    Route::get('service-all', 'ConfigWeb@serviceAllIndex');
     Route::post('older-adult', 'ConfigWeb@olderAdultStore');
     Route::get('older-adult', 'ConfigWeb@olderAdultIndex');
+    Route::get('older-adult-all', 'ConfigWeb@olderAdultAllIndex');
+    Route::get('publication', 'ConfigWeb@publicationIndex');
+    Route::post('publication-search', 'ConfigWeb@publicationSearch');
+    Route::post('publication-filter', 'ConfigWeb@publicationFilter');
+    Route::get('filter-one-publication', 'FilterOnePublicationController@index');
+    Route::get('filter-two-publication/filter/{id}', 'FilterTwoPublicationController@indexFilter');
+    Route::get('filter-three-publication/filter/{id}', 'FilterThreePublicationController@indexFilter');
+    Route::post('dowloand-file', 'ConfigWeb@dowloandFile');
     Route::post('diabetic', 'ConfigWeb@diabeticStore');
     Route::get('diabetic', 'ConfigWeb@diabeticIndex');
     Route::post('subcription', 'ConfigWeb@subcriptionStore');
     Route::get('subcription', 'ConfigWeb@subcriptionIndex');
     Route::post('contact', 'ConfigWeb@contactStore');
     Route::get('contact', 'ConfigWeb@contactIndex');
-    Route::get('service-all', 'ServiceController@index');
     Route::get('carrusel', 'CarruselController@index');
   });
