@@ -7,6 +7,8 @@
         <title>Document</title>
     </head>
 <body>
-   Hola {{ $usuario->name }}, te damos la bienvenida a Xiayi, para ingresar a la aplicación con tu usuario al panel administrativo, podrá hacerlo con el uso de su correo electrónico y la siguiente contraseña:   {{ $password }}.
+   Hola {{ $comentario->nombre }}, te informamos que hemos recibido tu {{ $tipoComentario->nombre }}.
+   &nbsp;
+   <strong>Respuesta:</strong> {{ $comentario->respuesta }}
 </body>
 </html>

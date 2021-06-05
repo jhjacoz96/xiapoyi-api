@@ -61,6 +61,7 @@ class AuthController extends Controller
             return bodyResponseRequest( EnumResponse::UNAUTHORIZED, $data);
         }
         $user = $request->user();
+
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)

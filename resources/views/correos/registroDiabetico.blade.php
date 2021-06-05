@@ -7,6 +7,6 @@
         <title>Document</title>
     </head>
 <body>
-   Hola {{ $datosMensaje->usuario->nombre }}  {{ $datosMensaje->usuario->apellido }} te damos la bienvenida a Xiayi, para ingresar a la aplicación movil, podrá hacerlo con el uso de su correo electrónico y la siguiente contraseña:   {{ $datosMensaje->password }}.
+   Hola {{ $usuario->nombre }}  {{ $usuario->apellido }} te damos la bienvenida a Xiayi, para ingresar a la aplicación movil, podrá hacerlo con el uso de su correo electrónico y la siguiente contraseña:   {{ $password }}.
 </body>
 </html>

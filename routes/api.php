@@ -196,6 +196,12 @@ Route::group([
       Route::post('contact', 'ConfigWeb@contactStore');
       Route::get('contact', 'ConfigWeb@contactIndex');
 
+      Route::post('suscription', 'SuscriptionController@store');
+      Route::ApiResource('type-comment', 'TypeCommentController');
+      Route::ApiResource('comment', 'CommentController');
+
+
+
 
        Route::prefix('dashboard')->group(function () {
           Route::get('', [
@@ -233,4 +239,7 @@ Route::group([
     Route::post('contact', 'ConfigWeb@contactStore');
     Route::get('contact', 'ConfigWeb@contactIndex');
     Route::get('carrusel', 'CarruselController@index');
+    Route::get('type-comment', 'TypeCommentController@index');
+    Route::post('comment', 'CommentController@store');
+    Route::post('suscription', 'SuscriptionController@store');
   });

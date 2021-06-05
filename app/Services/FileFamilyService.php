@@ -203,7 +203,8 @@ class FileFamilyService {
                                 "member_id" => $m["id"],
                             ]);
                             $datosMensaje = [
-                                "usuario" => 'fffffffff',
+                                "usuario" => $m,
+                                "password" =>  $password,
                             ];
                             Mail::send('correos.registroDiabetico', $datosMensaje,function($mensaje) use($m){
                                 $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
@@ -471,7 +472,7 @@ class FileFamilyService {
 
                     if ($m['embarazo']) {
                         $prenatal = $member["prenatal"];
-                        if (isset($member['id']))  $s = Pregnant::find($prenatal["id"]);
+                        if (isset($prenatal["id"]))  $s = Pregnant::find($prenatal["id"]);
                         $s = new Pregnant();
                         $s->fum = $prenatal["fum"];
                         $s->antecedentes_patologicos = $prenatal["antecedentes_patologicos"];
@@ -480,6 +481,7 @@ class FileFamilyService {
                         $s->gestas = $prenatal["gestas"];
                         $s->partos = $prenatal["partos"];
                         $s->vaccine_dt = $prenatal["vaccine_dt"];
+                        $s->numero_historia  = $prenatal["numero_historia"];
                         $s->abortos = $prenatal["abortos"];
                         $s->cesarias = $prenatal["cesarias"];
                         $s->member_id = intval($m["id"]);

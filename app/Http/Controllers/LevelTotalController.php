@@ -28,7 +28,7 @@ class LevelTotalController extends Controller
             $data = LevelTotalResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
-            return $e;
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
         }
     }
 

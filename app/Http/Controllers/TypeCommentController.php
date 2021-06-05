@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PublicationStoreRequest;
-use App\Http\Requests\PublicationUpdateRequest;
+use App\Http\Requests\TypeCommentStoreRequest;
+use App\Http\Requests\TypeCommentUpdateRequest;
 use App\Utils\Enums\EnumResponse;
-use App\Publication;
-use App\Http\Resources\PublicationResource;
-use App\Services\PublicationService;
+use App\TypeComment;
+use App\Services\TypeCommentService;
+use App\Http\Resources\TypeCommentResource;
 
-class PublicationController extends Controller
+class TypeCommentController extends Controller
 {
-    function __construct(PublicationService $_PublicationService)
+
+    function __construct(TypeCommentService $_TypeCommentService)
     {
-        $this->service = $_PublicationService;
+        $this->service = $_TypeCommentService;
     }
     /**
-     * Display a listing of the Publication.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
@@ -25,7 +26,7 @@ class PublicationController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = PublicationResource::collection($model);
+            $data = TypeCommentResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -33,63 +34,29 @@ class PublicationController extends Controller
     }
 
     /**
-     * Store a newly created Publication in storage.
+     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PublicationStoreRequest $request) {
-      try {
-        $data = $request->validated();
-        $model = $this->service->store($data);
-        return $model;
-        $data = new PublicationResource($model);
-        return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-      } catch (\Exception $e) {
-        return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
-      }
-    }
-
-    /**
-     * Display the specified Publication.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Update the specified Publication in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(PublicationUpdateRequest $request, $id)
+    public function store(TypeCommentStoreRequest $request)
     {
         try {
             $data = $request->validated();
-            $model = $this->service->update($data, $id);
-            if (!$model) {
-                $data = [
-                    'message' => __('response.bad_request_long')
-                ];
-                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
-            } else {
-                $data = new PublicationResource($model);
-                return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-            }
+            $model = $this->service->store($data);
+            $data = new TypeCommentResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
           } catch (\Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
           }
     }
 
     /**
-     * Remove the specified Publication from storage.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
     public function show($id)
     {
         try {
@@ -100,7 +67,7 @@ class PublicationController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new PublicationResource($model);
+                $data = new TypeCommentResource($model);
                 return bodyResponseRequest(EnumResponse::SUCCESS, $data);
             }
         } catch (\Exception $e) {
@@ -108,7 +75,40 @@ class PublicationController extends Controller
         }
     }
 
-    public function destroy($id) {
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(TypeCommentUpdateRequest $request, $id)
+    {
+        try {
+            $data = $request->validated();
+            $model = $this->service->update($data, $id);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new TypeCommentResource($model);
+                return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+            }
+          } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+          }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
         try {
             $model = $this->service->delete($id);
             if (!$model) {
