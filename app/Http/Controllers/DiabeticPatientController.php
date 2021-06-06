@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\DiabeticPatientStoreRequest;
 use App\Http\Requests\DiabeticPatientUpdateRequest;
+use App\Http\Requests\RegisterGlucosaRequest;
+use App\Http\Requests\RegisterWeightRequest;
 use App\Utils\Enums\EnumResponse;
 use App\DiabeticPatient;
 use App\Http\Resources\RegisterGlucoseResource;
@@ -112,10 +114,10 @@ class DiabeticPatientController extends Controller
 
     // movil //-----------------------------------------------
 
-    public function registerGlucoseMovil(Request $request) {
+    public function registerGlucoseMovil(RegisterGlucosaRequest $request) {
       try {
-        // $data = $request->validated();
-        $model = $this->service->registerGlucoseMovil($request);
+        $data = $request->validated();
+        $model = $this->service->registerGlucoseMovil($data);
         $data = new RegisterGlucoseResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
@@ -123,10 +125,10 @@ class DiabeticPatientController extends Controller
       }
     }
     
-    public function registerWeightMovil(Request $request) {
+    public function registerWeightMovil(RegisterWeightRequest $request) {
       try {
-        // $data = $request->validated();
-        $model = $this->service->registerWeightMovil($request);
+        $data = $request->validated();
+        $model = $this->service->registerWeightMovil($data);
         $data = new RegisterWightResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {

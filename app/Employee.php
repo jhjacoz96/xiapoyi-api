@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Employee extends Model
 {
+    use Notifiable;
+
     protected $fillable = [
         'name', 'phone', 'document', 'address', 'status', 'canton_id', 'user_id', 'gender_id',
         'type_document_id', 'type_employee_id', 'specialty_id',

@@ -16,6 +16,7 @@
         "laravel/passport": "^9.4",
         "laravel/tinker": "^2.5",
         "myclabs/php-enum": "^1.7",
+        "pusher/pusher-php-server": "^4.1",
         "spatie/laravel-permission": "^4.0"
     },
     "require-dev": {

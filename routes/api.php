@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Events\CommentAdultOldEvent;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +160,7 @@ Route::group([
       Route::ApiResource('file-family', 'FileFamilyController');
 
       Route::prefix('employee')->group(function () {
+          Route::get('notifications', 'EmployeeController@notifications');
           Route::post('', [
               'uses' => 'EmployeeController@store',
               'as' => 'api.employee.store'
@@ -201,7 +203,10 @@ Route::group([
       Route::ApiResource('comment', 'CommentController');
 
 
-
+      Route::get('/event', function () {
+        event(new CommentAdultOldEvent);
+        return 'event';
+      });
 
        Route::prefix('dashboard')->group(function () {
           Route::get('', [

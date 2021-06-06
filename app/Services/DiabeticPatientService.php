@@ -145,6 +145,7 @@ class DiabeticPatientService {
             $diabetic = RegisterGlucose::create([
                 "fecha" => $data["fecha"]  ?? $date,
                 "nivel_glusemia" => $data["nivel_glusemia"],
+                "comida" => $data["comida"] ?? null,
                 "diabetic_patient_id" => $model->id,
             ]);
             
@@ -193,6 +194,7 @@ class DiabeticPatientService {
             $diabetic = RegisterGlucose::create([
                 "fecha" => $data["fecha"]  ?? $date,
                 "nivel_glusemia" => $data["nivel_glusemia"],
+                "comida" => $data["comida"] ?? null,
                 "diabetic_patient_id" => $model->id,
             ]);
             

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RegisterGlucose extends Model
 {
     protected $fillable = [
-        'fecha', 'nivel_glusemia', 'diabetic_patient_id',
+        'fecha', 'nivel_glusemia', 'diabetic_patient_id', 'comida',
     ];
 
     public function diabeticPatient () {

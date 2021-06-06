@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Comment;
 use App\TypeComment;
+use App\Employee;
+use App\Notifications\CommentAdultOldNotification;
+use App\Events\CommentAdultOldEvent;
 
 class CommentService {
 
@@ -31,6 +34,9 @@ class CommentService {
         try {
             DB::beginTransaction();
             $model = Comment::create($data);
+            $comment = Comment::with('typeComment')->find($model["id"]);
+            event(new CommentAdultOldEvent($comment));
+
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

@@ -21,6 +21,16 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function notifications()
+    {
+        try {
+            $model = \Auth::user()->Employee->unreadNotifications;
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     public function index()
     {
         try {
