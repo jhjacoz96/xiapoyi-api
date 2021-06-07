@@ -19,31 +19,31 @@ class UserSeeder extends Seeder
         $institucions = [
             [
                 "name" => 'MSP',
-                "code" => '111',
+                "code" => 'f42d',
             ],
             [
                 "name" => 'IESS Campesino',
-                "code" => '222',
+                "code" => 'f45f',
             ],
             [
                 "name" => 'IESS',
-                "code" => '333',
+                "code" => 'g45g',
             ],
             [
                 "name" => 'Fuerzas Armadas',
-                "code" => '444',
+                "code" => 'g45g45',
             ],
             [
                 "name" => 'Policía Nacional',
-                "code" => '555',
+                "code" => 'g454',
             ],
             [
                 "name" => 'Red Privada',
-                "code" => '666',
+                "code" => '663g3g6',
             ],
         ];
 
-        foreach ($institucions as $key => $value) {
+        foreach ($institucions as $value) {
             Institution::create($value);
         }
 
