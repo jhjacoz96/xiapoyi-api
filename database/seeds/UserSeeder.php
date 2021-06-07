@@ -5,7 +5,9 @@ use App\User;
 use App\Employee;
 use App\TypeEmployee;
 use App\Specialty;
+use App\Zone;
 use App\Institution;
+use App\TypeComment;
 
 class UserSeeder extends Seeder
 {
@@ -16,6 +18,22 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+
+        $typeComments = [
+            [
+                "nombre" => "Duda",
+            ],
+            [
+                "nombre" => "Sugerencia",
+            ],
+            [
+                "nombre" => "Reclamo",
+            ],
+        ];
+        foreach ($typeComments as $key => $value) {
+            TypeComment::create($value);
+        }
+
         $institucions = [
             [
                 "name" => 'MSP',

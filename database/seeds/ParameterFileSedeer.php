@@ -317,12 +317,12 @@ class ParameterFileSedeer extends Seeder
         }
 
         $pathologys = [
-            "Diabetes",
-            "Hipertención",
-            "Cardiovasculares",
-            "Renales",
-            "Cáncer",
-            "Otros",
+            ["name" => "Diabetes", "capture" => true],
+            ["name" => "Hipertención", "capture" => false],
+            ["name" => "Cardiovasculares", "capture" => false],
+            ["name" => "Renales", "capture" => false],
+            ["name" => "Cáncer", "capture" => false],
+            ["name" => "Otros", "capture" => false],
         ];
 
         foreach ($pathologys as $pathology) {
