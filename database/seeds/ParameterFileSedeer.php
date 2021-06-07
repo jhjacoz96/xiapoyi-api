@@ -326,7 +326,7 @@ class ParameterFileSedeer extends Seeder
         ];
 
         foreach ($pathologys as $pathology) {
-            Pathology::create(["name" => $pathology]);
+            Pathology::create($pathology);
         }
 
         $disabilities = [
