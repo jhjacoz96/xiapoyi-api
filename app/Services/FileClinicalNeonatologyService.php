@@ -21,7 +21,7 @@ class FileClinicalNeonatologyService {
     public function index () {
         try {
             
-            $model = FileClinicalNeonatology::All();
+            $model = FileClinicalNeonatology::orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;

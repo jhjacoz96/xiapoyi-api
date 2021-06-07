@@ -13,6 +13,7 @@ use App\Pathology;
 use App\Member;
 use App\User;
 use App\DiabeticPatient;
+use App\Events\DiabeticPatientEvent;
 
 class FileFamilyService {
 
@@ -207,9 +208,11 @@ class FileFamilyService {
                                 "password" =>  $password,
                             ];
                             Mail::send('correos.registroDiabetico', $datosMensaje,function($mensaje) use($m){
-                                $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
+                                $mensaje->to($m["correo"])->subject('Registro de paciente diabético - Xiaoyi');
                             });
-                           
+
+                            event(new DiabeticPatientEvent($diabetic_patient));
+
                         }
                     }
                     //asignar patologias

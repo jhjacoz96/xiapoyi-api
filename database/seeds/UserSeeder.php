@@ -5,6 +5,7 @@ use App\User;
 use App\Employee;
 use App\TypeEmployee;
 use App\Specialty;
+use App\Institution;
 
 class UserSeeder extends Seeder
 {
@@ -15,6 +16,37 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        $institucions = [
+            [
+                "name" => 'MSP',
+                "code" => '001',
+            ],
+            [
+                "name" => 'IESS Campesino',
+                "code" => '002',
+            ],
+            [
+                "name" => 'IESS',
+                "code" => '003',
+            ],
+            [
+                "name" => 'Fuerzas Armadas',
+                "code" => '004',
+            ],
+            [
+                "name" => 'Policía Nacional',
+                "code" => '005',
+            ],
+            [
+                "name" => 'Red Privada',
+                "code" => '006',
+            ],
+        ];
+
+        foreach ($institucions as $key => $value) {
+            Institution::create($value);
+        }
+
         $typeEmployees = [
             [
                 "name" => "Médico",

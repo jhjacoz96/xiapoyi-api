@@ -28,7 +28,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'obstetrics_access', 'description' => 'Obstetricia'],
             ['name' => 'diabetes_control_access', 'description' => 'Control de diabéticos'],
             ['name' => 'patient_care_access', 'description' => 'Atención al paciente'],
-            ['name' => 'evaluate_suggestion_access', 'description' => 'Evaluar sugerencias'],
+            ['name' => 'evaluate_suggestion_access', 'description' => 'Evaluar comentarios'],
             ['name' => 'report_access', 'description' => 'Reportes'],
             ['name' => 'system_administration_access', 'description' => 'Administración del sistema'],
         ];

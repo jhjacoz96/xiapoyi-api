@@ -22,7 +22,7 @@ class DiabeticPatientService {
 
     public function index () {
         try { 
-            $model = Member::has('DiabeticPatient')->get();
+            $model = Member::has('DiabeticPatient')->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;

@@ -56,7 +56,7 @@ class RiskSeed extends Seeder
         		"risk_classification_id" => 1
         	],
         	[
-        		"name" => "Consume de agua insegura",
+        		"name" => "Consumo de agua insegura",
         		"risk_classification_id" => 2
         	],
         	[
@@ -113,27 +113,27 @@ class RiskSeed extends Seeder
         	[
         		"name" => "Sin riesgo",
         		"value" => 0,
-        		"color" => "green"
+        		"color" => "#05F215"
         	],
         	[
         		"name" => "Riesgo muy bajo",
         		"value" => 1,
-        		"color" => "yellow"
+        		"color" => "#FFCD43"
         	],
         	[
         		"name" => "Riesgo bajo",
         		"value" => 2,
-        		"color" => "orange"
+        		"color" => "#FF9800"
         	],
         	[
         		"name" => "Riesgo moderado",
         		"value" => 3,
-        		"color" => "pink"
+        		"color" => "#E91E63"
         	],
         	[
         		"name" => "Riesgo alto",
         		"value" => 4,
-        		"color" => "red"
+        		"color" => "#F44336"
         	]
         ];
         foreach ($levelRisks as $value) {
@@ -144,22 +144,22 @@ class RiskSeed extends Seeder
         	[
         		"name" => "Sin riesgo",
         		"rank" => "[0,0]",
-        		"color" => "green"
+        		"color" => "#05F215"
         	],
         	[
         		"name" => "Riesgo bajo",
         		"rank" => "[1,14]",
-        		"color" => "orange"
+        		"color" => "#FFCD43"
         	],
         	[
         		"name" => "Riesgo medio",
         		"rank" => "[15,34]",
-        		"color" => "pink"
+        		"color" => "#FF9800"
         	],
         	[
         		"name" => "Riesgo alto",
         		"rank" => "[35,72]",
-        		"color" => "red"
+        		"color" => "#F44336"
         	]
         ];
         foreach ($levelTotals as $value) {

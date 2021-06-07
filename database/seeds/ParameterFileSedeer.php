@@ -13,6 +13,7 @@ use App\PsychotrophicSubstance;
 use App\ExamRoutine;
 use App\AlterationPregnant;
 use App\PathologyNeonatal;
+use App\GroupAge;
 use App\PathologyPregnant;
 use App\Reflex;
 use App\Pathology;
@@ -32,27 +33,27 @@ class ParameterFileSedeer extends Seeder
             [
                 "name" => "Posmaduro",
                 "rank" => "[42, 100]",
-                "color" => "blue",
+                "color" => "#2B46FC",
             ],
             [
                 "name" => "A término",
                 "rank" => "[37, 41]",
-                "color" => "green",
+                "color" => "#04F528",
             ],
             [
                 "name" => "Prematuro leve",
                 "rank" => "[35, 36]",
-                 "color" => "yellow",
+                 "color" => "#F5F127",
             ],
             [
                 "name" => "Prematuro moderado",
                 "rank" => "[33, 34]",
-                "color" => "warning",
+                "color" => "#F5BF29",
             ],
             [
                 "name" => "Prematuro extremo",
                 "rank" => "[10, 32]",
-                "color" => "pink",
+                "color" => "#F55E26",
             ],
         ];
         foreach ($gestations as $gestation) {
@@ -60,6 +61,51 @@ class ParameterFileSedeer extends Seeder
                 'name' => $gestation["name"],
                 "rank" => $gestation["rank"],
                 "color" => $gestation["color"],
+            ]);
+        }
+
+        $groupAges = [
+            [
+                "name" => "Bebé (0 a 1 año)",
+                "rank" => "[0, 1]",
+                "description" => "#2B46FC",
+            ],
+            [
+                "name" => "Primera infancia (2 a 5 años)",
+                "rank" => "[2, 5]",
+                "description" => "#04F528",
+            ],
+            [
+                "name" => "Infancia (6 a 11 años)",
+                "rank" => "[6, 11]",
+                 "description" => "#F5F127",
+            ],
+            [
+                "name" => "Adolececia (12 a 18 años)",
+                "rank" => "[12, 18]",
+                "description" => "#F5BF29",
+            ],
+            [
+                "name" => "Juventud (19 a 26 años)",
+                "rank" => "[19, 26]",
+                "description" => "#F55E26",
+            ],
+            [
+                "name" => "Adultez (27 a 59 años)",
+                "rank" => "[27, 59]",
+                "description" => "#F55E26",
+            ],
+            [
+                "name" => "Vejez (Más de 60)",
+                "rank" => "[60, 200]",
+                "description" => "#F55E26",
+            ],
+        ];
+        foreach ($groupAges as $value) {
+            GroupAge::create([
+                'name' => $value["name"],
+                "rank" => $value["rank"],
+                "description" => $value["description"],
             ]);
         }
 
@@ -82,6 +128,9 @@ class ParameterFileSedeer extends Seeder
         }
         
         $relationships = [
+            [
+                "name" => "Jefe de la familia",
+            ],
             [
                 "name" => "Esposo/a",
             ],
@@ -245,8 +294,8 @@ class ParameterFileSedeer extends Seeder
             "Citomegalovirus",
             "Pre eclampsia",
             "Eclamsia",
-            "Diabetes gestacional",
-            "Diabetes melitus",
+            "Diábetes gestacional",
+            "Diábetes melitus",
         ];
 
         foreach ($pathologyPregnants as $pathologyPregnant) {
@@ -268,11 +317,11 @@ class ParameterFileSedeer extends Seeder
         }
 
         $pathologys = [
-            "Diabetes"
-            "Hipertension",
+            "Diabetes",
+            "Hipertención",
             "Cardiovasculares",
             "Renales",
-            "Cancer",
+            "Cáncer",
             "Otros",
         ];
 

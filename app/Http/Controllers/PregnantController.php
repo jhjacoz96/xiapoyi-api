@@ -93,7 +93,6 @@ class PregnantController extends Controller
     {
         try {
             $model = $this->service->update($request, $id);
-            return $model;
             if (!$model) {
                 $data = [
                     'message' => __('response.bad_request_long')

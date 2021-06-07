@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\DiabeticPatient;
+use Carbon\Carbon;
 
 class DiabeticPatientNotification extends Notification
 {
@@ -16,9 +18,9 @@ class DiabeticPatientNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(DiabeticPatient $diabeticPatient)
     {
-        //
+        $this->diabeticPatient = $diabeticPatient;
     }
 
     /**
