@@ -19,27 +19,27 @@ class UserSeeder extends Seeder
         $institucions = [
             [
                 "name" => 'MSP',
-                "code" => '001',
+                "code" => '111',
             ],
             [
                 "name" => 'IESS Campesino',
-                "code" => '002',
+                "code" => '222',
             ],
             [
                 "name" => 'IESS',
-                "code" => '003',
+                "code" => '333',
             ],
             [
                 "name" => 'Fuerzas Armadas',
-                "code" => '004',
+                "code" => '444',
             ],
             [
                 "name" => 'Policía Nacional',
-                "code" => '005',
+                "code" => '555',
             ],
             [
                 "name" => 'Red Privada',
-                "code" => '006',
+                "code" => '666',
             ],
         ];
 
