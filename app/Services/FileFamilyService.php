@@ -189,7 +189,6 @@ class FileFamilyService {
                     $m->gender_id = $member['gender_id'];
                     $m->file_family_id = $model->id;
                     $m->save();
-
                     //captar pacientes con diabetes
                     foreach ($member["patologias"] as  $pathology) {
                         $query = Pathology::find($pathology);
