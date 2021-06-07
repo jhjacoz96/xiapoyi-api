@@ -6,10 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Comment;
-use Carbon\Carbon;
 
-class CommentAdultOldNotification extends Notification
+class DiabeticPatientNotification extends Notification
 {
     use Queueable;
 
@@ -18,9 +16,9 @@ class CommentAdultOldNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Comment $comment)
+    public function __construct()
     {
-        $this->comment = $comment;
+        //
     }
 
     /**
@@ -57,10 +55,10 @@ class CommentAdultOldNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id' => $this->comment->id,
-            'type_comment' => $this->comment->typeComment->nombre,
-            'type_notification' => 'Comentario en el sitio web',
-            'time' => Carbon::now(),
+            'id' => $this->diabeticPatient->id,
+            'type_comment' => $this->diabeticPatient->member->cedula,
+            'type_notification' => 'Nuevo paciente diabetico',
+            'time' => Carbon::now(),            
         ];
     }
 }

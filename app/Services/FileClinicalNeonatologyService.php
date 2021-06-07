@@ -37,7 +37,7 @@ class FileClinicalNeonatologyService {
                 $query->where('nombre','like','%'.$search .'%');
                 $query->orWhere('apellido','like','%'.$search .'%');
             })
-            ->get();
+            ->orderBy('id', 'desc')->get();
 
             return $model;
         } catch (\Exception $e) {

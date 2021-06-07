@@ -6,10 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Comment;
+use App\Pregnant;
 use Carbon\Carbon;
 
-class CommentAdultOldNotification extends Notification
+class FileClinicalObstetricNotification extends Notification
 {
     use Queueable;
 
@@ -18,9 +18,9 @@ class CommentAdultOldNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Comment $comment)
+    public function __construct(Pregnant $pregnant)
     {
-        $this->comment = $comment;
+        $this->pregnant = $pregnant;
     }
 
     /**
@@ -56,11 +56,10 @@ class CommentAdultOldNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            'id' => $this->comment->id,
-            'type_comment' => $this->comment->typeComment->nombre,
-            'type_notification' => 'Comentario en el sitio web',
+         return [
+            'id' => $this->pregnant->id,
+            'type_comment' => $this->pregnant->numero_historia,
+            'type_notification' => 'Ficha clinica de obstetricia',
             'time' => Carbon::now(),
-        ];
-    }
+        ];    }
 }

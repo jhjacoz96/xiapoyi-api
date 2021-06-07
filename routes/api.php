@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Events\CommentAdultOldEvent;
+use App\Events\FileClinicalObstetricEvent;
+use App\Events\DiabeticPatientEvent;
+use App\Pregnant;
+use App\DiabeticPatient;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,6 +164,8 @@ Route::group([
       Route::ApiResource('file-family', 'FileFamilyController');
 
       Route::prefix('employee')->group(function () {
+          Route::get('read-all-notifications', 'EmployeeController@readAllNotifications');
+          Route::get('read-notifications/{id}', 'EmployeeController@readNotifications');
           Route::get('notifications', 'EmployeeController@notifications');
           Route::post('', [
               'uses' => 'EmployeeController@store',
@@ -204,7 +210,8 @@ Route::group([
 
 
       Route::get('/event', function () {
-        event(new CommentAdultOldEvent);
+        $diabeticPatient = DiabeticPatient::find(1);
+        event(new DiabeticPatientEvent($diabeticPatient));
         return 'event';
       });
 

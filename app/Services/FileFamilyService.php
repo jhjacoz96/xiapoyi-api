@@ -24,7 +24,7 @@ class FileFamilyService {
     public function index () {
         try {
             
-            $model = FileFamily::All();
+            $model = FileFamily::orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -50,7 +50,7 @@ class FileFamilyService {
                                 })
                                 ->orWhereHas('zone', function ($query) use ($search) {
                                     $query->where('name', 'like','%'.$search .'%');
-                                })->get();
+                                })->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -65,13 +65,13 @@ class FileFamilyService {
                 $model = FileFamily::whereIn('level_total_id', $level_totals)->whereIn('zone_id', $zones)->get();
             }
             else if (count($zones) > 0 && count($level_totals) == 0) {
-                $model = FileFamily::whereIn('zone_id', $zones)->get();
+                $model = FileFamily::whereIn('zone_id', $zones)->orderBy('id', 'desc')->get();
             }
             else if (count($zones) == 0 && count($level_totals) > 0) {
-                $model = FileFamily::whereIn('level_total_id', $level_totals)->get();
+                $model = FileFamily::whereIn('level_total_id', $level_totals)->orderBy('id', 'desc')->get();
             }
             else if (count($zones) == 0 && count($level_totals) == 0) {
-                $model = FileFamily::All();
+                $model = FileFamily::orderBy('id', 'desc')->get();
             }
             return $model;
         } catch (\Exception $e) {

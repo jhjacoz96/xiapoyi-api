@@ -2,15 +2,15 @@
 
 namespace App\Listeners;
 
-use App\Events\CommentAdultOldEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\DiabeticPatientEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Notification;
+use App\DiabeticPatient;
 use App\Employee;
-use App\Notifications\CommentAdultOldNotification;
+use App\Notifications\DiabeticPatientNotification;
 
-
-class CommentAdultOldListener
+class DiabeticPatientListener
 {
     /**
      * Create the event listener.
@@ -25,18 +25,17 @@ class CommentAdultOldListener
     /**
      * Handle the event.
      *
-     * @param  CommentAdultOldEvent  $event
+     * @param  object  $event
      * @return void
      */
-    public function handle(CommentAdultOldEvent $event)
+    public function handle(DiabeticPatientEvent $event)
     {
-      Employee::All()
+        Employee::All()
             ->filter(function (Employee $employee) use($event) {
-                return $employee->user->can(' evaluate_suggestion_access');
+                return $employee->user->can('diabetes_control_access');
             })
             ->each(function (Employee $employee) use($event) {
-                Notification::send($employee, new CommentAdultOldNotification($event->comment));
-                // $query->notify(new CommentAdultOldNotification($model));
+                Notification::send($employee, new DiabeticPatientNotification($event->diabeticPatient));
             });
     }
 }

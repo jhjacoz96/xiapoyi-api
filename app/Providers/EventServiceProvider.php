@@ -8,6 +8,10 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\CommentAdultOldEvent;
 use App\Listeners\CommentAdultOldListener;
+use App\Events\FileClinicalObstetricEvent;
+use App\Listeners\FileClinicalObstetricListener;
+use App\Events\DiabeticPatientEvent;
+use App\Listeners\DiabeticPatientListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -23,9 +27,15 @@ class EventServiceProvider extends ServiceProvider
         CommentAdultOldEvent::class => [
             CommentAdultOldListener::class,
         ],
-        'App\Events\CommentAdultOldEvent' => [
-            'App\Listeners\CommentAdultOldListener',
+        DiabeticPatientEvent::class => [
+            DiabeticPatientListener::class,
         ],
+        FileClinicalObstetricEvent::class => [
+            FileClinicalObstetricListener::class,
+        ],
+        /*'App\Events\CommentAdultOldEvent' => [
+            'App\Listeners\CommentAdultOldListener',
+        ],*/
     ];
 
     /**

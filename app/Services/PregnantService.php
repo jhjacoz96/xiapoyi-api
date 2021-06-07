@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Pregnant;
 use App\Member;
+use App\Events\FileClinicalObstetricEvent;
 
 class PregnantService {
 
@@ -19,7 +20,7 @@ class PregnantService {
     public function index () {
         try {
             
-            $model = Member::has('pregnant')->get();
+            $model = Member::has('pregnant')->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -31,6 +32,7 @@ class PregnantService {
             DB::beginTransaction();
             $model = Pregnant::create([
                 "numero_historia" => $data["numero_historia"],
+                "employee_id" => \Auth::user()->employee->id,
                 "antecedentes_patologicos" => $data["antecedentes_patologicos"],
                 "semana_gestacion" => $data["semana_gestacion"],
                 "gestas" => $data["gestas"],
@@ -83,6 +85,10 @@ class PregnantService {
                 "señal_alarma" => $data["señal_alarma"],
                 "member_id" => $data["member_id"],
             ]);
+
+            if ($data["señal_alarma"] != '') {
+                event(new FileClinicalObstetricEvent($model));
+            }
 
             $updateMember = Member::find($model["member_id"]);
 
@@ -171,7 +177,7 @@ class PregnantService {
             ->orWhereHas('pregnant', function ($query) use($search) {
                 $query->where('numero_historia', 'like','%'.$search .'%');
             })
-            ->get();
+            ->orderBy('id', 'desc')->get();
 
             return $model;
         } catch (\Exception $e) {
@@ -188,18 +194,18 @@ class PregnantService {
                 $model = Member::has('pregnant')
                     ->where('embarazo', true)
                     ->whereIn('group_age_id', $group_ages)
-                    ->get();
+                    ->orderBy('id', 'desc')->get();
             } else if (count($group_ages) > 0) {
                 $model = Member::has('pregnant')
                     ->whereIn('group_age_id', $group_ages)
-                    ->get();
+                    ->orderBy('id', 'desc')->get();
             } else if (!empty($gestacion)) {
                  $model = Member::has('pregnant')
                     ->where('embarazo', true)
-                    ->get();
+                    ->orderBy('id', 'desc')->get();
             } else {
                 $model = Member::has('pregnant')
-                    ->get();
+                    ->orderBy('id', 'desc')->get();
             }
 
             return $model;
@@ -273,6 +279,11 @@ class PregnantService {
                     "embarazo" => false,
                 ]);
             }
+
+             if ($data["señal_alarma"] != '') {
+                event(new FileClinicalObstetricEvent($model));
+            }
+
             
             $validar = $data['tratamiento']  ?? null;
             if (!is_null($validar)) {

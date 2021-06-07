@@ -9,6 +9,7 @@ use App\Utils\Enums\EnumResponse;
 use App\Employee;
 use App\Http\Resources\EmployeeResource;
 use App\Services\EmployeeService;
+use Illuminate\Support\Facades\Notification;
 
 class EmployeeController extends Controller
 {
@@ -24,7 +25,36 @@ class EmployeeController extends Controller
     public function notifications()
     {
         try {
-            $model = \Auth::user()->Employee->unreadNotifications;
+            $model = \Auth::user()->employee->unreadNotifications;
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function readNotifications($id)
+    {
+        try {
+            $notifications = \Auth::user()->employee->unreadNotifications;
+            foreach ($notifications as $key => $value) {
+               if ($value->data["id"] == $id) {
+                    $value->markAsRead();
+               }
+            }
+            $model = \Auth::user()->employee->unreadNotifications;
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function readAllNotifications()
+    {
+        try {
+            $model = \Auth::user()
+                ->employee
+                ->notifications
+                ->markAsRead();
             return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
         } catch (Exception $e) {
             return $e;
