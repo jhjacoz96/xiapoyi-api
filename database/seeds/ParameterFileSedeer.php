@@ -17,7 +17,7 @@ use App\GroupAge;
 use App\PathologyPregnant;
 use App\Reflex;
 use App\Pathology;
-use App\Typeblood;
+use App\TypeBlood;
 use App\CulturalGroup;
 use App\Disability;
 class ParameterFileSedeer extends Seeder
