@@ -16,36 +16,36 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $institucions = [
-            [
-                "name" => 'MSP',
-                "code" => 'f42d',
-            ],
-            [
-                "name" => 'IESS Campesino',
-                "code" => 'f45f',
-            ],
-            [
-                "name" => 'IESS',
-                "code" => 'g45g',
-            ],
-            [
-                "name" => 'Fuerzas Armadas',
-                "code" => 'g45g45',
-            ],
-            [
-                "name" => 'Policía Nacional',
-                "code" => 'g454',
-            ],
-            [
-                "name" => 'Red Privada',
-                "code" => '663g3g6',
-            ],
-        ];
+        // $institucions = [
+        //     [
+        //         "name" => 'MSP',
+        //         "code" => 'f42d',
+        //     ],
+        //     [
+        //         "name" => 'IESS Campesino',
+        //         "code" => 'f45f',
+        //     ],
+        //     [
+        //         "name" => 'IESS',
+        //         "code" => 'g45g',
+        //     ],
+        //     [
+        //         "name" => 'Fuerzas Armadas',
+        //         "code" => 'g45g45',
+        //     ],
+        //     [
+        //         "name" => 'Policía Nacional',
+        //         "code" => 'g454',
+        //     ],
+        //     [
+        //         "name" => 'Red Privada',
+        //         "code" => '663g3g6',
+        //     ],
+        // ];
 
-        foreach ($institucions as $value) {
-            Institution::create($value);
-        }
+        // foreach ($institucions as $value) {
+        //     Institution::create($value);
+        // }
 
         $typeEmployees = [
             [
