@@ -6,6 +6,7 @@ use App\Events\CommentAdultOldEvent;
 use App\Events\FileClinicalObstetricEvent;
 use App\Events\DiabeticPatientEvent;
 use App\Pregnant;
+use App\Comment;
 use App\DiabeticPatient;
 
 /*
@@ -210,9 +211,9 @@ Route::group([
 
 
       Route::get('/event', function () {
-        $diabeticPatient = DiabeticPatient::find(1);
-        event(new DiabeticPatientEvent($diabeticPatient));
-        return 'event';
+        $comment = Comment::find(1);
+        event(new CommentAdultOldEvent($comment));
+        return 'send';
       });
 
        Route::prefix('dashboard')->group(function () {
