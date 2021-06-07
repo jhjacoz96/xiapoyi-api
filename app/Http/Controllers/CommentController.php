@@ -86,6 +86,7 @@ class CommentController extends Controller
         try {
             $data = $request->validated();
             $model = $this->service->update($data, $id);
+            return $model;
             if (!$model) {
                 $data = [
                     'message' => __('response.bad_request_long')

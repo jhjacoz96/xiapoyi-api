@@ -608,7 +608,7 @@ class FileFamilyService {
     public function verifyEmail ($data) {
         try {
             DB::beginTransaction();
-            $model = Member::where('correo', $data)->first();
+            $model = User::where('email', $data)->first();
             if(!$model) return null;
             DB::commit();
             return $model;
