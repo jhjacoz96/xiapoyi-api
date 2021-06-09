@@ -25,7 +25,7 @@ class EmployeeShowResource extends JsonResource
             "canton_id" => $this->canton->name,
             "province_id" => $this->province->name,
             "type_document_id" => $this->type_document_id,
-            "type_employee_id" => $this->type_employee->name,
+            "type_employee_id" => $this->typeEmployee->name,
             "specialty_id" => $this->specialty_id,
             "role_id" => $this->user->roles[0]->name ?? null,
             "image" => $this->image ?? null,

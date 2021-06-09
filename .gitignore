@@ -3,6 +3,7 @@
 /public/storage
 /public/imagenPublication
 /public/imagenWeb
+/public/imagePerfil
 /vendor
 .env
 .env.backup
