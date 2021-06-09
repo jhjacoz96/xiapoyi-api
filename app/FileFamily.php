@@ -9,7 +9,7 @@ USE App\Member;
 class FileFamily extends Model
 {
     protected $fillable = [
-        'manzana', 'direccion_habitual', 'barrio', 'numero_familia', 'numero_historia', 'numero_telefono', 'numero_casa', 'total_risk', 'zone_id', 'level_total_id', 'cultural_group_id'
+        'manzana', 'direccion_habitual', 'barrio', 'numero_familia', 'numero_historia', 'numero_telefono', 'numero_casa', 'total_risk', 'zone_id', 'level_total_id', 'cultural_group_id', 'created_at',
     ];
 
     public function zone () {

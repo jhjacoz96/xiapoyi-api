@@ -16,5 +16,6 @@ return [
     'failed' => 'These credentials do not match our records.',
     'failed_org' => 'Your credentials are not associated with an organization. check with the system administrator.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'password_not' => 'Contraseña antigua no coincide con la existente',
 
 ];

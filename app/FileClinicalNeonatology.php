@@ -64,6 +64,7 @@ class FileClinicalNeonatology extends Model
         'pentavaliente',
         'neumococo',
         'influenza_estacionaria',
+        'created_at',
     ];
 
     public function alterationPregnants () {

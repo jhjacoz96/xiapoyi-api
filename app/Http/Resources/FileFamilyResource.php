@@ -34,6 +34,7 @@ class FileFamilyResource extends JsonResource
             "level_total_id" => $this->level_total_id,
             "contaminacion" => $this->contaminationPoints,
             "sitios_tratamiento" => $this->treatmentSites,
+            "created_at"  => $this->created_at,
         ];  
     }
 }

@@ -69,7 +69,6 @@ class ReportStadisticController extends Controller
                     "data" => [],
                     "color" => $value["color"],
                 ];
-                $colorRisk[] = $value["color"];
             }
 
             $zones = Zone::All();
@@ -80,9 +79,7 @@ class ReportStadisticController extends Controller
 
                 foreach ($levelRisk as $key => $v) {
                     $cant = FileFamily::where('zone_id', $value["id"])->where('level_total_id', $v["id"])->count();
-                    $nivelRisk[$key]["data"] = [
-                        $cant
-                    ];
+                    $nivelRisk[$key]["data"][] = $cant;
                 }
 
              }

@@ -32,6 +32,7 @@ class FileFamilyListResource extends JsonResource
             "level_total_id" => $this->levelTotal,
             "contaminacion" => $this->contaminationPoints,
             "sitios_tratamiento" => $this->treatmentSites,
+            "created_at"  => $this->created_at,
         ];  
     }
 }

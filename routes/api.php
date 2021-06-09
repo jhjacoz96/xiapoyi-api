@@ -30,7 +30,6 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('login-diabetic', 'AuthController@loginDiabetic');
     Route::post('signup', 'AuthController@signUp');
-
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
@@ -43,7 +42,6 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
   ], function() {
-
       Route::get('role/permission', 'RoleController@permissionIndex');
       Route::ApiResource('role', 'RoleController');
       Route::put('role/assign-permissions/{id}', 'RoleController@assignPermission');
@@ -165,6 +163,11 @@ Route::group([
       Route::ApiResource('file-family', 'FileFamilyController');
 
       Route::prefix('employee')->group(function () {
+        Route::post('password', 'EmployeeController@updatePassword');
+        Route::post('avatar', [
+              'uses' => 'EmployeeController@updateAvatar',
+              'as' => 'api.avatar.update'
+          ]);
           Route::get('read-all-notifications', 'EmployeeController@readAllNotifications');
           Route::get('read-notifications/{id}', 'EmployeeController@readNotifications');
           Route::get('notifications', 'EmployeeController@notifications');
@@ -184,6 +187,7 @@ Route::group([
               'uses' => 'EmployeeController@update',
               'as' => 'api.employee.show'
           ]);
+          
           Route::delete('{id}', [
               'uses' => 'EmployeeController@delete',
               'as' => 'api.employee.delete'

@@ -7,6 +7,27 @@
         <title>Document</title>
     </head>
 <body>
-   Hola {{ $usuario->name }}, te damos la bienvenida a Xiayi, para ingresar a la aplicación con tu usuario al panel administrativo, podrá hacerlo con el uso de su correo electrónico y la siguiente contraseña:   {{ $password }}.
+   Hola {{ $usuario->name }}, te damos la bienvenida a  KA-THANI. Para ingresar al panel administrativo podrás hacerlo con uso de los siguientes datos: <br>
+   <table>
+    <tr>
+        <td>
+         Correo electrónico:
+        </td>
+        <td>
+         {{ $email }}
+        </td>
+    </tr>
+    <tr>
+        <td>
+         Contraseña:
+        </td>
+        <td>
+         {{ $password }}
+        </td>
+    </tr>
+</table>
+<br>
+&nbsp;
+<span>!Tu salud es nuestro compromiso!</span>
 </body>
 </html>

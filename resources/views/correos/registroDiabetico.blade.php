@@ -7,6 +7,28 @@
         <title>Document</title>
     </head>
 <body>
-   Hola {{ $usuario->nombre }}  {{ $usuario->apellido }} te damos la bienvenida a Xiayi, para ingresar a la aplicación movil, podrá hacerlo con el uso de su correo electrónico y la siguiente contraseña:   {{ $password }}.
+   Hola {{ $usuario->nombre }}  {{ $usuario->apellido }} te damos la bienvenida a KA-THANI. Para ingresar a la aplicación móvil, deberás usar los siguientes datos: <br> 
+   &nbsp;
+   <table>
+       <tr>
+           <td>
+            Correo electrónico:
+           </td>
+           <td>
+            {{ $usuario->correo }}
+           </td>
+       </tr>
+       <tr>
+           <td>
+            Contraseña:
+           </td>
+           <td>
+            {{ $password }}
+           </td>
+       </tr>
+   </table>
+   <br>
+   &nbsp;
+   <span>!Tu salud es nuestro compromiso!</span>
 </body>
 </html>

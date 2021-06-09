@@ -317,8 +317,8 @@ class ParameterFileSedeer extends Seeder
         }
 
         $pathologys = [
-            ["name" => "Diabetes", "capture" => true],
-            ["name" => "Hipertención", "capture" => false],
+            ["name" => "Diábetes", "capture" => true],
+            ["name" => "Hipertensión", "capture" => false],
             ["name" => "Cardiovasculares", "capture" => false],
             ["name" => "Renales", "capture" => false],
             ["name" => "Cáncer", "capture" => false],

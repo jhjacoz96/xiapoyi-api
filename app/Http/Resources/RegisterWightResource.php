@@ -18,6 +18,7 @@ class RegisterWightResource extends JsonResource
             "id" => $this->id,
             "fecha" => $this->fecha,
             "peso" => $this->peso,
+            "hora" => $this->hora ?? null,
         ];
     }
 }

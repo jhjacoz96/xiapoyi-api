@@ -32,6 +32,10 @@ class FileClinicalObstetricListener
     {
          Employee::All()
             ->filter(function (Employee $employee) use($event) {
+                if (
+                    $employee->user->can('obstetrics_access') &&
+                    \Auth::user()->employee->id != $employee->id
+                   )
                 return $employee->user->can('obstetrics_access');
             })
             ->each(function (Employee $employee) use($event) {

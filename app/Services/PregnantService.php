@@ -36,6 +36,7 @@ class PregnantService {
                 "antecedentes_patologicos" => $data["antecedentes_patologicos"],
                 "semana_gestacion" => $data["semana_gestacion"],
                 "gestas" => $data["gestas"],
+                "recomendaciones" => $data["recomendaciones"],
                 "partos" => $data["partos"],
                 "abortos" => $data["abortos"],
                 "descripcion_gestacion" => $data["descripcion_gestacion"],
@@ -86,7 +87,7 @@ class PregnantService {
                 "member_id" => $data["member_id"],
             ]);
 
-            if ($data["señal_alarma"] != '') {
+            if ($data["recomendaciones"] != '') {
                 event(new FileClinicalObstetricEvent($model));
             }
 
@@ -219,6 +220,13 @@ class PregnantService {
             DB::beginTransaction();
             $model = Pregnant::find($id);
             if(!$model) return null;
+
+            $updateMember = Member::find($data["member_id"]);
+
+            if ($data["recomendaciones"] != '' && $model["recomendaciones"] == '') {
+                event(new FileClinicalObstetricEvent($model));
+            }
+
             $model->update([
                 "numero_historia" => $data["numero_historia"],
                 "antecedentes_patologicos" => $data["antecedentes_patologicos"],
@@ -228,6 +236,7 @@ class PregnantService {
                 "abortos" => $data["abortos"],
                 "cesarias" => $data["cesarias"],
                 "type_blood_id" => $data["type_blood_id"],
+                 "recomendaciones" => $data["recomendaciones"],
                 "fum" => $data["fum"],
                 "descripcion_gestacion" => $data["descripcion_gestacion"],
                 "estado_civil" => $data["estado_civil"],
@@ -272,16 +281,14 @@ class PregnantService {
                 "señal_alarma" => $data["señal_alarma"],
             ]);
 
-            $updateMember = Member::find($model["member_id"]);
-
             if ($model["observacion_parto"] !== '') {
                 $updateMember->update([
                     "embarazo" => false,
                 ]);
-            }
-
-             if ($data["señal_alarma"] != '') {
-                event(new FileClinicalObstetricEvent($model));
+            } else {
+                $updateMember->update([
+                    "embarazo" => true,
+                ]);
             }
 
             

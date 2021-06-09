@@ -29,6 +29,29 @@ class EmployeeService {
         }
     }
 
+    public function updateAvatar ($data) {
+        try {
+            DB::beginTransaction();
+            $employee = \Auth::user()->Employee;
+            $image = $data['image'];
+            $nombre = 'image_perfil_'.$image->getClientOriginalName();
+            $ruta = public_path().'/imagePerfil';
+           $image->move($ruta , $nombre);
+            $url['url']='/imagePerfil/'.$nombre;
+            if ($employee->image) {
+               $employee->image->url = $url['url'];
+               $employee->push();
+            } else {
+               $employee->image()->create($url);
+            }
+            DB::commit();
+            return  $employee;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
     public function store ($data) {
         try {
             DB::beginTransaction();
@@ -50,10 +73,11 @@ class EmployeeService {
             $modelEmployee->save();
             $datosMensaje = [
                 "usuario" => $modelEmployee,
+                "email" => $modelUser->email,
                 "password" =>  $password,
             ];
-            Mail::send('correos.registroEmpleado', $datosMensaje,function($mensaje) use($m){
-                $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
+            Mail::send('correos.registroEmpleado', $datosMensaje,function($mensaje) use($modelUser){
+                $mensaje->to($modelUser["email"])->subject('Registro - KA-THANI');
             });
             DB::commit();
             return  $modelEmployee;

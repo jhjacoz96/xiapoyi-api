@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Pregnant extends Model
 {
     protected $fillable = [
-        'fum', 'fpp', 'antecedentes_patologicos', 'semana_gestacion', 'gestas', 'partos', 'abortos', 'cesarias', 'member_id', 'created_at',
+        'fum', 'fpp', 'antecentedes_patologicos', 'semana_gestacion', 'gestas', 'partos', 'abortos', 'cesarias', 'member_id', 'created_at', 'employee_id',
         'type_blood_id',
         'estado_civil',
         'vive_con',
+        'recomendaciones',
         'numero_historia',
         'antecentedes_paternos',
         'antecentedes_maternos',

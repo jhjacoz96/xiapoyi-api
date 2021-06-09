@@ -62,16 +62,54 @@ class FileFamilyService {
         try {
             $zones = $data["zone_id"];
             $level_totals = $data["level_total_id"];
-            if (count($zones) > 0 && count($level_totals) > 0) {
-                $model = FileFamily::whereIn('level_total_id', $level_totals)->whereIn('zone_id', $zones)->get();
+            $pathology = $data["pathology_id"];
+
+            if (count($zones) > 0 && count($level_totals) > 0 &&  count($pathology) > 0) {
+                $model = FileFamily::whereIn('level_total_id', $level_totals)
+                ->whereIn('zone_id', $zones)
+                ->whereHas('members', function ($query) use($pathology) {
+                    $query->whereHas('pathologies', function ($query) use($pathology) {
+                       $query->whereIn('pathologies.id', $pathology);
+                    });
+                })->orderBy('id', 'desc')->get();
             }
-            else if (count($zones) > 0 && count($level_totals) == 0) {
+            else if (count($zones) > 0 && count($level_totals) == 0 &&  count($pathology) == 0) {
                 $model = FileFamily::whereIn('zone_id', $zones)->orderBy('id', 'desc')->get();
             }
-            else if (count($zones) == 0 && count($level_totals) > 0) {
+            else if (count($zones) == 0 && count($level_totals) > 0 &&  count($pathology) == 0) {
                 $model = FileFamily::whereIn('level_total_id', $level_totals)->orderBy('id', 'desc')->get();
             }
-            else if (count($zones) == 0 && count($level_totals) == 0) {
+            else if (count($zones) == 0 && count($level_totals) == 0 &&  count($pathology) > 0) {
+                $model = FileFamily::whereHas('members', function ($query) use($pathology) {
+                    $query->whereHas('pathologies', function ($query) use($pathology) {
+                       $query->whereIn('pathologies.id', $pathology);
+                    });
+                })->orderBy('id', 'desc')->get();
+            }
+            else if (count($zones) > 0 && count($level_totals) > 0 &&  count($pathology) == 0) {
+                $model = FileFamily::whereIn('zone_id', $zones)
+                ->whereIn('level_total_id', $level_totals)
+                ->orderBy('id', 'desc')->get();
+            }
+            else if (count($zones) > 0 && count($level_totals) == 0 &&  count($pathology) > 0) {
+                $model = FileFamily::whereIn('zone_id', $zones)
+                ->whereHas('members', function ($query) use($pathology) {
+                    $query->whereHas('pathologies', function ($query) use($pathology) {
+                       $query->whereIn('pathologies.id', $pathology);
+                    });
+                })
+                ->orderBy('id', 'desc')->get();
+            }
+            else if (count($zones) == 0 && count($level_totals) > 0 &&  count($pathology) > 0) {
+                $model = FileFamily::whereIn('level_total_id', $level_totals)
+                ->whereHas('members', function ($query) use($pathology) {
+                    $query->whereHas('pathologies', function ($query) use($pathology) {
+                       $query->whereIn('pathologies.id', $pathology);
+                    });
+                })
+                ->orderBy('id', 'desc')->get();
+            }
+            else if (count($zones) == 0 && count($level_totals) == 0 &&  count($pathology) == 0) {
                 $model = FileFamily::orderBy('id', 'desc')->get();
             }
             return $model;
@@ -237,6 +275,7 @@ class FileFamilyService {
                         $s->abortos = $prenatal["abortos"];
                         $s->cesarias = $prenatal["cesarias"];
                         $s->member_id = intval($m["id"]);
+                         $s->employee_id = \Auth::user()->employee->id;
                         $s->save();
                     }
                 }
@@ -461,6 +500,7 @@ class FileFamilyService {
                             Mail::send('correos.registroDiabetico', $datosMensaje,function($mensaje) use($m){
                                 $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
                             });
+                            event(new DiabeticPatientEvent($diabetic_patient));
                         }
                     }
                     //asignar patologias
@@ -474,8 +514,12 @@ class FileFamilyService {
 
                     if ($m['embarazo']) {
                         $prenatal = $member["prenatal"];
-                        if (isset($prenatal["id"]))  $s = Pregnant::find($prenatal["id"]);
-                        $s = new Pregnant();
+                        if (isset($prenatal["id"])) { 
+                            $s = Pregnant::find($prenatal["id"]);
+                        } else {
+                            $s = new Pregnant();
+                            $s->employee_id = \Auth::user()->employee->id;
+                        }
                         $s->fum = $prenatal["fum"];
                         $s->antecedentes_patologicos = $prenatal["antecedentes_patologicos"];
                         $s->fpp = $prenatal["fpp"];

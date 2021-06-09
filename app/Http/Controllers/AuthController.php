@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidationQuestionRequest;
@@ -44,6 +45,7 @@ class AuthController extends Controller
     /**
      * Inicio de sesión y creación de token
      */
+
     public function login(Request $request)
     {
         $request->validate([

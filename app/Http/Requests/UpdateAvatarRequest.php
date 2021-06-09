@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterWeightRequest extends FormRequest
+class UpdateAvatarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class RegisterWeightRequest extends FormRequest
     public function rules()
     {
         return [
-            "fecha" => "required|date",
-            "hora" => "nullable|sometimes|string",
-            "peso" => "required|numeric",
+            "image" => "required|file",
         ];
     }
 }

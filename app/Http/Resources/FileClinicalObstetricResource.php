@@ -71,7 +71,7 @@ class FileClinicalObstetricResource extends JsonResource
             "antecentedes_paternos" => $this->antecentedes_paternos ?? null,
             "antecentedes_maternos" => $this->antecentedes_maternos ?? null,
             "antecentedes_prenatales" => $this->antecentedes_prenatales ?? null,
-            "antecentedes_patologicos" => $this->antecentedes_patologicos ?? null,
+            "antecedentes_patologicos" => $this->antecedentes_patologicos ?? null,
             "medicamentos" => $this->medicamentos ?? null,
             "embarazo_planificado" => $this->embarazo_planificado ?? null,
             "causa_embarazo" => $this->causa_embarazo ?? null,
@@ -112,6 +112,8 @@ class FileClinicalObstetricResource extends JsonResource
             "vacuna" => $arrayVaccine,
             "examenes_rutinarios" => $arrayExam,
             "sustancias_sicotropicas" => $arrayPsychotrophicPregnant,
-        ];
+            "recomendaciones" => $this->recomendaciones ?? null,
+            "created_At" => $this->created_at ?? null,
+       ];
     }
 }

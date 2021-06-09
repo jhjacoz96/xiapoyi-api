@@ -195,6 +195,7 @@ class DiabeticPatientService {
                 "fecha" => $data["fecha"]  ?? $date,
                 "nivel_glusemia" => $data["nivel_glusemia"],
                 "comida" => $data["comida"] ?? null,
+                "hora" => $data["hora"] ?? null,
                 "diabetic_patient_id" => $model->id,
             ]);
             
@@ -218,6 +219,7 @@ class DiabeticPatientService {
             $diabetic = RegisterwWight::create([
                 "fecha" => $data["fecha"]  ?? $date,
                 "peso" => $data["peso"],
+                "hora" => $data["hora"],
                 "diabetic_patient_id" => $model->id,
             ]);
             

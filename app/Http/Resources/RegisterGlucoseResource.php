@@ -17,6 +17,7 @@ class RegisterGlucoseResource extends JsonResource
         return [
             "id" => $this->id,
             "fecha" => $this->fecha,
+            "hora" => $this->hora ?? null,
             "comida" => $this->comida,
             "nivel_glusemia" => $this->nivel_glusemia,
         ];

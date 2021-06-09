@@ -25,6 +25,7 @@ class RegisterGlucosaRequest extends FormRequest
     {
         return [
             "fecha" => "required|date",
+            "hora" => "nullable|sometimes|string",
             "comida" => "nullable|sometimes|string",
             "nivel_glusemia" => "required|numeric",
         ];

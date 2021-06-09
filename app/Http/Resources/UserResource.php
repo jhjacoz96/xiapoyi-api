@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             "id" => $this->id,
             "email" => $this->email,
             "role" => RolHasPermissionResource::collection($this->roles),
-            "employee" => new EmployeeResource(Employee::where("user_id", $this->id)->first())
+            "employee" => new EmployeeShowResource(Employee::where("user_id", $this->id)->first())
         ];
     }
 }

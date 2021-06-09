@@ -81,7 +81,7 @@ class FileFamilyController extends Controller
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
           } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.update');
+            return $e;
           }
     }
 

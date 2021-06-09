@@ -124,7 +124,8 @@ class FileClincalNeonatologyResource extends JsonResource
             "patologias_embarazo" =>  $arrayPathologyPregnant,
             "patologias_paternas" => $arrayPathologyFather,
             "reflejos" =>  $arrayReflex,
-            "pregnant_cedula" => $this->pregnant->member->cedula
+            "pregnant_cedula" => $this->pregnant->member->cedula,
+            "created_at"  => $this->created_at,
         ];
     }
 }

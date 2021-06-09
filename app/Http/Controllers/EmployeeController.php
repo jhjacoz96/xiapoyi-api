@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\EmpoyeeStoreRequest;
 use App\Http\Requests\EmpoyeeUpdateRequest;
+use App\Http\Requests\UpdateAvatarRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Utils\Enums\EnumResponse;
 use App\Employee;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\EmployeeShowResource;
 use App\Services\EmployeeService;
 use Illuminate\Support\Facades\Notification;
 
@@ -22,6 +25,27 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function updatePassword (UpdatePasswordRequest $request) {
+      try {
+          $data = $request->validated();
+          $user = \Auth::user();
+          if (\Hash::check($request->passwordOld, $user->password)) {
+            $user->password =  \Hash::make($request->password);
+            $user->save();
+            $data = new EmployeeResource($user->employee);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+          } else {
+            $data = [
+              'message' => __('auth.password_not')
+            ];
+            return bodyResponseRequest(EnumResponse::UNAUTHORIZED, $data);
+          }
+      } catch (\Exception $e) {
+        return $e;
+      }
+    }
+
     public function notifications()
     {
         try {
@@ -137,6 +161,18 @@ class EmployeeController extends Controller
             }
           } catch (\Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.update');
+          }
+    }
+
+    public function updateAvatar(UpdateAvatarRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $model = $this->service->updateAvatar($data);
+            $data = new EmployeeResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+          } catch (\Exception $e) {
+            return $e;
           }
     }
 
