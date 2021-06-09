@@ -32,9 +32,6 @@ class Employee extends Model
     public function type_employee () {
         return $this->belongsTo('App\TypeEmployee', 'type_employee_id', 'id');
     }
-    public function typeEmployee () {
-        return $this->belongsTo('App\TypeEmployee', 'type_employee_id', 'id');
-    }
     public function specialty () {
         return $this->belongsTo('App\Specialty', 'specialty_id', 'id');
     }
