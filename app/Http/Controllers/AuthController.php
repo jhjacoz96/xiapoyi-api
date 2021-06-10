@@ -63,13 +63,17 @@ class AuthController extends Controller
             return bodyResponseRequest( EnumResponse::UNAUTHORIZED, $data);
         }
         $user = $request->user();
-
+        if (count($user->permissions) <= 0 && empty($user->typeEmployee)) {
+             $data = [
+                'message' => __('auth.not_permissions') 
+            ];
+            return bodyResponseRequest( EnumResponse::UNAUTHORIZED, $data);
+        }
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
-
         return response()->json([
 		     'title' => 'OK',
             'access_token' => $tokenResult->accessToken,
