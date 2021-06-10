@@ -17,7 +17,7 @@ class RiskResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "risk_classification_id" => new riskClassificationResource($this->riskClassification),
+            "risk_classification_id" => new RiskClassificationResource($this->riskClassification),
         ];
     }
 }
