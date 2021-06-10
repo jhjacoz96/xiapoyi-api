@@ -63,7 +63,7 @@ class AuthController extends Controller
             return bodyResponseRequest( EnumResponse::UNAUTHORIZED, $data);
         }
         $user = $request->user();
-        if (count($user->permissions) <= 0 && empty($user->typeEmployee)) {
+        if ((count($user->roles) <= 0) && empty($user->typeEmployee)) {
              $data = [
                 'message' => __('auth.not_permissions') 
             ];
