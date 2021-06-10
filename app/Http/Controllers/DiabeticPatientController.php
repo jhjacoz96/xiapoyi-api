@@ -13,6 +13,7 @@ use App\Http\Resources\RegisterGlucoseResource;
 use App\Http\Resources\RegisterWightResource;
 use App\Http\Resources\DiabeticPatientResource;
 use App\Http\Resources\PatientTreatmentResource;
+use App\Http\Resources\RegisterTreatmentResource;
 use App\Http\Resources\MemberResource;
 use App\Services\DiabeticPatientService;
 
@@ -81,9 +82,33 @@ class DiabeticPatientController extends Controller
             $data = PatientTreatmentResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
+            return $e; 
+        }
+    }
+
+    public function continueTreatment(Request $request)
+    {
+        try {
+            $model = $this->service->continueTreatment($request);
+            $data = new RegisterTreatmentResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
             return $e;
         }
     }
+
+    public function indexRegisterTreatment()
+    {
+        try {
+            $model = $this->service->indexRegisterTreatment();
+            return $model;
+            $data = PatientTreatmentResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.

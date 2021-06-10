@@ -143,11 +143,20 @@ Route::group([
             ]);
             Route::get('register-weight', [
                 'uses' => 'DiabeticPatientController@indexRegisterWeightMovil',
-                'as' => 'api.controlDiabetic.registerWeightMovil.index'
+                'as' => 'api.controlDiabetic.registerWeightMovil'
             ]);
             Route::get('treatment', [
                 'uses' => 'DiabeticPatientController@indexTreatment',
-                'as' => 'api.controlDiabetic.treatment.index'
+                'as' => 'api.controlDiabetic.treatment'
+            ]);
+
+            Route::post('continue-treatment', [
+                'uses' => 'DiabeticPatientController@continueTreatment',
+                'as' => 'api.controlDiabetic.continueTreatment'
+            ]);
+            Route::get('register-treatment', [
+                'uses' => 'DiabeticPatientController@indexRegisterTreatment',
+                'as' => 'api.controlDiabetic.indexRegisterTreatment'
             ]);
       });
 

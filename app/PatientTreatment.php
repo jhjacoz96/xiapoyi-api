@@ -21,4 +21,8 @@ class PatientTreatment extends Model
     public function presentation () {
     	return $this->belongsTo('App\Presentation', 'presentation_id', 'id');
     }
+
+    public function registerTreatment () {
+    	return $this->hasMany('App\RegisterTreatment', 'patient_treatment_id', 'id');
+    }
 }

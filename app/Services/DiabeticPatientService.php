@@ -12,6 +12,7 @@ use App\RegisterGlucose;
 use App\RegisterwWight;
 use App\Member;
 use App\PatientTreatment;
+use App\RegisterTreatment;
 use DateTime;
 
 class DiabeticPatientService {
@@ -34,6 +35,33 @@ class DiabeticPatientService {
         try { 
             $patient = \Auth::user()->diabeticPatient;
             $model = PatientTreatment::where('diabetic_patient_id', $patient->id)->orderBy('id', 'desc')->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function continueTreatment ($data) {
+        try { 
+            $patient = \Auth::user()->diabeticPatient;
+            $model = RegisterTreatment::create([
+                "patient_treatment_id" => $data["patient_treatment_id"],
+                "fecha" => Carbon::now()->toDateTimeString(),
+            ]);
+
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+     public function indexRegisterTreatment () {
+        try {
+            $patient = \Auth::user()->diabeticPatient;
+            $model =  PatientTreatment::where('diabetic_patient_id', $patient->id)->whereDoesntHave('registerTreatment', function ($query) {
+                $query->whereDate('fecha', Carbon::now()->format('Y-m-d'));
+            })->orderBy('id', 'desc')->get();
+
             return $model;
         } catch (\Exception $e) {
             return $e;
