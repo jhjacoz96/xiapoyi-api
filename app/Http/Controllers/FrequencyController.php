@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\FrequencyStoreRequest;
-use App\Http\Requests\FrequencyUpdateRequest;
+use App\Http\Requests\FrequecyUpdateRequest;
 use App\Utils\Enums\EnumResponse;
 use App\Frequency;
 use App\Http\Resources\FrequencyResource;
@@ -63,7 +63,7 @@ class FrequencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(FrequencyUpdateRequest $request, $id)
+    public function update(FrequecyUpdateRequest $request, $id)
     {
         try {
             $data = $request->validated();
