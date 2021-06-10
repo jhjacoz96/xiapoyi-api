@@ -70,8 +70,8 @@ Route::group([
       Route::ApiResource('medicine', 'MedicineController');
       Route::ApiResource('frequency', 'FrequencyController');
       Route::ApiResource('measure', 'MeasureController');
-      Route::ApiResource('type-blood', 'typeBloodController');
-      Route::ApiResource('cultural-group', 'culturalGroupController');
+      Route::ApiResource('type-blood', 'TypeBloodController');
+      Route::ApiResource('cultural-group', 'CulturalGroupController');
       Route::ApiResource('pathology', 'PathologyController');
       Route::ApiResource('disability', 'DisabilityController');
       Route::ApiResource('group-age', 'GroupAgeController');
