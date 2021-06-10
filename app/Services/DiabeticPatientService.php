@@ -11,6 +11,7 @@ use App\Medicine;
 use App\RegisterGlucose;
 use App\RegisterwWight;
 use App\Member;
+use App\PatientTreatment;
 use DateTime;
 
 class DiabeticPatientService {
@@ -23,6 +24,16 @@ class DiabeticPatientService {
     public function index () {
         try { 
             $model = Member::has('DiabeticPatient')->orderBy('id', 'desc')->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexTreatment () {
+        try { 
+            $patient = \Auth::user()->diabeticPatient;
+            $model = PatientTreatment::where('diabetic_patient_id', $patient->id)->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;

@@ -145,6 +145,10 @@ Route::group([
                 'uses' => 'DiabeticPatientController@indexRegisterWeightMovil',
                 'as' => 'api.controlDiabetic.registerWeightMovil.index'
             ]);
+            Route::get('treatment', [
+                'uses' => 'DiabeticPatientController@indexTreatment',
+                'as' => 'api.controlDiabetic.treatment.index'
+            ]);
       });
 
       Route::post('file-clinical-neonatology/search', 'FileClinicalNeonatologyController@search');

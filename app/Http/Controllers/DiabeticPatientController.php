@@ -12,6 +12,7 @@ use App\DiabeticPatient;
 use App\Http\Resources\RegisterGlucoseResource;
 use App\Http\Resources\RegisterWightResource;
 use App\Http\Resources\DiabeticPatientResource;
+use App\Http\Resources\PatientTreatmentResource;
 use App\Http\Resources\MemberResource;
 use App\Services\DiabeticPatientService;
 
@@ -70,6 +71,17 @@ class DiabeticPatientController extends Controller
             }
         } catch (\Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    public function indexTreatment()
+    {
+        try {
+            $model = $this->service->indexTreatment();
+            $data = PatientTreatmentResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
         }
     }
 
