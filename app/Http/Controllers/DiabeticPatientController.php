@@ -79,6 +79,7 @@ class DiabeticPatientController extends Controller
     {
         try {
             $model = $this->service->indexTreatment();
+            return $model;
             $data = PatientTreatmentResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
@@ -90,7 +91,7 @@ class DiabeticPatientController extends Controller
     {
         try {
             $model = $this->service->continueTreatment($request);
-            $data = new RegisterTreatmentResource($model);
+            $data = new PatientTreatmentResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;

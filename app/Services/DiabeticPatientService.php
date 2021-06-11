@@ -34,6 +34,7 @@ class DiabeticPatientService {
     public function indexTreatment () {
         try { 
             $patient = \Auth::user()->diabeticPatient;
+            return $patient->medicines;
             $model = PatientTreatment::where('diabetic_patient_id', $patient->id)->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
@@ -48,8 +49,8 @@ class DiabeticPatientService {
                 "patient_treatment_id" => $data["patient_treatment_id"],
                 "fecha" => Carbon::now()->toDateTimeString(),
             ]);
-
-            return $model;
+            $treatment = PatientTreatment::find($model->patient_treatment_id);
+            return $treatment;
         } catch (\Exception $e) {
             return $e;
         }
@@ -137,7 +138,7 @@ class DiabeticPatientService {
             if (!is_null($validar)) {
                 $tratamiento_farmacologico = [];
                 foreach ($data['tratamiento_farmacologico'] as $item) {
-                        $tratamiento_farmacologico[$item["id"]] = [
+                        $tratamiento_farmacologico[$item["medicine_id"]] = [
                             "dosis" => $item["dosis"],
                             "hora" => $item["hora"],
                             "measure_id" => $item["measure_id"],
