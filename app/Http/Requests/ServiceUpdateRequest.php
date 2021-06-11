@@ -27,7 +27,7 @@ class ServiceUpdateRequest extends FormRequest
             "nombre" => "required|string",
             "descripcion" => "sometimes|nullable|string",
             "image_service" => "sometimes|nullable|file",
-            "view_web" => "required|boolean",
+            "view_web" => "sometimes|nullable|boolean",
         ];
     }
 }
