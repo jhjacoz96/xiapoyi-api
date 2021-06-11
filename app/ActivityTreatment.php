@@ -10,4 +10,8 @@ class ActivityTreatment extends Model
         'actividad', 'duracion', 'hora', 'diabetic_patient_id',
     ];
 
+    public function registerActivity () {
+    	return $this->hasMany('App\RegisterActivity', 'activity_treatment_id', 'id');
+    }
+
 }

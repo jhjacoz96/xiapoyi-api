@@ -13,6 +13,8 @@ use App\RegisterwWight;
 use App\Member;
 use App\PatientTreatment;
 use App\RegisterTreatment;
+use App\ActivityTreatment;
+use App\RegisterActivity;
 use DateTime;
 
 class DiabeticPatientService {
@@ -79,13 +81,13 @@ class DiabeticPatientService {
     }
 
     public function continueActivity ($data) {
-        try { 
+        try {
             $patient = \Auth::user()->diabeticPatient;
             $model = RegisterActivity::create([
-                "patient_treatment_id" => $data["patient_treatment_id"],
+                "activity_treatment_id" => $data["activity_treatment_id"],
                 "fecha" => Carbon::now()->toDateTimeString(),
             ]);
-            $treatment = ActivityTreatment::find($model->patient_treatment_id);
+            $treatment = ActivityTreatment::find($data["activity_treatment_id"]);
             return $treatment;
         } catch (\Exception $e) {
             return $e;
@@ -98,7 +100,6 @@ class DiabeticPatientService {
             $model =  ActivityTreatment::where('diabetic_patient_id', $patient->id)->whereDoesntHave('registerActivity', function ($query) {
                 $query->whereDate('fecha', Carbon::now()->format('Y-m-d'));
             })->orderBy('id', 'desc')->get();
-
             return $model;
         } catch (\Exception $e) {
             return $e;

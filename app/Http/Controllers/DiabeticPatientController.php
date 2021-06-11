@@ -13,6 +13,7 @@ use App\Http\Resources\RegisterGlucoseResource;
 use App\Http\Resources\RegisterWightResource;
 use App\Http\Resources\DiabeticPatientResource;
 use App\Http\Resources\PatientTreatmentResource;
+use App\Http\Resources\ActivityTreatmentResource;
 use App\Http\Resources\RegisterTreatmentResource;
 use App\Http\Resources\MemberResource;
 use App\Services\DiabeticPatientService;

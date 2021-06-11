@@ -158,6 +158,19 @@ Route::group([
                 'uses' => 'DiabeticPatientController@indexRegisterTreatment',
                 'as' => 'api.controlDiabetic.indexRegisterTreatment'
             ]);
+            Route::get('activity', [
+                'uses' => 'DiabeticPatientController@indexActivity',
+                'as' => 'api.controlDiabetic.activity'
+            ]);
+
+            Route::post('continue-activity', [
+                'uses' => 'DiabeticPatientController@continueActivity',
+                'as' => 'api.controlDiabetic.continueActivity'
+            ]);
+            Route::get('register-activity', [
+                'uses' => 'DiabeticPatientController@indexRegisterActivity',
+                'as' => 'api.controlDiabetic.indexRegisterActivity'
+            ]);
       });
 
       Route::post('file-clinical-neonatology/search', 'FileClinicalNeonatologyController@search');
@@ -238,7 +251,6 @@ Route::group([
               'uses' => 'ReportStadisticController@dashboard',
           ]);
        });
-
   });
 
   Route::group([

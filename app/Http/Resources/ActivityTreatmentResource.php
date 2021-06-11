@@ -19,6 +19,7 @@ class ActivityTreatmentResource extends JsonResource
             "actividad" => $this->actividad,
             "duracion" => $this->duracion,
             "hora" => $this->hora,
+             "fecha" => $this->created_at,
         ];
     }
 }
