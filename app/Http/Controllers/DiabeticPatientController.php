@@ -108,6 +108,40 @@ class DiabeticPatientController extends Controller
         }
     }
 
+     public function indexActivity()
+    {
+        try {
+            $model = $this->service->indexActivity();
+            $data = ActivityTreatmentResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e; 
+        }
+    }
+
+    public function continueActivity(Request $request)
+    {
+        try {
+            $model = $this->service->continueActivity($request);
+            $data = new ActivityTreatmentResource($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexRegisterActivity()
+    {
+        try {
+            $model = $this->service->indexRegisterActivity();
+            $data = ActivityTreatmentResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+
 
     /**
      * Store a newly created resource in storage.

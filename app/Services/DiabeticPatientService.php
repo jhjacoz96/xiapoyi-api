@@ -34,7 +34,6 @@ class DiabeticPatientService {
     public function indexTreatment () {
         try { 
             $patient = \Auth::user()->diabeticPatient;
-            return $patient->medicines;
             $model = PatientTreatment::where('diabetic_patient_id', $patient->id)->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
@@ -60,6 +59,43 @@ class DiabeticPatientService {
         try {
             $patient = \Auth::user()->diabeticPatient;
             $model =  PatientTreatment::where('diabetic_patient_id', $patient->id)->whereDoesntHave('registerTreatment', function ($query) {
+                $query->whereDate('fecha', Carbon::now()->format('Y-m-d'));
+            })->orderBy('id', 'desc')->get();
+
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexActivity () {
+        try { 
+            $patient = \Auth::user()->diabeticPatient;
+            $model = ActivityTreatment::where('diabetic_patient_id', $patient->id)->orderBy('id', 'desc')->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function continueActivity ($data) {
+        try { 
+            $patient = \Auth::user()->diabeticPatient;
+            $model = RegisterActivity::create([
+                "patient_treatment_id" => $data["patient_treatment_id"],
+                "fecha" => Carbon::now()->toDateTimeString(),
+            ]);
+            $treatment = ActivityTreatment::find($model->patient_treatment_id);
+            return $treatment;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+     public function indexRegisterActivity () {
+        try {
+            $patient = \Auth::user()->diabeticPatient;
+            $model =  ActivityTreatment::where('diabetic_patient_id', $patient->id)->whereDoesntHave('registerActivity', function ($query) {
                 $query->whereDate('fecha', Carbon::now()->format('Y-m-d'));
             })->orderBy('id', 'desc')->get();
 
