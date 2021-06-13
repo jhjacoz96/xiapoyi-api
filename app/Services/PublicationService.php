@@ -40,16 +40,52 @@ class PublicationService {
                 'filter_one_publication_id' => $data['filter_one_publication_id'],
                 'filter_three_publication_id' => $data['filter_three_publication_id'] != "null" ? $data['filter_three_publication_id'] : null,
             ]);
-            if (!empty($data['image_mini'])) $model->assingImageMini($data['image_mini']);
-            if ($data["type_resource"] == 'image' || $data["type_resource"] == 'document') {
-                $resource = Resource::create([
-                    'type_resource' => $data['type_resource'],
-                    'url'  => 'kkk',
-                    'publication_id' => $model["id"],
+            $folder = 'image/publication';
+            if (!empty($data['image_mini'])) {
+                // $model->assingImageMini($data['image_mini']);
+                $image = $data['image_mini']->getRealPath();
+                \Cloudder::upload($image, null, ['folder' => $folder], []);
+                $c = \Cloudder::getResult();
+                $model->image()->create([
+                   'url' => $c['url'],
+                   'public_id' => $c['public_id'],
                 ]);
-                $resources = $resource->assingResource($data['resource']);
-                $resource->update([
-                    'url'  => $resources["url"],
+            }
+            if ($data["type_resource"] == 'image') {
+                $image = $data['resource'];
+                \Cloudder::upload($image, null, ['folder' => $folder], []);
+                $c = \Cloudder::getResult();
+                $resource = Resource::create([
+                    "type_resource" => $data['type_resource'],
+                    "url"  => $c["url"],
+                    "publication_id" => $model["id"],
+                ]);
+                // $resources = $resource->assingResource($data['resource']);
+                $resources = $resource->image()->create([
+                   'url' => $c['url'],
+                   'public_id' => $c['public_id'],
+                ]);
+            } else if ($data["type_resource"] == 'document') {
+                $image = $data['resource'];
+                \Cloudder::upload(
+                    $image,
+                    \Str::random(10) . $data['resource']->getClientOriginalName(),
+                    [
+                        "resource_type" => "raw",
+                        "folder" => $folder
+                    ],
+                    []
+                );
+                $c = \Cloudder::getResult();
+                $resource = Resource::create([
+                    "type_resource" => $data['type_resource'],
+                    "url"  => $c["url"],
+                    "publication_id" => $model["id"],
+                ]);
+                // $resources = $resource->assingResource($data['resource']);
+                $resources = $resource->image()->create([
+                   'url' => $c['url'],
+                   'public_id' => $c['public_id'],
                 ]);
             } else {
                  $resource = Resource::create([
@@ -67,7 +103,7 @@ class PublicationService {
                     "publicacion" => $modell,
                 ];
                 Mail::send('correos.publicacion', $datosMensaje,function($mensaje) use($value){
-                    $mensaje->to($value["correo"])->subject('Nueva publicacion - Xiaoyi');
+                    $mensaje->to($value["correo"])->subject('Nueva publicacion - KA-THANI');
                 });
             }
 
@@ -92,7 +128,16 @@ class PublicationService {
                 'filter_one_publication_id' => $data['filter_one_publication_id'],
                 'filter_three_publication_id' => $data['filter_three_publication_id'] != "null" ? $data['filter_three_publication_id'] : null
             ]);
-            if  (!empty($data['image_mini'])) $model->assingImageMini($data['image_mini']);
+            $folder = 'image/publication';
+            if  (!empty($data['image_mini'])) {
+                \Cloudder::upload($image, null, ['folder' => $folder], []);
+                $c = \Cloudder::getResult();
+                $data->image->url = $c['url'];
+                $data->image->public_id = $c['public_id'];
+                $data->push();
+                \Cloudder::destroyImage($data->image->public_id, ['folder' => $folder]);
+            }
+            // $model->assingImageMini($data['image_mini']);
             /*    if (!empty($data['image_mini'])) $model->assingImageMini($data['image_mini']);
                 if ($data["type_resource"] == 'image' || $data["type_resource"] == 'document') {
                     $model->resource->update([
@@ -140,6 +185,8 @@ class PublicationService {
             DB::beginTransaction();
             $model = Publication::find($id);
             if(!$model) return null;
+            $folder = 'image/publication';
+            \Cloudder::destroyImage($model->image->public_id, ['folder' => $folder]);
             $model->delete();
             DB::commit();
             return true;

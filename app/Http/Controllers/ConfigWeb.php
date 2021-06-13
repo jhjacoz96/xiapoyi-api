@@ -12,6 +12,7 @@ use App\Us;
 use App\Zone;
 use App\Contact;
 use App\Publication;
+use App\Image;
 use App\Utils\Enums\EnumResponse;
 use App\Http\Resources\ServicesWebResource;
 use App\Http\Resources\OldAdultResource;
@@ -57,7 +58,7 @@ class ConfigWeb extends Controller
                     $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])
                     ->whereHas("resource", function ($query) use($request) {
                         $query->where("type_resource", $request["type_resource"]);
-                    })  
+                    })
                     ->paginate(6);
                 } else {
                     $model = Publication::where("filter_one_publication_id", $request["filter_one_publication_id"])->paginate(6);
@@ -207,6 +208,7 @@ class ConfigWeb extends Controller
                 ]);
             }
 
+            $folder = 'image/web';
             if ($request->file('image_mission')) {
                 $data = Us::updateOrCreate(
                     [
@@ -214,7 +216,19 @@ class ConfigWeb extends Controller
                     ]
                 );
                 $imagenMission = $request->file('image_mission');
-                $nombreMission = 'image_mission'.$imagenMission->getClientOriginalName();
+                \Cloudder::upload($imagenMission, null, ['folder' => $folder], []);
+                $rutaMission = \Cloudder::getResult();
+                if (!empty($data->image_mission)) {
+                   $data->image_mission = $rutaMission['url'];
+                } else {
+                   $m = $data->image()->create([
+                       'url' => $rutaMission['url'],
+                       'public_id' => $rutaMission['public_id'],
+                    ]);
+                    $data->image_mission = $m->url;
+                }
+                $data->save();
+                /*$nombreMission = 'image_mission'.$imagenMission->getClientOriginalName();
                 $rutaMission = public_path().'/imagenWeb';
                 $imagenMission->move($rutaMission , $nombreMission);
                 
@@ -224,8 +238,7 @@ class ConfigWeb extends Controller
                 } else {
                     $m = $data->image()->create($urlImagenMission);
                     $data->image_mission = $m->url;
-                }
-                $data->save();
+                }*/
             }
             if ($request->file('image_vision')) {
                 $data = Us::updateOrCreate(
@@ -234,15 +247,20 @@ class ConfigWeb extends Controller
                     ]
                 );
                 $imagenVision = $request->file('image_vision');
-                $nombreVision = 'image_vision'.$imagenVision->getClientOriginalName();
+                \Cloudder::upload($imagenVision, null, ['folder' => $folder], []);
+                $rutaVision = \Cloudder::getResult();
+                /*$nombreVision = 'image_vision'.$imagenVision->getClientOriginalName();
                 $rutavVision = public_path().'/imagenWeb';
                 $imagenVision->move($rutavVision , $nombreVision);
-                
-                $urlImagenVision['url']='/imagenWeb/'.$nombreVision;
+                $urlImagenVision['url']='/imagenWeb/'.$nombreVision;*/
+
                 if (!empty($data->image_vision)) {
-                    $data->image_vision = $urlImagenVision['url'];
+                    $data->image_vision = $rutaVision['url'];
                 } else {
-                    $v = $data->image()->create($urlImagenVision);
+                    $v = $data->image()->create([
+                       'url' => $rutaVision['url'],
+                       'public_id' => $rutaVision['public_id'],
+                    ]);
                     $data->image_vision = $v->url;
                 }
                 $data->save();
@@ -254,15 +272,21 @@ class ConfigWeb extends Controller
                     ]
                 );
                 $imagenObjetive = $request->file('image_objective');
+                \Cloudder::upload($imagenObjetive, null, ['folder' => $folder], []);
+                $rutaObjetive = \Cloudder::getResult();
+                /*$imagenObjetive = $request->file('image_objective');
                 $nombreObjetive = 'image_objective'.$imagenObjetive->getClientOriginalName();
                 $rutaObjetive = public_path().'/imagenWeb';
                 $imagenObjetive->move($rutaObjetive , $nombreObjetive);
                 
-                $urlImagenObjetive['url']='/imagenWeb/'.$nombreObjetive;
+                $urlImagenObjetive['url']='/imagenWeb/'.$nombreObjetive;*/
                 if (!empty($data->image_objetive)) {
-                    $data->image_objective = $urlImagenObjetive['url'];
-                } else {    
-                    $o = $data->image()->create($urlImagenObjetive);
+                    $data->image_objective = $rutaObjetive['url'];
+                } else {
+                    $o = $data->image()->create([
+                       'url' => $rutaObjetive['url'],
+                       'public_id' => $rutaObjetive['public_id'],
+                    ]);
                     $data->image_objective = $o->url;
                 }
                 $data->save();
@@ -274,14 +298,15 @@ class ConfigWeb extends Controller
                     ]
                 );
                 $imagenValue = $request->file('image_value');
-                $nombreValue = 'image_value'.$imagenValue->getClientOriginalName();
-                $rutaValue = public_path().'/imagenWeb';
-                $imagenValue->move($rutaValue , $nombreValue);
-                $urlImagenValue['url']='/imagenWeb/'.$nombreValue;
+                \Cloudder::upload($imagenValue, null, ['folder' => $folder], []);
+                $rutaValue = \Cloudder::getResult();
                 if (!empty($data->image_value)) {
-                    $data->image_value = $urlImagenValue['url'];
+                    $data->image_value = $rutaValue['url'];
                 } else {
-                   $v = $data->image()->create($urlImagenValue);
+                   $v = $data->image()->create([
+                       'url' => $rutaValue['url'],
+                       'public_id' => $rutaValue['public_id'],
+                    ]);
                    $data->image_value = $v->url;
                 }
                 $data->save();
@@ -293,14 +318,18 @@ class ConfigWeb extends Controller
                     ]
                 );
                 $imagenUs = $request->file('image_us');
-                $nombreUs = 'image_us'.$imagenUs->getClientOriginalName();
-                $rutaUs = public_path().'/imagenWeb';
-                $imagenUs->move($rutaUs , $nombreUs);
-                
-                $urlImagenUs['url']='/imagenWeb/'.$nombreUs;
-                $u = $data->image()->create($urlImagenUs);
+                \Cloudder::upload($imagenUs, null, ['folder' => $folder], []);
+                $rutaUs = \Cloudder::getResult();
 
-                $data->image_us = $u->url;
+                if (!empty($data->image_us)) {
+                    $data->image_us = $rutaUs['url'];
+                } else {
+                   $u = $data->image()->create([
+                       'url' => $rutaUs['url'],
+                       'public_id' => $rutaUs['public_id'],
+                    ]);
+                   $data->image_us = $u->url;
+                }
                 $data->save();
             }
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
@@ -371,18 +400,18 @@ class ConfigWeb extends Controller
             ]);
 
             if (isset($request['image'])) {
-
+                $folder = 'image/web';
                 $imagenDiabetic = $request['image'];
-                $nombreDiabetic = 'image_diabetic'.$imagenDiabetic->getClientOriginalName();
-                $rutaDiabetic = public_path().'/imagenWeb';
-                $imagenDiabetic->move($rutaDiabetic , $nombreDiabetic);
-                
-                $urlImagenDiabetic['url']='/imagenWeb/'.$nombreDiabetic;
+                \Cloudder::upload($imagenDiabetic, null, ['folder' => $folder], []);
+                $rutaDiabetic = \Cloudder::getResult();
                 if (!empty($data->image)) {
-                    $data->image->url = $urlImagenDiabetic['url'];
+                    $data->image->url = $rutaDiabetic['url'];
                     $data->push();
                 } else {
-                    $data->image()->create($urlImagenDiabetic);
+                    $data->image()->create([
+                       'url' => $rutaDiabetic['url'],
+                       'public_id' => $rutaDiabetic['public_id'],
+                    ]);
                 }
             }
 

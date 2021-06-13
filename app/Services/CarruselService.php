@@ -29,7 +29,17 @@ class CarruselService {
         try {
             DB::beginTransaction();
             $model = Carrusel::create($data);
-            if ($data['image']) $model->assignImage($data['image']);
+            if ($data['image']) {
+                $image = $data['image']->getRealPath();
+                $folder = 'image/web';
+                \Cloudder::upload($image, null, ['folder' => $folder], []);
+                $c = \Cloudder::getResult();
+                $model->image()->create([
+                   'url' => $c['url'],
+                   'public_id' => $c['public_id'],
+                ]);
+            }
+            // $model->assignImage($data['image']);
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

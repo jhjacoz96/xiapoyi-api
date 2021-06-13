@@ -33,16 +33,24 @@ class EmployeeService {
         try {
             DB::beginTransaction();
             $employee = \Auth::user()->Employee;
-            $image = $data['image'];
-            $nombre = 'image_perfil_'.$image->getClientOriginalName();
+            $image = $data['image']->getRealPath();
+            /*$nombre = 'image_perfil_'.$image->getClientOriginalName();
             $ruta = public_path().'/imagePerfil';
            $image->move($ruta , $nombre);
-            $url['url']='/imagePerfil/'.$nombre;
+            $url['url']='/imagePerfil/'.$nombre;*/
+            $folder = 'image/perfil';
+            \Cloudder::upload($image, null, ['folder' => $folder], []);
+            $c = \Cloudder::getResult();
             if ($employee->image) {
-               $employee->image->url = $url['url'];
+               \Cloudder::destroyImage($employee->image->public_id, ['folder' => $folder]);
+               $employee->image->url = $c['url'];
+               $employee->image->public_id = $c['public_id'];
                $employee->push();
             } else {
-               $employee->image()->create($url);
+               $employee->image()->create([
+                   'url' => $c['url'],
+                   'public_id' => $c['public_id'],
+                ]);
             }
             DB::commit();
             return  $employee;
@@ -51,6 +59,7 @@ class EmployeeService {
             return $e;
         }
     }
+
 
     public function store ($data) {
         try {

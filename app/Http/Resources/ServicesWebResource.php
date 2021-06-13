@@ -16,10 +16,10 @@ class ServicesWebResource extends JsonResource
     public function toArray($request)
     {
         $service = Service::All();
-        $Services = ServiceResource::collection($service);
-        $arrayServices =  $Services->map( function ($query) {
-            if ($query->view_web) return $query;
+        $services =  $service->filter(function ($query) {
+           return $query->view_web == 1;
         });
+        $arrayServices = ServiceResource::collection($services);
         return [
             "id" => $this->id,
             "description1" => $this->description1,

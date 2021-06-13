@@ -32,7 +32,17 @@ class ServiceService {
             $model = Service::create($data);
             $model->view_web = false;
             $model->save();
-            if (isset($data['image_service'])) $model->assignImage($data['image_service']);
+            /*if (isset($data['image_service'])) $model->assignImage($data['image_service']);*/
+            if (isset($data['image_service'])) {
+                $image = $data['image_service']->getRealPath();
+                $folder = 'image/service';
+                \Cloudder::upload($image, null, ['folder' => $folder], []);
+                $c = \Cloudder::getResult();
+                $model->image()->create([
+                   'url' => $c['url'],
+                   'public_id' => $c['public_id'],
+                ]);
+            }
             DB::commit();
             return $model;
         } catch (\Exception $e) {
@@ -74,7 +84,10 @@ class ServiceService {
             $model->update($data);
             $model->view_web = $data["view_web"];
             $model->save();
-            if (isset($data['image_service'])) $model->assignImage($data['image_service']);
+            if (isset($data['image_service'])) {
+                
+            }
+            // $model->assignImage($data['image_service']);
             DB::commit();
             return  $model;
         } catch (\Exception $e) {
@@ -101,6 +114,10 @@ class ServiceService {
             DB::beginTransaction();
             $model = Service::find($id);
             if(!$model) return null;
+            if ($model->image) {
+                $folder = 'image/service';
+                \Cloudder::destroyImage($model->image->public_id, ['folder' => $folder]);
+            }
             $model->delete();
             DB::commit();
             return true;

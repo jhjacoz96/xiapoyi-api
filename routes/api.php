@@ -230,6 +230,7 @@ Route::group([
       Route::post('older-adult', 'ConfigWeb@olderAdultStore');
       Route::get('older-adult', 'ConfigWeb@olderAdultIndex');
       Route::get('diabetic', 'ConfigWeb@diabeticIndex');
+      Route::post('diabetic', 'ConfigWeb@diabeticStore');
       Route::post('subcription', 'ConfigWeb@subcriptionStore');
       Route::get('subcription', 'ConfigWeb@subcriptionIndex');
       Route::post('contact', 'ConfigWeb@contactStore');
