@@ -14,6 +14,15 @@ class MemberDiabeticPatientResource extends JsonResource
      */
     public function toArray($request)
     {
+        $pathologies = MemberPathology::where('member_id', $this->id)->get();
+        $arrayPathologies = $pathologies->map(function($query) {
+            return $query->pathology_id;
+        });
+        $disability = MemberDisability::where('member_id', $this->id)->get();
+        $arrayDisability = $disability->map(function($query) {
+            return $query->disability_id;
+        });
+        $prenatal = Pregnant::where('member_id', $this->id)->get();
         return [
             "id" => $this->id,
             "apellido" => $this->apellido,
