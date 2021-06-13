@@ -113,6 +113,9 @@ class ConfigWeb extends Controller
     public function organizationIndex() {
         try {
             $data = Organization::with('province', 'institution', 'canton')->find(1); 
+            if (!$data) {
+                 $data = Organization::with('province', 'institution', 'canton')->find(3); 
+            }
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -153,7 +156,7 @@ class ConfigWeb extends Controller
                     [
                       'id' => $idd,
                     ],
-                    [   
+                    [
                         'name' => $request['name'],
                         'province_id' => $request['province_id'],
                         'canton_id' => $request['canton_id'],
