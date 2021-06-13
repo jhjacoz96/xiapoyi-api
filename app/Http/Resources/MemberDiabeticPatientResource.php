@@ -36,6 +36,6 @@ class MemberDiabeticPatientResource extends JsonResource
             "prenatal_todos" => count( $prenatal) > 0 ? PregnantResource::collection($prenatal) : null,
             "file_family_id" => $this->file_family_id,
             "diabetic_patient" => new DiabeticPatientResource($this->diabeticPatient) ?? null,
-        ]
+        ];
     }
 }
