@@ -40,7 +40,6 @@ class DiabeticPatientController extends Controller
             return $e;
         }
     }
-
     public function indexRegisterGlucose($id)
     {
         try {
@@ -185,6 +184,20 @@ class DiabeticPatientController extends Controller
     }
 
     // movil //-----------------------------------------------
+
+    public function dashboardMovil () {
+      try {
+        $user = \Auth::user()->diabeticPatient;
+        $data = [
+            "pesoActual" => $user->peso,
+            "altura" => $user->altura, 
+            "glucosaActual" => $user->nivel_glusemia,
+        ];
+        return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+      } catch (\Exception $e) {
+        return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+      }
+    }
 
     public function registerGlucoseMovil(RegisterGlucosaRequest $request) {
       try {

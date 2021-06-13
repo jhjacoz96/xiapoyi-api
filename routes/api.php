@@ -171,6 +171,11 @@ Route::group([
                 'uses' => 'DiabeticPatientController@indexRegisterActivity',
                 'as' => 'api.controlDiabetic.indexRegisterActivity'
             ]);
+            Route::get('dashboard', [
+                'uses' => 'DiabeticPatientController@dashboardMovil',
+                'as' => 'api.diabeticPatientController.dashboardMovil'
+            ]);
+            
       });
 
       Route::post('file-clinical-neonatology/search', 'FileClinicalNeonatologyController@search');
