@@ -132,21 +132,37 @@ class ConfigWeb extends Controller
     {
         try {
             $id = 1;
-            $data = Organization::updateOrCreate(
+            $idd = 3;
+            $o = Organization::find($id);
+            if ($o) {
+                $data = Organization::updateOrCreate(
                 [
                   'id' => $id,
                 ],
-                [
-                'id' => $id,    
-                'name' => $request['name'],
-                'province_id' => $request['province_id'],
-                'canton_id' => $request['canton_id'],
-                'address' => $request['address'],
-                'institution_id' => $request['institution_id'],
-                'code_uo' => $request['code_uo'],
-                'parroquia' => $request['parroquia'],
-
-            ]);
+                [   
+                    'name' => $request['name'],
+                    'province_id' => $request['province_id'],
+                    'canton_id' => $request['canton_id'],
+                    'address' => $request['address'],
+                    'institution_id' => $request['institution_id'],
+                    'code_uo' => $request['code_uo'],
+                    'parroquia' => $request['parroquia'],
+                ]);
+            } else {
+                $data = Organization::updateOrCreate(
+                    [
+                      'id' => $idd,
+                    ],
+                    [   
+                        'name' => $request['name'],
+                        'province_id' => $request['province_id'],
+                        'canton_id' => $request['canton_id'],
+                        'address' => $request['address'],
+                        'institution_id' => $request['institution_id'],
+                        'code_uo' => $request['code_uo'],
+                        'parroquia' => $request['parroquia'],
+                ]);
+            }
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
