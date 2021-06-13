@@ -428,7 +428,7 @@ class ConfigWeb extends Controller
                 'description2' => $request['description2'],
             ]);
 
-            if (isset($request['image'])) {
+            if ($request['image']) {
                 $folder = 'image/web';
                 $imagenDiabetic = $request['image'];
                 \Cloudder::upload($imagenDiabetic, null, ['folder' => $folder], []);
