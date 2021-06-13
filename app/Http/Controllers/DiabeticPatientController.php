@@ -15,6 +15,7 @@ use App\Http\Resources\DiabeticPatientResource;
 use App\Http\Resources\PatientTreatmentResource;
 use App\Http\Resources\ActivityTreatmentResource;
 use App\Http\Resources\RegisterTreatmentResource;
+use App\Http\Resources\MemberDiabeticPatientResource;
 use App\Http\Resources\MemberResource;
 use App\Services\DiabeticPatientService;
 
@@ -33,7 +34,7 @@ class DiabeticPatientController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = MemberResource::collection($model);
+            $data = MemberDiabeticPatientResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
