@@ -3,6 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\MemberPathology;
+use App\MemberDisability;
+use App\Pregnant;
 
 class MemberDiabeticPatientResource extends JsonResource
 {
