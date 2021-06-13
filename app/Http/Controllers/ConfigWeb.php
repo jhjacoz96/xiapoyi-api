@@ -137,6 +137,7 @@ class ConfigWeb extends Controller
                   'id' => $id,
                 ],
                 [
+                'id' => $id,    
                 'name' => $request['name'],
                 'province_id' => $request['province_id'],
                 'canton_id' => $request['canton_id'],
