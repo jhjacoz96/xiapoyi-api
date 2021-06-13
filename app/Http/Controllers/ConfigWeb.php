@@ -119,6 +119,15 @@ class ConfigWeb extends Controller
         }
     }
 
+    public function organizationFind () {
+        try {
+            $data = Organization::with('province', 'institution', 'canton')->get(); 
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     public function organizationStore(Request $request)
     {
         try {

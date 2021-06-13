@@ -259,6 +259,7 @@ Route::group([
   ], function () {
     Route::post('organization', 'ConfigWeb@organizationStore');
     Route::get('organization', 'ConfigWeb@organizationIndex');
+     Route::get('organization-all', 'ConfigWeb@organizationFind');
     Route::post('us', 'ConfigWeb@upStore');
     Route::get('us', 'ConfigWeb@upIndex');
     Route::get('zone', 'ZoneController@index');
