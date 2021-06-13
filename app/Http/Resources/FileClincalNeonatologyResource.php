@@ -56,6 +56,7 @@ class FileClincalNeonatologyResource extends JsonResource
         return [
             "id" => $this->id,
             "nombre" => $member["nombre"],
+            "cedula" => $member["cedula"] ?? null,
             "apellido" => $member["apellido"],
             "fecha_nacimiento" => $member["fecha_nacimiento"],
             "gender_id" => $member["gender_id"],

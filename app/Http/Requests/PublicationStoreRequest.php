@@ -29,7 +29,7 @@ class PublicationStoreRequest extends FormRequest
             "filter_three_publication_id" => "nullable",
             "filter_two_publication_id" => "required|integer",
             "filter_one_publication_id" => "required|integer",
-            "image_mini" => "required",
+            "image_mini" => "nullable|sometimes",
             "resource" => "required",
             "type_resource" => "required|string"
         ];

@@ -51,6 +51,8 @@ class FileClinicalNeonatologyService {
             $pregnant = Pregnant::find($data["pregnant_id"]);
             $member = Member::create([
                 "nombre" => $data["nombre"],
+                "cedula" => $data["cedula"] ?? null,
+                "type_document_id" => 1,
                 "apellido" => $data["apellido"],
                 "fecha_nacimiento" => $data["fecha_nacimiento"],
                 "gender_id" => $data["gender_id"],
@@ -266,6 +268,8 @@ class FileClinicalNeonatologyService {
             $member->update([
                 "nombre" => $data["nombre"],
                 "apellido" => $data["apellido"],
+                "type_document_id" => 1,
+                "cedula" => $data["cedula"] ?? null,
                 "fecha_nacimiento" => $data["fecha_nacimiento"],
                 "gender_id" => $data["gender_id"],
                 "file_family_id" =>   intval($pregnant->member->fileFamily->id),
