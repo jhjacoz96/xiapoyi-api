@@ -35,8 +35,7 @@ class FileClinicalObstetricListener
                 if (
                     $employee->user->can('obstetrics_access') &&
                     \Auth::user()->employee->id != $employee->id
-                   )
-                return $employee->user->can('obstetrics_access');
+                   ) return $employee->user->can('obstetrics_access');
             })
             ->each(function (Employee $employee) use($event) {
                 Notification::send($employee, new FileClinicalObstetricNotification($event->pregnant));
