@@ -45,6 +45,7 @@ class FileFamilyController extends Controller
       try {
         // $data = $request->validated();
         $model = $this->service->store($request);
+        return $model;
         $data = new FileFamilyResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
