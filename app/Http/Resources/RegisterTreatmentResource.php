@@ -24,7 +24,7 @@ class RegisterTreatmentResource extends JsonResource
             "measure" => new MeasureResource($treatment->measure),
             "medicine" => new MedicineResource($treatment->medicine),
             "presentation" => new PresentationResource($treatment->presentation),
-            "created_at" => $this->created_at,
+            "created_at" => $this->fecha,
         ];
     }
 }

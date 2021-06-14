@@ -27,6 +27,10 @@ class DiabeticPatient extends Model
         return $this->hasMany('App\RegisterGlucose', 'diabetic_patient_id', 'id');
     }
 
+    public function registerWight () {
+        return $this->hasMany('App\RegisterwWight', 'diabetic_patient_id', 'id');
+    }
+
     public function member () {
         return $this->belongsTo('App\Member', 'member_id', 'id');
     }

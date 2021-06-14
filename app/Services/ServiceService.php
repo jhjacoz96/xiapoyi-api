@@ -111,15 +111,13 @@ class ServiceService {
 
     public function delete ($id) {
         try {
-            DB::beginTransaction();
             $model = Service::find($id);
             if(!$model) return null;
-            if ($model->image) {
+            if ($model->image->public_id) {
                 $folder = 'image/service';
                 \Cloudder::destroyImage($model->image->public_id, ['folder' => $folder]);
             }
             $model->delete();
-            DB::commit();
             return true;
         } catch (\Exception $e) {
             DB::rollback();

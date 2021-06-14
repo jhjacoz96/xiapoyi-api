@@ -51,7 +51,7 @@ class MemberShowResource extends JsonResource
             "prenatal" => count( $prenatal) > 0 ? new PregnantResource($prenatal->last()->first()) : null ,
             "prenatal_todos" => count( $prenatal) > 0 ? PregnantResource::collection($prenatal) : null,
             "file_family_id" => $this->file_family_id,
-            "diabetic_patient" => new DiabeticPatientResource($this->diabeticPatient) ?? null,
+            "diabetic_patient" => new DiabeticPatientShowResource($this->diabeticPatient) ?? null,
         ];
     }
 }

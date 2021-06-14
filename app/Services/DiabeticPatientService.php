@@ -110,7 +110,9 @@ class DiabeticPatientService {
         try {
             $patient = DiabeticPatient::find($id);
             if(!$patient) return null;
-            $model = RegisterGlucose::where('diabetic_patient_id',  $patient["id"])->get();
+            $model = RegisterGlucose::where('diabetic_patient_id',  $patient["id"])
+            ->orderBy('id', 'desc')
+            ->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -121,7 +123,9 @@ class DiabeticPatientService {
         try {
             $patient = DiabeticPatient::find($id);
             if(!$patient) return null;
-            $model = RegisterwWight::where('diabetic_patient_id',  $patient["id"])->get();
+            $model = RegisterwWight::where('diabetic_patient_id',  $patient["id"])
+            ->orderBy('id', 'desc')
+            ->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -312,7 +316,9 @@ class DiabeticPatientService {
         try {
             $patient = \Auth::user()->diabeticPatient;
             if(!$patient) return null;
-            $model = RegisterGlucose::where('diabetic_patient_id',  $patient["id"])->get();
+            $model = RegisterGlucose::where('diabetic_patient_id',  $patient["id"])
+            ->orderBy('id', 'desc')
+            ->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -323,7 +329,9 @@ class DiabeticPatientService {
         try {
             $patient = \Auth::user()->diabeticPatient;
             if(!$patient) return null;
-            $model = RegisterwWight::where('diabetic_patient_id',  $patient["id"])->get();
+            $model = RegisterwWight::where('diabetic_patient_id',  $patient["id"])
+            ->orderBy('id', 'desc')
+            ->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
