@@ -10,4 +10,7 @@ class RegisterActivity extends Model
         'fecha', 'activity_treatment_id',
     ];
 
+    public function activityTreatment () {
+        return $this->belongsTo('App\activityTreatment', 'activity_treatment_id', 'id');
+    }
 }

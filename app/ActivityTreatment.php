@@ -14,4 +14,8 @@ class ActivityTreatment extends Model
     	return $this->hasMany('App\RegisterActivity', 'activity_treatment_id', 'id');
     }
 
+    public function diabeticPatient () {
+    	return $this->belongsTo('App\diabeticPatient', 'diabetic_patient_id', 'id');
+    }
+
 }

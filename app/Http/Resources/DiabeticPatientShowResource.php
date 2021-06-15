@@ -8,6 +8,7 @@ use App\RegisterWight;
 use App\RegisterGlucose;
 use App\ActivityTreatment;
 use App\RegisterTreatment;
+use App\RegisterActivity;
 
 class DiabeticPatientShowResource extends JsonResource
 {
@@ -23,6 +24,9 @@ class DiabeticPatientShowResource extends JsonResource
         $registerTreatment = RegisterTreatment::whereHas('patientTreatment', function($query) use($id) {
                 $query->where('diabetic_patient_id', $id);
         })->latest()->take(10)->get();
+        /*$registerActivity = RegisterActivity::whereHas('activityTreatment', function($query) use($id) {
+                $query->where('diabetic_patient_id', $id);
+        })->latest()->take(10)->get();*/
         return [
             "id" => $this->id,
             "presion_arterial" => $this->presion_arterial,
