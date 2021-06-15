@@ -36,6 +36,7 @@ class FileClinicalNeonatologyService {
             ->orWhereHas('member', function ($query) use ($search) {
                 $query->where('nombre','like','%'.$search .'%');
                 $query->orWhere('apellido','like','%'.$search .'%');
+                $query->orWhere('cedula','like','%'.$search .'%');
             })
             ->orderBy('id', 'desc')->get();
 
