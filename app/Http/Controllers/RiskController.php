@@ -8,6 +8,7 @@ use App\Http\Requests\RiskUpdateRequest;
 use App\Risk;
 use App\Services\RiskService;
 use App\Http\Resources\RiskResource;
+use App\Http\Resources\RiskShowResource;
 use App\Utils\Enums\EnumResponse;
 
 class RiskController extends Controller
@@ -25,7 +26,7 @@ class RiskController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = RiskResource::collection($model);
+            $data = RiskShowResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;

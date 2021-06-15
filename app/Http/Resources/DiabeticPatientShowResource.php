@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\PatientTreatment;
-use App\RegisterWight;
+use App\RegisterwWight;
 use App\RegisterGlucose;
 use App\ActivityTreatment;
 use App\RegisterTreatment;
@@ -24,9 +24,9 @@ class DiabeticPatientShowResource extends JsonResource
         $registerTreatment = RegisterTreatment::whereHas('patientTreatment', function($query) use($id) {
                 $query->where('diabetic_patient_id', $id);
         })->latest()->take(10)->get();
-        /*$registerActivity = RegisterActivity::whereHas('activityTreatment', function($query) use($id) {
+        $registerActivity = RegisterActivity::whereHas('activityTreatment', function($query) use($id) {
                 $query->where('diabetic_patient_id', $id);
-        })->latest()->take(10)->get();*/
+        })->latest()->take(10)->get();
         return [
             "id" => $this->id,
             "presion_arterial" => $this->presion_arterial,
@@ -43,8 +43,9 @@ class DiabeticPatientShowResource extends JsonResource
             "tratamiento_farmacologico" => PatientTreatment::where('diabetic_patient_id', $this->id)->get(),
             "tratamiento_no_farmacologico" => ActivityTreatmentResource::collection($this->activityTreatments),
             "registro_glucosa" => RegisterGlucose::where('diabetic_patient_id', $this->id)->orderBy('id', 'desc')->latest()->take(10) ->get(),
-            "registro_peso" => RegisterGlucose::where('diabetic_patient_id', $this->id)->orderBy('id', 'desc')->latest()->take(10) ->get(),
+            "registro_peso" => RegisterwWight::where('diabetic_patient_id', $this->id)->orderBy('id', 'desc')->latest()->take(10) ->get(),
             "registro_tratamiento" => RegisterTreatmentResource::collection($registerTreatment),
+            "registro_actividad" => RegisterActivityResource::collection($registerActivity),
         ];
     }
 }

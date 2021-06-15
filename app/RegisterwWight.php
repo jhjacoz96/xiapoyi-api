@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class RegisterwWight extends Model
 {
     protected $fillable = [
-        'fecha', 'peso', 'diabetic_patient_id', 'hora',
+        'fecha', 'peso', 'diabetic_patient_id', 'hora', 'created_at'
     ];
 
     public function diabeticPatient () {

@@ -25,7 +25,7 @@ class RiskUpdateRequest extends FormRequest
     {
         return [
             "name" => "required|string",
-            "risk_classification_id" => "sometimes|nullable|integer",
+            "risk_classification_id" => "nullable|sometimes|integer",
         ];
     }
 }
