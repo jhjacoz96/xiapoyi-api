@@ -15,7 +15,7 @@ class ActivityTreatment extends Model
     }
 
     public function diabeticPatient () {
-    	return $this->belongsTo('App\diabeticPatient', 'diabetic_patient_id', 'id');
+    	return $this->belongsTo('App\DiabeticPatient', 'diabetic_patient_id', 'id');
     }
 
 }

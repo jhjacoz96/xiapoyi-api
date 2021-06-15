@@ -11,6 +11,6 @@ class RegisterActivity extends Model
     ];
 
     public function activityTreatment () {
-        return $this->belongsTo('App\activityTreatment', 'activity_treatment_id', 'id');
+        return $this->belongsTo('App\ActivityTreatment', 'activity_treatment_id', 'id');
     }
 }
