@@ -65,6 +65,11 @@ class Pregnant extends Model
     public function medicines () {
         return  $this->belongsToMany('App\Medicine','medicine_pregnants','pregnant_id','medicine_id')->withPivot('dosis', 'presentation_id', 'measure_id', 'frequency_id', 'id');
     }
+
+    public function senalAlarms () {
+        return  $this->belongsToMany('App\SenalAlarm','senal_alarm_pregnants','pregnant_id','senal_alarm_id');
+    }
+
     
     public function vaccines () {
         return  $this->belongsToMany('App\Vaccine','vaccine_pregnants','pregnant_id','vaccine_id');

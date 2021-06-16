@@ -8,6 +8,7 @@ use App\ExamPregnant;
 use App\PsychotrophicPregnant;
 use App\MemberDisability;
 use App\MedicinePregnant;
+use App\SenalAlarmPregnant;
 class FileClinicalObstetricResource extends JsonResource
 {
     /**
@@ -38,6 +39,11 @@ class FileClinicalObstetricResource extends JsonResource
         $exam = ExamPregnant::where('pregnant_id', $this->id)->get();
         $arrayExam =  $exam->map(function ($query) {
             return $query->exam_routine_id;
+        });
+
+        $senal= SenalAlarmPregnant::where('pregnant_id', $this->id)->get();
+        $arraySenal =  $senal->map(function ($query) {
+            return $query->senal_alarm_id;
         });
 
         return [
@@ -106,7 +112,7 @@ class FileClinicalObstetricResource extends JsonResource
             "educacion_paciente" => $this->educacion_paciente ?? null,
             "educacion_depresion" => $this->educacion_depresion ?? null,
             "proporcionar_telefono" => $this->proporcionar_telefono ?? null,
-            "señal_alarma" => $this->señal_alarma ?? null,
+            "senal_alarma" => $arraySenal,
             "tratamiento" => MedicinePregnant::where('pregnant_id', $this->id)->get(),
             "telefonos" => $this->pregnantPhones,
             "vacuna" => $arrayVaccine,

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Relationship extends Model
+class SenalAlarm extends Model
 {
     protected $fillable = [
-        'name'
+        'nombre'
     ];
 }

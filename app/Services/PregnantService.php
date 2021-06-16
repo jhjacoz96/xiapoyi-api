@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Pregnant;
 use App\Member;
+use App\SenalAlarm;
 use App\Events\FileClinicalObstetricEvent;
 
 class PregnantService {
@@ -83,7 +84,6 @@ class PregnantService {
                 "educacion_paciente" => $data["educacion_paciente"],
                 "educacion_depresion" => $data["educacion_depresion"],
                 "proporcionar_telefono" => $data["proporcionar_telefono"],
-                "señal_alarma" => $data["señal_alarma"],
                 "member_id" => $data["member_id"],
             ]);
 
@@ -93,7 +93,7 @@ class PregnantService {
 
             $updateMember = Member::find($model["member_id"]);
 
-            if ($model["observacion_parto"] !== '') {
+            if ($model["observacion_parto"] != '') {
                 $updateMember->update([
                     "embarazo" => false,
                 ]);
@@ -120,6 +120,11 @@ class PregnantService {
             $validar1 = $data['vacuna']  ?? null;
             if (!is_null($validar1)) {
                 $model->vaccines()->sync($data['vacuna']);
+            }
+
+             $validar7 = $data['senal_alarma']  ?? null;
+            if (!is_null($validar7)) {
+                $model->senalAlarms()->sync($data['senal_alarma']);
             }
             
             $validar2 = $data['telefonos']  ?? null;
@@ -278,10 +283,9 @@ class PregnantService {
                 "educacion_paciente" => $data["educacion_paciente"],
                 "educacion_depresion" => $data["educacion_depresion"],
                 "proporcionar_telefono" => $data["proporcionar_telefono"],
-                "señal_alarma" => $data["señal_alarma"],
             ]);
 
-            if ($model["observacion_parto"] !== '') {
+            if ($model["observacion_parto"] != '') {
                 $updateMember->update([
                     "embarazo" => false,
                 ]);
@@ -309,6 +313,11 @@ class PregnantService {
             $validar1 = $data['vacuna']  ?? null;
             if (!is_null($validar1)) {
                 $model->vaccines()->sync($data['vacuna']);
+            }
+
+            $validar7 = $data['senal_alarma']  ?? null;
+            if (!is_null($validar7)) {
+                $model->senalAlarms()->sync($data['senal_alarma']);
             }
             
             $validar2 = $data['telefonos']  ?? null;

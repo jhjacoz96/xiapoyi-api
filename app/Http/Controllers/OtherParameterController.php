@@ -13,6 +13,7 @@ use App\PathologyNeonatal;
 use App\PathologyPregnant;
 use App\Reflex;
 use App\Pathology;
+use App\SenalAlarm;
 
 class OtherParameterController extends Controller
 {
@@ -94,6 +95,15 @@ class OtherParameterController extends Controller
     {
         try {
             $model = Scholarship::All();
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+    public function senalAlarmIndex()
+    {
+        try {
+            $model = SenalAlarm::All();
             return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
         } catch (Exception $e) {
             return $e;

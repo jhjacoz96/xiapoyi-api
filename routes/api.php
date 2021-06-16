@@ -83,6 +83,7 @@ Route::group([
       Route::ApiResource('exam-routine', 'ExamRoutineController');
 
       Route::get('reflex', 'OtherParameterController@reflexIndex');
+      Route::get('senal-alarm', 'OtherParameterController@senalAlarmIndex');
       Route::get('alteration-pregnant', 'OtherParameterController@alterationPregnantIndex');
       Route::get('pathology-neonatal', 'OtherParameterController@pathologyNeonatalIndex');
       Route::get('pathology-pregnant', 'OtherParameterController@pathologyPregnantIndex');
