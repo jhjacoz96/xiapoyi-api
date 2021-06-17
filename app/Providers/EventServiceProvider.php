@@ -12,6 +12,8 @@ use App\Events\FileClinicalObstetricEvent;
 use App\Listeners\FileClinicalObstetricListener;
 use App\Events\DiabeticPatientEvent;
 use App\Listeners\DiabeticPatientListener;
+use App\Events\PostGlucoseEvent;
+use App\Listeners\PostGlucoseListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         FileClinicalObstetricEvent::class => [
             FileClinicalObstetricListener::class,
+        ],
+        PostGlucoseEvent::class => [
+            PostGlucoseListener::class,
         ],
         /*'App\Events\CommentAdultOldEvent' => [
             'App\Listeners\CommentAdultOldListener',

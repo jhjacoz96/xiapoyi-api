@@ -16,6 +16,7 @@ use App\RegisterTreatment;
 use App\ActivityTreatment;
 use App\RegisterActivity;
 use DateTime;
+use App\Events\PostGlucoseEvent;
 
 class DiabeticPatientService {
 
@@ -279,6 +280,15 @@ class DiabeticPatientService {
                 "hora" => $data["hora"] ?? null,
                 "diabetic_patient_id" => $model->id,
             ]);
+
+            if (
+                $data["nivel_glusemia"] < 70 ||
+                $data["nivel_glusemia"] > 125
+            ) {
+                $r = RegisterGlucose::with("diabeticPatient.member")->find($diabetic["id"]);
+                return $r["diabeticPatient"];
+                event(new PostGlucoseEvent($r));
+            }
             
             DB::commit();
             return $diabetic;

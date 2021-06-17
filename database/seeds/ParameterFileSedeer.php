@@ -67,37 +67,37 @@ class ParameterFileSedeer extends Seeder
         $groupAges = [
             [
                 "name" => "Bebé (0 a 1 año)",
-                "rank" => "[0, 1]",
+                "rank" => "[0,1]",
                 "description" => "#2B46FC",
             ],
             [
                 "name" => "Primera infancia (2 a 5 años)",
-                "rank" => "[2, 5]",
+                "rank" => "[2,5]",
                 "description" => "#04F528",
             ],
             [
                 "name" => "Infancia (6 a 11 años)",
-                "rank" => "[6, 11]",
+                "rank" => "[6,11]",
                  "description" => "#F5F127",
             ],
             [
                 "name" => "Adolececia (12 a 18 años)",
-                "rank" => "[12, 18]",
+                "rank" => "[12,18]",
                 "description" => "#F5BF29",
             ],
             [
                 "name" => "Juventud (19 a 26 años)",
-                "rank" => "[19, 26]",
+                "rank" => "[19,26]",
                 "description" => "#F55E26",
             ],
             [
                 "name" => "Adultez (27 a 59 años)",
-                "rank" => "[27, 59]",
+                "rank" => "[27,59]",
                 "description" => "#F55E26",
             ],
             [
                 "name" => "Vejez (Más de 60)",
-                "rank" => "[60, 200]",
+                "rank" => "[60,200]",
                 "description" => "#F55E26",
             ],
         ];

@@ -203,6 +203,7 @@ class DiabeticPatientController extends Controller
       try {
         $data = $request->validated();
         $model = $this->service->registerGlucoseMovil($data);
+        return $model;
         $data = new RegisterGlucoseResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {

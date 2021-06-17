@@ -10,8 +10,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PostGlucoseEvent
+class PostGlucoseEvent implements ShouldBroadcast
 {
+    public $registerGlucose;
+
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
@@ -19,9 +21,9 @@ class PostGlucoseEvent
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($registerGlucose)
     {
-        //
+        $this->registerGlucose = $registerGlucose;
     }
 
     /**
@@ -31,6 +33,6 @@ class PostGlucoseEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return ['glucose-diabetic.' . $this->registerGlucose->id, 'glucose-diabetic'];
     }
 }

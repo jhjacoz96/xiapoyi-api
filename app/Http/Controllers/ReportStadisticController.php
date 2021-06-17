@@ -31,7 +31,7 @@ class ReportStadisticController extends Controller
    	
             }
 
-            $groupAges = GroupAge::All();
+            $groupAges = GroupAge::where('id','>=',4)->get();
             $nameGroupAge = [];
             $cantGroupAge = [];
             foreach ($groupAges as $key => $value) {

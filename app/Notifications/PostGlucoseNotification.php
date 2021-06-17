@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\RegisterGlucose;
 
 class PostGlucoseNotification extends Notification
 {
@@ -16,9 +17,9 @@ class PostGlucoseNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(RegisterGlucose $registerGlucose)
     {
-        //
+        $this->registerGlucose = $registerGlucose;
     }
 
     /**
@@ -29,7 +30,7 @@ class PostGlucoseNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -54,8 +55,11 @@ class PostGlucoseNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            //
+         return [
+            'id' => $this->registerGlucose->id,
+            'type_comment' => $this->registerGlucose->diabetic_patient->member->cedula,
+            'type_notification' => 'Registro glucosa',
+            'time' => Carbon::now(),
         ];
     }
 }
