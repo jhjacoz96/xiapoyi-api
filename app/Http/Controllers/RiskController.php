@@ -26,7 +26,7 @@ class RiskController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = RiskShowResource::collection($model);
+            $data = RiskResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
