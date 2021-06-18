@@ -7,7 +7,7 @@
         <title>Document</title>
     </head>
 <body>
-   Hola {{ $suscriptor->nombre }}  te informamos que hemos dado de alta una nueva publicación, que podrás visualizar en nuestro portal web Xiaoyi.
+   Hola {{ $suscriptor->nombre }}  te informamos que hemos dado de alta una nueva publicación, que podrás visualizar en nuestro portal web KA-THANI.
    &nbsp;
     Titulo de la publicación: <strong>{{ $publicacion->name }}</strong>
     &nbsp;

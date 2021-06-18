@@ -57,7 +57,7 @@ class CommentService {
                 "tipoComentario" =>  $typeComment,
             ];
             Mail::send('correos.respuestaComentarioo', $datosMensaje,function($mensaje) use($model){
-                $mensaje->to($model["correo"])->subject('Respuesta de comentario - Xiaoyi');
+                $mensaje->to($model["correo"])->subject('Respuesta de comentario - KA-THANI');
             });
             DB::commit();
             return  $model;
