@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\RegisterGlucose;
+use Carbon\Carbon;
 
 class PostGlucoseNotification extends Notification
 {
@@ -57,7 +58,7 @@ class PostGlucoseNotification extends Notification
     {
          return [
             'id' => $this->registerGlucose->id,
-            'type_comment' => $this->registerGlucose->diabetic_patient->member->cedula,
+            'type_comment' => $this->registerGlucose->diabeticPatient->member->cedula,
             'type_notification' => 'Registro glucosa',
             'time' => Carbon::now(),
         ];

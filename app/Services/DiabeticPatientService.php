@@ -286,7 +286,6 @@ class DiabeticPatientService {
                 $data["nivel_glusemia"] > 125
             ) {
                 $r = RegisterGlucose::with("diabeticPatient.member")->find($diabetic["id"]);
-                return $r["diabeticPatient"];
                 event(new PostGlucoseEvent($r));
             }
             
