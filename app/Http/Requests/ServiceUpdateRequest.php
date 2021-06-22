@@ -25,8 +25,8 @@ class ServiceUpdateRequest extends FormRequest
     {
         return [
             "nombre" => "required|string",
-            "descripcion" => "sometimes|nullable|string",
-            "image_service" => "sometimes|nullable|file",
+            "descripcion" => "required|string",
+            "image" => "sometimes|nullable",
             "view_web" => "sometimes|nullable|boolean",
         ];
     }

@@ -33,8 +33,8 @@ class ServiceService {
             $model->view_web = false;
             $model->save();
             /*if (isset($data['image_service'])) $model->assignImage($data['image_service']);*/
-            if (isset($data['image_service'])) {
-                $image = $data['image_service']->getRealPath();
+            if (isset($data['image']) != "null") {
+                $image = $data['image']->getRealPath();
                 $folder = 'image/service';
                 \Cloudder::upload($image, null, ['folder' => $folder], []);
                 $c = \Cloudder::getResult();
@@ -82,10 +82,16 @@ class ServiceService {
             $model = Service::find($id);
             if(!$model) return null;
             $model->update($data);
-            $model->view_web = $data["view_web"];
+            if (isset($data['view_web'])) $model->view_web = $data["view_web"];
             $model->save();
-            if (isset($data['image_service'])) {
-                
+            if (isset($data['image']) && $data['image'] != "null") {
+                $image = $data['image']->getRealPath();
+                $folder = 'image/service';
+                \Cloudder::upload($image, null, ['folder' => $folder], []);
+                $c = \Cloudder::getResult();
+                $model->image->url = $c["url"];
+                $model->image->public_id = $c["public_id"];
+                $model->push();
             }
             // $model->assignImage($data['image_service']);
             DB::commit();

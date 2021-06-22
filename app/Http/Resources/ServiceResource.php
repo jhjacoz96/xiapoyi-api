@@ -20,7 +20,7 @@ class ServiceResource extends JsonResource
             "descripcion" => $this->descripcion,
             "view_web" => $this->view_web,
             "activities" => ActivityResource::collection($this->activities),
-            "image" => $this->image
+            "image" => $this->image ? $this->image->url : null,
         ];
     }
 }

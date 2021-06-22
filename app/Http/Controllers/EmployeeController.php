@@ -169,7 +169,6 @@ class EmployeeController extends Controller
         try {
             $data = $request->validated();
             $model = $this->service->updateAvatar($data);
-            return $model;
             $data = new EmployeeResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
           } catch (\Exception $e) {

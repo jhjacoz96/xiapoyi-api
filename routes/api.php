@@ -52,7 +52,7 @@ Route::group([
 
       Route::ApiResource('institution', 'InstitutionController');
 
-      Route::ApiResource('service', 'ServiceController');
+      Route::resource('service', 'ServiceController');
       Route::put('service/assign-activities/{id}', 'ServiceController@assignActivities');
 
       Route::ApiResource('activity', 'ActivityController');
