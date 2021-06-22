@@ -33,7 +33,7 @@ class ServiceService {
             $model->view_web = false;
             $model->save();
             /*if (isset($data['image_service'])) $model->assignImage($data['image_service']);*/
-            if (isset($data['image']) != "null") {
+            if ($data['image'] != "null") {
                 $image = $data['image']->getRealPath();
                 $folder = 'image/service';
                 \Cloudder::upload($image, null, ['folder' => $folder], []);
