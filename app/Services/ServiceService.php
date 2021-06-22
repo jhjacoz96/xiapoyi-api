@@ -84,7 +84,7 @@ class ServiceService {
             $model->update($data);
             if (isset($data['view_web'])) $model->view_web = $data["view_web"];
             $model->save();
-            if (isset($data['image']) && $data['image'] != "null") {
+            if ($data['image'] != "null") {
                 $image = $data['image']->getRealPath();
                 $folder = 'image/service';
                 \Cloudder::upload($image, null, ['folder' => $folder], []);
@@ -126,7 +126,6 @@ class ServiceService {
             $model->delete();
             return true;
         } catch (\Exception $e) {
-            DB::rollback();
             return $e;
         }
     }
