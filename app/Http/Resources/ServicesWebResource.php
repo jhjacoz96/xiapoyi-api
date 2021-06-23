@@ -19,7 +19,7 @@ class ServicesWebResource extends JsonResource
         $services =  $service->filter(function ($query) {
            return $query->view_web == 1;
         });
-        $arrayServices = ServiceResource::collection($services);
+        $arrayServices = ServiceListResource::collection($services);
         return [
             "id" => $this->id,
             "description1" => $this->description1,
