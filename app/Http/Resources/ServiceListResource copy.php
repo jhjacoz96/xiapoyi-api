@@ -18,7 +18,9 @@ class ServiceListResource extends JsonResource
             "id" => $this->id,
             "nombre" => $this->nombre,
             "descripcion" => $this->descripcion,
-            "activies" => ActivityResource::collection($this->activities)
+            "view_web" => $this->view_web,
+            "activities" => ActivityResource::collection($this->activities),
+            "image" => $this->image ?? null,
         ];
     }
 }

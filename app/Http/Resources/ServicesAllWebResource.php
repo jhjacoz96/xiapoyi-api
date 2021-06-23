@@ -20,7 +20,7 @@ class ServicesAllWebResource extends JsonResource
             "id" => $this->id,
             "description1" => $this->description1,
             "description2" => $this->description2,
-            "services" =>  ServiceResource::collection($service),
+            "services" =>  ServiceListResource::collection($service),
         ];
     }
 }
