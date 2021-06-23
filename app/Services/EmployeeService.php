@@ -45,7 +45,7 @@ class EmployeeService {
                \Cloudder::destroyImage($employee->image->public_id, ['folder' => $folder]);
                $employee->image->url = $c['url'];
                $employee->image->public_id = $c['public_id'];
-               $employee->image->save();
+               $employee->push();
             } else {
                $employee->image()->create([
                    'url' => $c['url'],
