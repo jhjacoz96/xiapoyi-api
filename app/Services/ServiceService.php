@@ -119,6 +119,10 @@ class ServiceService {
         try {
             $model = Service::find($id);
             if(!$model) return null;
+            /*if ($model->image->public_id) {
+                $folder = 'image/service';
+                \Cloudder::destroyImage($model->image->public_id, ['folder' => $folder]);
+            }*/
             $model->delete();
             return true;
         } catch (\Exception $e) {
