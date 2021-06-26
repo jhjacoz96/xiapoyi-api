@@ -19,7 +19,7 @@ class ReportController extends Controller
     public function fileFamilyIndex (Request $request) {
         try {
             $model = $this->service->fileFamilyIndex($request);
-            $data = FileFamilyResource::collection($model);
+            $data = FileFamilyListResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
