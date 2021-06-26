@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ReportService;
 use App\Utils\Enums\EnumResponse;
-use App\Http\Resources\FilefamilyResource;
+use App\Http\Resources\FileFamilyResource;
 use App\Http\Resources\MemberResource;
 
 class ReportController extends Controller
