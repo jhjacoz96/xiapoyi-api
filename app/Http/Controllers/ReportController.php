@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\ReportService;
 use App\Utils\Enums\EnumResponse;
 use App\Http\Resources\FileFamilyResource;
+use App\Http\Resources\FileFamilyListResource;
 use App\Http\Resources\MemberResource;
 
 class ReportController extends Controller
