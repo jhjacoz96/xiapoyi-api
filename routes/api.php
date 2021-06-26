@@ -226,6 +226,17 @@ Route::group([
           ]);
       });
 
+      Route::prefix('report')->group(function () {
+        Route::get('file-family', [
+              'uses' => 'ReportController@fileFamilyIndex',
+              'as' => 'api.report.fileFamily.index'
+          ]);
+        Route::get('member', [
+              'uses' => 'ReportController@memberIndex',
+              'as' => 'api.report.member.index'
+          ]);
+      });
+
 
       Route::post('organization', 'ConfigWeb@organizationStore');
       Route::get('organization', 'ConfigWeb@organizationIndex');
@@ -258,6 +269,9 @@ Route::group([
               'uses' => 'ReportStadisticController@dashboard',
           ]);
        });
+
+       
+
   });
 
   Route::group([

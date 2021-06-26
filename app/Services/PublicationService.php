@@ -41,7 +41,7 @@ class PublicationService {
                 'filter_three_publication_id' => $data['filter_three_publication_id'] != "null" ? $data['filter_three_publication_id'] : null,
             ]);
             $folder = 'image/publication';
-            if (!empty($data['image_mini'])) {
+            if ($data['image_mini'] != "null") {
                 // $model->assingImageMini($data['image_mini']);
                 $image = $data['image_mini']->getRealPath();
                 \Cloudder::upload($image, null, ['folder' => $folder], []);
@@ -67,9 +67,10 @@ class PublicationService {
                 ]);
             } else if ($data["type_resource"] == 'document') {
                 $image = $data['resource'];
+                $publicId = \Str::random(4) . $data['resource']->getClientOriginalName();
                 \Cloudder::upload(
                     $image,
-                    \Str::random(10) . $data['resource']->getClientOriginalName(),
+                    $publicId,
                     [
                         "resource_type" => "raw",
                         "folder" => $folder
@@ -77,6 +78,9 @@ class PublicationService {
                     []
                 );
                 $c = \Cloudder::getResult();
+                /*\Cloudder::rename($c["public_id"], 'hola'.$publicId, [
+                        "folder" => $folder
+                    ]);*/
                 $resource = Resource::create([
                     "type_resource" => $data['type_resource'],
                     "url"  => $c["url"],
@@ -129,13 +133,12 @@ class PublicationService {
                 'filter_three_publication_id' => $data['filter_three_publication_id'] != "null" ? $data['filter_three_publication_id'] : null
             ]);
             $folder = 'image/publication';
-            if  (!empty($data['image_mini'])) {
+            if  ($data['image_mini'] != "null") {
                 \Cloudder::upload($image, null, ['folder' => $folder], []);
                 $c = \Cloudder::getResult();
                 $data->image->url = $c['url'];
                 $data->image->public_id = $c['public_id'];
                 $data->push();
-                \Cloudder::destroyImage($data->image->public_id, ['folder' => $folder]);
             }
             // $model->assingImageMini($data['image_mini']);
             /*    if (!empty($data['image_mini'])) $model->assingImageMini($data['image_mini']);

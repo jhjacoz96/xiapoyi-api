@@ -497,11 +497,21 @@ class ConfigWeb extends Controller
                 'Content-Type: application/xlsx',
             );
             return \Response::download($file,"productos.xlsx",$header);*/
-             $file_path = public_path().$request["resource"];
+             /*$file_path = public_path().$request["resource"];
              $header=array(
                 'Content-Type: application/odt',
             );
-            return  response()->download($file_path, "productos.odt", $header);
+            return  response()->download($file_path, "productos.odt", $header);*/
+            $folder = 'image/publication';
+            $c = \Cloudder::privateDownloadUrl (
+                "sample",
+                "jpg",
+                [
+                    "resource_type" => "image",
+                    "attachment" => true
+                ]
+            );
+            return $c;
         } catch (Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.dowloandFile');
         }
