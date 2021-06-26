@@ -227,11 +227,11 @@ Route::group([
       });
 
       Route::prefix('report')->group(function () {
-        Route::get('file-family', [
+        Route::post('file-family', [
               'uses' => 'ReportController@fileFamilyIndex',
               'as' => 'api.report.fileFamily.index'
           ]);
-        Route::get('member', [
+        Route::post('member', [
               'uses' => 'ReportController@memberIndex',
               'as' => 'api.report.member.index'
           ]);
