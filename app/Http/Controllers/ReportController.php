@@ -37,7 +37,8 @@ class ReportController extends Controller
             $data = ReportFileFamilyResource::collection($model);
             $organization = Organization::find(3);
             $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
-            return $pdf->download('informe_ficha_familiar' . '.pdf');
+            $pdf->save($path);
+            return response()->download($path);
         } catch (Exception $e) {    
             return $e;
         }
