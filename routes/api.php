@@ -231,7 +231,7 @@ Route::group([
             'uses' => 'ReportController@fileFamilyIndex',
             'as' => 'api.report.fileFamily.index'
         ]);
-        Route::get('file-family/generate', [
+        Route::post('file-family/generate', [
             'uses' => 'ReportController@fileFamilyGenerate',
             'as' => 'api.report.fileFamily.post'
         ]);
