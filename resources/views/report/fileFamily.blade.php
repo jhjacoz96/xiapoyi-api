@@ -17,7 +17,7 @@
                     <td width="94%">
                         <label for="p1">Cantón:</label><br>
                         <input type="text" value="
-                            {{ $organization->canton->name }}
+                            {{ isset($organization->canton) ? $organization->canton->name : '' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -27,7 +27,7 @@
                     <td width="94%">
                         <label for="p1">Provincia:</label><br>
                         <input type="text" value="
-                            {{ $organization->province->name }}
+                            {{ isset( $organization->province) ? $organization->province->name : '' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -37,7 +37,7 @@
                     <td width="94%">
                         <label for="p1">Institución del sistema:</label><br>
                         <input type="text" value="
-                            {{ $organization->institution->name }}
+                            {{ isset($organization->institution) ? $organization->institution->name : '' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
