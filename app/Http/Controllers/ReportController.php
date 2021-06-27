@@ -11,7 +11,9 @@ use App\Http\Resources\ReportFileFamilyResource;
 use App\Http\Resources\MemberResource;
 use App\FileFamily;
 use App\Organization;
+use DateTime;
 use PDF;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
@@ -36,8 +38,10 @@ class ReportController extends Controller
             $model = $this->service->fileFamilyIndex($request);
             $data = ReportFileFamilyResource::collection($model);
             $organization = Organization::find(3);
+            $path = public_path() . '/pdf/' . Carbon::now()->toDateTimeString() . '_informe_ficha_familiar' . '.pdf';
             $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
-            return $pdf->download('informe_ficha_familiar' . '.pdf');
+            $pdf->save($path);
+            return response()->download($path);
         } catch (Exception $e) {
             return $e;
         }
