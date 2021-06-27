@@ -16,7 +16,7 @@ class ReportFileFamilyResource extends JsonResource
     public function toArray($request)
     {
         $jefe_familia = Member::whereHas('relationship', function($query) {
-            $query->find(3);
+            $query->find(1);
         })->first();
        return [
             "id" => $this->id,
