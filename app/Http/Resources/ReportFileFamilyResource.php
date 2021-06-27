@@ -15,9 +15,9 @@ class ReportFileFamilyResource extends JsonResource
      */
     public function toArray($request)
     {
-        /*$jefe_familia = Member::whereHas('relationship', function($query) {
+        $jefe_familia = Member::whereHas('relationship', function($query) {
             $query->find(1);
-        })->first();*/
+        })->first();
        return [
             "id" => $this->id,
             "manzana" => $this->manzana,
@@ -31,7 +31,7 @@ class ReportFileFamilyResource extends JsonResource
             "cultural_group_id" => $this->culturalGroup,
             "miembros" => MemberResource::collection($this->members),
             "mortalidad" => MortalityResource::collection($this->mortalities),
-            //"jefe_familia" => $jefe_familia ? $jefe_familia->nombre : null,
+            "jefe_familia" => $jefe_familia ? $jefe_familia->nombre : null,
             "riesgos" => RiskFileFamilyResource::collection($this->risks),
             "total_risk" => $this->total_risk,
             "level_total_id" => $this->levelTotal,
