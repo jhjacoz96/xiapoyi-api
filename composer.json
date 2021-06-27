@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.5",
         "myclabs/php-enum": "^1.7",
         "pusher/pusher-php-server": "^4.1",
+        "ext-gd": "*",
         "spatie/laravel-permission": "^4.0"
     },
     "require-dev": {
