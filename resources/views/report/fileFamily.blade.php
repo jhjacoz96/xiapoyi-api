@@ -10,7 +10,7 @@
         <main>
             <div class="title">Reporte de ficha familiar</div>
             <br>
-             <div class="section_title">Datos generales</div>
+             <div class="section_title">Datos generales:</div>
             <table align="center" width="100%" style="background: #ebebeb" class="tab-font">
                 <tr>
                     <td width="3%">&nbsp;</td>
@@ -35,7 +35,7 @@
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
-                        <label for="p1">Provincia:</label><br>
+                        <label for="p1">Institución del sistema:</label><br>
                         <input type="text" value="
                             {{ $organization->institution->name }}
                         "/>
