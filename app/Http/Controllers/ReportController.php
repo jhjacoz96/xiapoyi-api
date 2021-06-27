@@ -43,6 +43,18 @@ class ReportController extends Controller
         }
     }
 
+    public function pdf() {
+        try {
+            $model = FileFamily::All();
+            $data = ReportFileFamilyResource::collection($model);
+            $organization = Organization::find(3);
+            $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
+            return $pdf->download('informe_ficha_familiar' . '.pdf');
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     public function memberIndex (Request $request) {
         try {
             $model = $this->service->memberIndex($request);

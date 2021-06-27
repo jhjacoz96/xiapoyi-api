@@ -235,6 +235,10 @@ Route::group([
             'uses' => 'ReportController@fileFamilyGenerate',
             'as' => 'api.report.fileFamily.post'
         ]);
+        Route::get('pdf', [
+            'uses' => 'ReportController@pdf',
+            'as' => 'api.report.fileFamily.index'
+        ]);
         Route::post('member', [
               'uses' => 'ReportController@memberIndex',
               'as' => 'api.report.member.index'
