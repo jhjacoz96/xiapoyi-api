@@ -17,7 +17,7 @@
                     <td width="94%">
                         <label for="p1">Cantón:</label><br>
                         <input type="text" value="
-                            {{ $organization->canton }}
+                            {{ $organization->canton->name }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
