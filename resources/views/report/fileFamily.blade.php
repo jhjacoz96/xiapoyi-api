@@ -15,6 +15,46 @@
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
+                        <label for="p1">Cantón:</label><br>
+                        <input type="text" value="
+                            {{ $organization->canton }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Provincia:</label><br>
+                        <input type="text" value="
+                            {{ $organization->province->name }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Provincia:</label><br>
+                        <input type="text" value="
+                            {{ $organization->institution->name }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Código de unidad operativa:</label><br>
+                        <input type="text" value="
+                            {{ $organization->code_uo }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <!-- <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
                         <label for="p1">Total de registros:</label><br>
                         <input type="text" value="
                             <?php $count = count($data) ?>
@@ -22,7 +62,7 @@
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
-                </tr>
+                </tr> -->
                 <tr style="line-height: 4px;">
                     <td colspan="4">&nbsp;</td>
                 </tr>
