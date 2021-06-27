@@ -35,7 +35,7 @@ class ReportController extends Controller
         try {
             $model = $this->service->fileFamilyIndex($request);
             $data = ReportFileFamilyResource::collection($model);
-            $organization = Organization::find(1);
+            $organization = Organization::find(3);
             $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
             return $pdf->stream('informe_ficha_familiar' . '.pdf');
         } catch (Exception $e) {
