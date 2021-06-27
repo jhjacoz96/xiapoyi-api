@@ -4,7 +4,6 @@
 /public/imagenPublication
 /public/imagenWeb
 /public/imagePerfil
-/public/pdf
 /vendor
 .env
 .env.backup
