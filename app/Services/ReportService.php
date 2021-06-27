@@ -24,7 +24,7 @@ class ReportService {
                              (count($request["levelTotalRisk"]) > 0) ? $model = $q->whereIn("level_total_id", $request["levelTotalRisk"]) : "";
                              !empty($request["startDate"]) && 
                              !empty($request["endDate"])            ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
-                             $model = $q->get();
+                             $model = $q->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;

@@ -9,6 +9,9 @@ use App\Http\Resources\FileFamilyResource;
 use App\Http\Resources\FileFamilyListResource;
 use App\Http\Resources\ReportFileFamilyResource;
 use App\Http\Resources\MemberResource;
+use App\FileFamily;
+use App\Organization;
+use PDF;
 
 class ReportController extends Controller
 {
@@ -23,6 +26,18 @@ class ReportController extends Controller
             $model = $this->service->fileFamilyIndex($request);
             $data = ReportFileFamilyResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function fileFamilyGenerate(Request $request) {
+        try {
+            $model = $this->service->fileFamilyIndex($request);
+            $data = ReportFileFamilyResource::collection($model);
+            $organization = Organization::find(1);
+            $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
+            return $pdf->stream('informe_ficha_familiar' . '.pdf');
         } catch (Exception $e) {
             return $e;
         }

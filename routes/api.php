@@ -228,9 +228,13 @@ Route::group([
 
       Route::prefix('report')->group(function () {
         Route::post('file-family', [
-              'uses' => 'ReportController@fileFamilyIndex',
-              'as' => 'api.report.fileFamily.index'
-          ]);
+            'uses' => 'ReportController@fileFamilyIndex',
+            'as' => 'api.report.fileFamily.index'
+        ]);
+        Route::get('file-family/generate', [
+            'uses' => 'ReportController@fileFamilyGenerate',
+            'as' => 'api.report.fileFamily.post'
+        ]);
         Route::post('member', [
               'uses' => 'ReportController@memberIndex',
               'as' => 'api.report.member.index'
@@ -307,3 +311,4 @@ Route::group([
     Route::post('comment', 'CommentController@store');
     Route::post('suscription', 'SuscriptionController@store');
   });
+
