@@ -40,8 +40,9 @@ class ReportService {
                              (count($request["pathology"]) > 0)  ? $model = $q->whereHas("pathologies", function($query) use($request) {
                                 $query->whereIn("pathologies.id", $request["pathology"]);
                              }) : "";
-                             !empty($request["groupAge"])        ? $model = $q->where("group_age_id", $request["groupAge"]) : "";
-                             !empty($request["vaccine"])         ? $model = $q->where("vacunacion", $request["vaccine"]) : "";
+                             (count($request["groupAge"]) > 0)   ? $model = $q->whereIn("group_age_id", $request["groupAge"]) : "";
+                             !empty($request["gender"])          ? $model = $q->whereIn("gender_id", $request["gender"]) : "";
+                             isset($request["vaccine"])         ? $model = $q->where("vacunacion", $request["vaccine"]) : "";
                              !empty($request["pregnant"])        ? $model = $q->where("embarazo", $request["pregnant"]) : "";
                              !empty($request["startDate"]) && 
                              !empty($request["endDate"])         ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
