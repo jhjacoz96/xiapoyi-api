@@ -21,10 +21,10 @@ class DiabeticPatientShowResource extends JsonResource
     public function toArray($request)
     {
         $id = $this->id;
-        $registerTreatment = RegisterTreatment::whereHas('diabeticPatient', function($query) use($id) {
+        $registerTreatment = RegisterTreatment::whereHas('patientTreatment', function($query) use($id) {
                 $query->where('diabetic_patient_id', $id);
         })->latest()->take(10)->get();
-        $registerActivity = RegisterActivity::whereHas('diabeticPatient', function($query) use($id) {
+        $registerActivity = RegisterActivity::whereHas('activityTreatment', function($query) use($id) {
                 $query->where('diabetic_patient_id', $id);
         })->latest()->take(10)->get();
         return [
