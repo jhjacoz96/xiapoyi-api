@@ -2,12 +2,12 @@
     use Carbon\Carbon;
  ?>
 <script type="text/php">
-    if (isset($pdf)) { 
-
-     $font = Font_Metrics::get_font("helvetica", "bold"); 
-     $pdf->page_text(500,10, "Page: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0)); 
-
-    } 
+    if ( isset($pdf) ) {
+        $pdf->page_script('
+            $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+            $pdf->page_text(500,10, "Pagina {PAGE_NUM} de {PAGE_COUNT}", $font, 6, array(0,0,0)); 
+        ');
+    }
 </script>
 <header>
     <table align="center" width="100%">
