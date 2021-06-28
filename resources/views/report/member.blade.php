@@ -71,7 +71,7 @@
                         <td >{{ $item->groupAge ? $item->groupAge->name : '' }}</td>
                         <td>
                             @if (count($patologias) > 0)
-                                {{ implode("," $patologias) }}
+                                {{ implode(",", $patologias) }}
                             @else
                                 Sin registro 
                             @endif
