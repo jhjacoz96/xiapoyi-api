@@ -9,6 +9,8 @@ use App\Http\Requests\RegisterGlucosaRequest;
 use App\Http\Requests\RegisterWeightRequest;
 use App\Utils\Enums\EnumResponse;
 use App\DiabeticPatient;
+use App\RegisterGlucose;
+use App\RegisterwWight;
 use App\Http\Resources\RegisterGlucoseResource;
 use App\Http\Resources\RegisterWightResource;
 use App\Http\Resources\DiabeticPatientResource;
@@ -18,6 +20,7 @@ use App\Http\Resources\RegisterTreatmentResource;
 use App\Http\Resources\MemberDiabeticPatientResource;
 use App\Http\Resources\MemberResource;
 use App\Services\DiabeticPatientService;
+use Carbon\Carbon;
 
 class DiabeticPatientController extends Controller
 {
@@ -196,6 +199,58 @@ class DiabeticPatientController extends Controller
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
         return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+      }
+    }
+
+    public function getUltimoDiaMes($elAnio,$elMes) {
+        return date("d",(mktime(0,0,0,$elMes+1,1,$elAnio)-1));
+    }
+
+    public function stadististicGlucose () {
+      try {
+        /* mo_dia=$this->getUltimoDiaMes($request["ano"],$request["mes"]);
+        $fecha_inicial=date("Y-m-d H:i:s", strtotime($request["ano"]."-".$request["mes"]."-".$primer_dia) );
+        $fecha_final=date("Y-m-d H:i:s", strtotime($request["ano"]."-".$request["mes"]."-".$ultimo_dia) ); */
+
+        $user = \Auth::user()->diabeticPatient;
+        $glucosa = RegisterGlucose::whereHas('diabeticPatient', function($query) use($user) {
+                $query->where('diabetic_patient_id', $user["id"]);
+        })->latest()->take(10)->pluck('nivel_glusemia');
+        $fecha = RegisterGlucose::whereHas('diabeticPatient', function($query) use($user) {
+                $query->where('diabetic_patient_id', $user["id"]);
+        })->latest()->take(10)->pluck('fecha');
+        $fecha = $fecha->map(function ($query) {
+            return Carbon::parse($query)->format('d/m/Y');
+        });
+        $data = [
+            "glucosa" => $glucosa,
+            "fecha" => $fecha, 
+        ];
+        return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+      } catch (\Exception $e) {
+        return $e;
+      }
+    }
+
+    public function stadististicWeight (Request $request) {
+      try {
+        $user = \Auth::user()->diabeticPatient;
+        $peso = RegisterwWight::whereHas('diabeticPatient', function($query) use($user) {
+                $query->where('diabetic_patient_id', $user["id"]);
+        })->latest()->take(10)->pluck('peso');
+        $fecha = RegisterwWight::whereHas('diabeticPatient', function($query) use($user) {
+                $query->where('diabetic_patient_id', $user["id"]);
+        })->latest()->take(10)->pluck('fecha');
+        $fecha = $fecha->map(function ($query) {
+            return Carbon::parse($query)->format('d/m/Y');
+        });
+        $data = [
+            "glucosa" => $peso,
+            "fecha" => $fecha, 
+        ];
+        return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+      } catch (\Exception $e) {
+        return $e;
       }
     }
 

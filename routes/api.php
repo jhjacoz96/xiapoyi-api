@@ -176,7 +176,14 @@ Route::group([
                 'uses' => 'DiabeticPatientController@dashboardMovil',
                 'as' => 'api.diabeticPatientController.dashboardMovil'
             ]);
-            
+            Route::get('stadististic-glucose', [
+                'uses' => 'DiabeticPatientController@stadististicGlucose',
+                'as' => 'api.diabeticPatientController.stadististicGlucose'
+            ]);
+            Route::get('stadististic-weight', [
+                'uses' => 'DiabeticPatientController@stadististicWeight',
+                'as' => 'api.diabeticPatientController.stadististicWeight'
+            ]);
       });
 
       Route::post('file-clinical-neonatology/search', 'FileClinicalNeonatologyController@search');
