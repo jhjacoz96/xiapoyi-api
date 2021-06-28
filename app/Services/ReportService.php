@@ -41,7 +41,7 @@ class ReportService {
                                 $query->whereIn("pathologies.id", $request["pathology"]);
                              }) : "";
                              (count($request["groupAge"]) > 0)   ? $model = $q->whereIn("group_age_id", $request["groupAge"]) : "";
-                             !empty($request["gender"])          ? $model = $q->whereIn("gender_id", $request["gender"]) : "";
+                             !empty($request["gender"])          ? $model = $q->where("gender_id", $request["gender"]) : "";
                              isset($request["vaccine"])         ? $model = $q->where("vacunacion", $request["vaccine"]) : "";
                              !empty($request["pregnant"])        ? $model = $q->where("embarazo", $request["pregnant"]) : "";
                              !empty($request["startDate"]) && 
