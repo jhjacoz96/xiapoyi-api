@@ -37,7 +37,7 @@ class ReportController extends Controller
         try {
             $model = $this->service->fileFamilyIndex($request);
             $data = ReportFileFamilyResource::collection($model);
-            $organization = Organization::find(1);
+            $organization = Organization::find(3);
             $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
             return $pdf->download("informe_ficha_familiar.pdf");
         } catch (Exception $e) {
@@ -49,7 +49,7 @@ class ReportController extends Controller
         try {
             $model = FileFamily::All();
             $data = ReportFileFamilyResource::collection($model);
-            $organization = Organization::find(1);
+            $organization = Organization::find(3);
             $path = public_path().'/pdf/'.\Str::random(4).'_informe_ficha_familiar'.'.pdf';
             $header=array(
                 'Content-Type: application/pdf',
