@@ -42,8 +42,8 @@ class ReportService {
                              }) : "";
                              (count($request["groupAge"]) > 0)   ? $model = $q->whereIn("group_age_id", $request["groupAge"]) : "";
                              !empty($request["gender"])          ? $model = $q->where("gender_id", $request["gender"]) : "";
-                             isset($request["vaccine"])         ? $model = $q->where("vacunacion", $request["vaccine"]) : "";
-                             !empty($request["pregnant"])        ? $model = $q->where("embarazo", $request["pregnant"]) : "";
+                             ($request["vaccine"] != null)       ? $model = $q->where("vacunacion", $request["vaccine"]) : "";
+                             ($request["pregnant"] != null)      ? $model = $q->where("embarazo", $request["pregnant"]) : "";
                              !empty($request["startDate"]) && 
                              !empty($request["endDate"])         ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
                              $model = $q->get();

@@ -245,7 +245,7 @@ class DiabeticPatientController extends Controller
             return Carbon::parse($query)->format('d/m/Y');
         });
         $data = [
-            "glucosa" => $peso,
+            "peso" => $peso,
             "fecha" => $fecha, 
         ];
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);

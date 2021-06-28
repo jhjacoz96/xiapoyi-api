@@ -240,7 +240,11 @@ Route::group([
         ]);
         Route::post('file-family/generate', [
             'uses' => 'ReportController@fileFamilyGenerate',
-            'as' => 'api.report.fileFamily.post'
+            'as' => 'api.report.fileFamilyGenerate.post'
+        ]);
+        Route::post('member/generate', [
+            'uses' => 'ReportController@memberGenerate',
+            'as' => 'api.report.memberGenerate.post'
         ]);
         Route::get('pdf', [
             'uses' => 'ReportController@pdf',
@@ -248,7 +252,7 @@ Route::group([
         ]);
         Route::post('member', [
               'uses' => 'ReportController@memberIndex',
-              'as' => 'api.report.member.index'
+              'as' => 'api.report.memberIndex.post'
           ]);
       });
 
