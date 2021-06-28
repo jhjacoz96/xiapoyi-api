@@ -19,11 +19,11 @@ class MemberShowResource extends JsonResource
     {
         $pathologies = MemberPathology::where('member_id', $this->id)->get();
         $arrayPathologies = $pathologies->map(function($query) {
-            return $query->name;
+            return $query->pathology->name;
         });
         $disability = MemberDisability::where('member_id', $this->id)->get();
         $arrayDisability = $disability->map(function($query) {
-            return $query->name;
+            return $query->disability->name;
         });
         $prenatal = Pregnant::where('member_id', $this->id)->get();
          $fileFamily = $this->fileFamily;
