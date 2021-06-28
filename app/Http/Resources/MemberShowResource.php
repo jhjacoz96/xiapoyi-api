@@ -44,7 +44,7 @@ class MemberShowResource extends JsonResource
             "salud_bucal" => $this->salud_bucal,
             "scholarship_id" => $this->scholarship,
             "relationship_id" => $this->relationship,
-            "gender_id" => $this->gender_id,
+            "gender_id" => $this->gender,
             "patologias" => $arrayPathologies,
             "discapacidades" => $arrayDisability,
             "embarazo" => $this->embarazo,

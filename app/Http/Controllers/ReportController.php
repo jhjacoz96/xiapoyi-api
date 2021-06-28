@@ -9,6 +9,7 @@ use App\Http\Resources\FileFamilyResource;
 use App\Http\Resources\FileFamilyListResource;
 use App\Http\Resources\ReportFileFamilyResource;
 use App\Http\Resources\MemberResource;
+use App\Http\Resources\MemberShowResource;
 use App\FileFamily;
 use App\Organization;
 use DateTime;
@@ -64,7 +65,7 @@ class ReportController extends Controller
     public function memberIndex (Request $request) {
         try {
             $model = $this->service->memberIndex($request);
-            $data = MemberResource::collection($model);
+            $data = MemberShowResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
