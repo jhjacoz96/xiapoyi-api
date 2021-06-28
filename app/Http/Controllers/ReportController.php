@@ -37,14 +37,9 @@ class ReportController extends Controller
         try {
             $model = $this->service->fileFamilyIndex($request);
             $data = ReportFileFamilyResource::collection($model);
-            $organization = Organization::find(3);
-            $path = public_path().'/pdf/'.\Str::random(4).'_informe_ficha_familiar'.'.pdf';
-            $header=array(
-                'Content-Type: application/pdf',
-            );
+            $organization = Organization::find(1);
             $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
-            $pdf->save($path);
-            return response()->download($path,"informe_ficha_familiar.pdf", $header);
+            return $pdf->download("informe_ficha_familiar.pdf");
         } catch (Exception $e) {
             return $e;
         }
@@ -54,13 +49,12 @@ class ReportController extends Controller
         try {
             $model = FileFamily::All();
             $data = ReportFileFamilyResource::collection($model);
-            $organization = Organization::find(3);
+            $organization = Organization::find(1);
             $path = public_path().'/pdf/'.\Str::random(4).'_informe_ficha_familiar'.'.pdf';
             $header=array(
                 'Content-Type: application/pdf',
             );
-            $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'));
-            $pdf->save($path);
+            $pdf = \PDF::loadView('report.fileFamily', compact('data', 'organization'))->save($path);
             return response()->download($path, "informe_ficha_familiar.pdf", $header);
         } catch (Exception $e) {
             return $e;
