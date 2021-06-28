@@ -71,14 +71,14 @@
                         <td >{{ $item->groupAge ? $item->groupAge->name : '' }}</td>
                         <td>
                             @if (count($patologias) > 0)
-                                {{ implode($patologias , ', ') }}
+                                {{ implode("," $patologias) }}
                             @else
                                 Sin registro 
                             @endif
                         </td>
                         <td >
                             @if (count($discapacidades) > 0)
-                                {{ implode($discapacidades , ', ') }}
+                                {{ implode(",", $discapacidades) }}
                             @else
                                 Sin registro
                             @endif

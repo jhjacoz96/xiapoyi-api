@@ -52,7 +52,7 @@ class ReportController extends Controller
             $data = MemberShowResource::collection($model);
             $organization = Organization::find(3);
             $pdf = \PDF::loadView('report.member', compact('data', 'organization'));
-            return $pdf->download("informe_miembros.pdf");
+            return $pdf->download("Informe_miembros.pdf");
         } catch (Exception $e) {
             return $e;
         }
