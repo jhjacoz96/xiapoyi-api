@@ -11,7 +11,10 @@ use App\Http\Resources\ReportFileFamilyResource;
 use App\Http\Resources\MemberResource;
 use App\Http\Resources\MemberShowResource;
 use App\FileFamily;
+use App\Pregnant;
 use App\Organization;
+use App\Http\Resources\FileClinicalObstetricResource;
+use App\Resource;
 use DateTime;
 use PDF;
 use Carbon\Carbon;
@@ -79,6 +82,28 @@ class ReportController extends Controller
             $model = $this->service->memberIndex($request);
             $data = MemberShowResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+    
+    public function fileClinicalObstetricIndex (Request $request) {
+        try {
+            $model = $this->service->fileClinicalObstetricIndex($request);
+            $data = FileClinicalObstetricResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function fileClinicalObstetricGenerate(Request $request) {
+        try {
+            $model = $this->service->fileClinicalObstetricIndex($request);
+            $data = FileClinicalObstetricResource::collection($model);
+            $organization = Organization::find(3);
+            $pdf = \PDF::loadView('report.fileClinicalObstetric', compact('data', 'organization'));
+            return $pdf->download("informe_ficha_clinica_obstetrica.pdf");
         } catch (Exception $e) {
             return $e;
         }

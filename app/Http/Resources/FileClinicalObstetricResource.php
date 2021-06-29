@@ -53,6 +53,8 @@ class FileClinicalObstetricResource extends JsonResource
             "type_document_id" => $miembro->typeDocument,
             "cultural_group_id" =>  $fileFamily->culturalGroup,
             "fecha_nacimiento" => $miembro->fecha_nacimiento,
+            "embarazo" => $miembro->embarazo,
+            "grupo_edad" => $miembro->groupAge,
             "zone_id" => $fileFamily->zone,
             "direccion_habitual" => $fileFamily->direccion_habitual,
             "scholarship_id" => $miembro->scholarship,
@@ -120,6 +122,7 @@ class FileClinicalObstetricResource extends JsonResource
             "sustancias_sicotropicas" => $arrayPsychotrophicPregnant,
             "recomendaciones" => $this->recomendaciones ?? null,
             "created_At" => $this->created_at ?? null,
+            "gestation_week_id" => $this->gestation_week_id ?? null,
        ];
     }
 }

@@ -254,6 +254,15 @@ Route::group([
               'uses' => 'ReportController@memberIndex',
               'as' => 'api.report.memberIndex.post'
           ]);
+        Route::post('file-clinical-obstetric', [
+              'uses' => 'ReportController@fileClinicalObstetricIndex',
+              'as' => 'api.report.fileClinicalObstetricIndex.post'
+          ]);
+        Route::post('file-clinical-obstetric/generate', [
+            'uses' => 'ReportController@fileClinicalObstetricGenerate',
+            'as' => 'api.report.fileClinicalObstetricGenerate.post'
+        ]);
+
       });
 
 

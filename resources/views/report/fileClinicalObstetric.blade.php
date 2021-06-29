@@ -1,14 +1,14 @@
 
 <html>
     <head>
-        <title>Reporte de las fichas familiares</title>
+        <title>Reporte  de ficha clinica obtetrica</title>
         @include('report.css')
     </head>
     <body>
         @include('report.header')
         @include('report.footer')
         <main>
-            <div class="title">Reporte de ficha familiar</div>
+            <div class="title">Reporte de ficha clinica obstetrica</div>
             <br>
              <div class="section_title">Datos generales:</div>
             <table align="center" width="100%" style="background: #ebebeb" class="tab-font">
@@ -50,49 +50,59 @@
             <br>
             <table id="tblAcciones" align="center" width="100%"   class="tab-font">
                 <tr>
-                  <td>Nombre</td>
-                  <td>Cédula</td>
+                  <td>Número de historia</td>
+                  <td>Edad gestacional</td>
                   <td>Grupo de edad</td>
-                  <td>Patologías</td>
-                  <td>Discapacidades</td>
-                  <td>Genero</td>
-                  <td>Parroquia</td>
-                  <td>Dirección</td>
-                  <td>Vacunacíón</td>
+                  <td>Tipo de parto</td>
+                  <td>Embarazo planificado</td>
+                  <td>Causa embarazo</td>
+                  <td>Embarazo activo</td>
+                  <td>Fecha de incio</td>
                 </tr>
                 @foreach ($data as $item)
-                    @php
-                        $patologias = $item->pathologies->pluck('name')->toArray();
-                        $discapacidades = $item->disabilities->pluck('name')->toArray();
-                    @endphp
                     <tr>
-                        <td >{{ $item->nombre }} {{ $item->apellido }}</td>
-                        <td>{{ $item->cedula }}</td>
-                        <td >{{ $item->groupAge ? $item->groupAge->name : '' }}</td>
+                        <td>{{ $item->numero_historia }}</td>
                         <td>
-                            @if (count($patologias) > 0)
-                                {{ implode(",", $patologias) }}
+                            @if ($item->descripcion_gestacion)
+                                {{ $item->descripcion_gestacion }}
                             @else
                                 -
                             @endif
                         </td>
-                        <td >
-                            @if (count($discapacidades) > 0)
-                                {{ implode(",", $discapacidades) }}
+                        <td>{{ $item->member->groupAge->name }}</td>
+                        <td>
+                            @if ($item->tipo_parto)
+                                {{ $item->tipo_parto }}
                             @else
                                 -
                             @endif
                         </td>
-                        <td >{{ $item->gender->nombre }}</td>
-                        <td >{{ $item->fileFamily->zone ? $item->fileFamily->zone->name : '' }}</td>
-                        <td >{{ $item->fileFamily->direccion_habitual }}</td>
                         <td>
-                            @if ($item->vacunacion)
-                            Completa
+                            @if ($item->embarazo_planificado !== null)
+                                @if ($item->embarazo_planificado)
+                                    Si
+                                @else
+                                    No
+                                @endif
                             @else
-                            Incompleta
+                                -
                             @endif
                         </td>
+                        <td>
+                            @if ($item->causa_embarazo)
+                                {{ $item->causa_embarazo }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td>
+                            @if ($item->member->embarazo)
+                                Si
+                            @else
+                                No
+                            @endif
+                        </td>
+                        <td>{{  \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
                     </tr>
                 @endforeach
                 <tr style="line-height: 4px;">

@@ -52,10 +52,15 @@ class Pregnant extends Model
         'educacion_depresion',
         'proporcionar_telefono',
         'señal_alarma',
+        'gestation_week_id',
     ];
 
     public function member () {
         return $this->belongsTo('App\Member','member_id', 'id');
+    }
+
+    public function gestationWeek () {
+        return $this->belongsTo('App\GestationWeek','gestation_week_id', 'id');
     }
 
     public function vaccineDts () {

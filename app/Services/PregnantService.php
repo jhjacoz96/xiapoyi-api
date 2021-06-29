@@ -85,6 +85,7 @@ class PregnantService {
                 "educacion_depresion" => $data["educacion_depresion"],
                 "proporcionar_telefono" => $data["proporcionar_telefono"],
                 "member_id" => $data["member_id"],
+                "gestation_week_id" => $data["gestation_week_id"],
             ]);
 
             if ($data["recomendaciones"] != '') {
@@ -283,6 +284,7 @@ class PregnantService {
                 "educacion_paciente" => $data["educacion_paciente"],
                 "educacion_depresion" => $data["educacion_depresion"],
                 "proporcionar_telefono" => $data["proporcionar_telefono"],
+                "gestation_week_id" => $data["gestation_week_id"],
             ]);
 
             if ($model["observacion_parto"] != '') {
