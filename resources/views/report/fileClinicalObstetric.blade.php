@@ -1,4 +1,7 @@
-
+<?php 
+use App\Utils\CalAge;
+use Carbon\Carbon;
+?>
 <html>
     <head>
         <title>Reporte  de ficha clinica obtetrica</title>
@@ -51,6 +54,8 @@
             <table id="tblAcciones" align="center" width="100%"   class="tab-font">
                 <tr>
                   <td>Número de historia</td>
+                  <td>Nombre</td>
+                  <td>Edad</td>
                   <td>Edad gestacional</td>
                   <td>Grupo de edad</td>
                   <td>Tipo de parto</td>
@@ -62,6 +67,8 @@
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $item->numero_historia }}</td>
+                        <td>{{ $item->member->nombre }} {{ $item->member->apellido }}</td>
+                        <td>{{ CalAge::get(Carbon::parse($item->member->fecha_nacimiento)) }}</td>
                         <td>
                             @if ($item->descripcion_gestacion)
                                 {{ $item->descripcion_gestacion }}
@@ -106,7 +113,7 @@
                     </tr>
                 @endforeach
                 <tr style="line-height: 4px;">
-                    <td colspan="9">&nbsp;</td>
+                    <td colspan="10">&nbsp;</td>
                 </tr>
             </table>
         </main>

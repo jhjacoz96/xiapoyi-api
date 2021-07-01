@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\FileFamily;
 use App\Pregnant;
 use App\Member;
+use App\FileClinicalNeonatology;
 
 class ReportService {
 
@@ -73,6 +74,27 @@ class ReportService {
                             })->whereNotNull("observacion_parto") : "";
                             !empty($request["startDate"]) &&
                             !empty($request["endDate"])                    ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
+                            $model = $q->orderBy('id', 'desc')->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function fileClinicalNeonatologyIndex ($request) {
+        try {
+            $q = FileClinicalNeonatology::with('member');
+                            (count($request["gestacion"]) > 0)             ? $model = $q->whereHas("pregnant", function($query) use($request) {
+                                $query->whereIn("descripcion_gestacion", $request["gestacion"]);
+                            }) : "";
+                            !empty($request["peso"]) ? $model = $q->whereBetween("peso", [$request["peso"][0], $request["peso"][1]]) : "";
+                            !empty($request["gender"]) ? $model = $q->whereHas("member", function($query) use($request) {
+                                $query->where("gender_id", $request["gender"]);
+                            }) : "";
+                            !empty($request["startDate"]) &&
+                            !empty($request["endDate"])                    ? $model = $q->whereHas('member', function($query) use($request) {
+                                $query->whereBetween("fecha_nacimiento", [$request["startDate"], $request["endDate"]]);
+                            }) : "";
                             $model = $q->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {

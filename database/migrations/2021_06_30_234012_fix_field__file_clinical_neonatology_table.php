@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FixFieldDiabeticTable extends Migration
+class FixFieldFileClinicalNeonatologyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,7 @@ class FixFieldDiabeticTable extends Migration
      */
     public function up()
     {
-         Schema::table('diabetics', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->nullable();
-            $table->text('description1')->nullable();
-            $table->text('description2')->nullable();
-            $table->timestamps();
-        });
+        //
     }
 
     /**
@@ -29,6 +23,11 @@ class FixFieldDiabeticTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('file_clinical_neonatologies', function (Blueprint $table) {
+            $table->dropColumn('peso');
+        });
+        Schema::table('file_clinical_neonatologies', function (Blueprint $table) {
+            $table->double('peso')->nullable();
+        });
     }
 }

@@ -11,7 +11,7 @@ use App\PathologyNeonatology;
 use App\PhatologyFamilyFile;
 use App\ReflexNeonatal;
 
-class FileClincalNeonatologyResource extends JsonResource
+class FileClinicaNeonatologyShowResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -59,7 +59,7 @@ class FileClincalNeonatologyResource extends JsonResource
             "cedula" => $member["cedula"] ?? null,
             "apellido" => $member["apellido"],
             "fecha_nacimiento" => $member["fecha_nacimiento"],
-            "gender_id" => $member["gender_id"],
+            "gender_id" => $member->gender,
             "group_age_id" => $member["group_age_id"],
             "numero_historia" => $this->numero_historia,
             "lugar_naciento" => $this->lugar_naciento,
@@ -69,7 +69,7 @@ class FileClincalNeonatologyResource extends JsonResource
             "type_boold_mother_id" => $this->type_boold_mother_id,
             "type_boold_father_id" => $this->type_boold_father_id,
             "edad_gestacional" => $this->edad_gestacional,
-            "gestation_week_id" => $this->pregnant->gestation_week_id,
+            "gestation_week_id" => $this->pregnant->descripcion_gestacion,
             "alimentacion_neonato" => $this->alimentacion_neonato,
             "aplicacion_vitamina" => $this->aplicacion_vitamina,
             "alergina_leche_materna" => $this->alergina_leche_materna,

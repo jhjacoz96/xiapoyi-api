@@ -14,10 +14,13 @@ use App\FileFamily;
 use App\Pregnant;
 use App\Organization;
 use App\Http\Resources\FileClinicalObstetricResource;
+use App\Http\Resources\FileClincalNeonatologyResource;
+use App\Http\Resources\FileClinicaNeonatologyShowResource;
 use App\Resource;
 use DateTime;
 use PDF;
 use Carbon\Carbon;
+use App\Utils\CalAge;
 
 class ReportController extends Controller
 {
@@ -104,6 +107,28 @@ class ReportController extends Controller
             $organization = Organization::find(3);
             $pdf = \PDF::loadView('report.fileClinicalObstetric', compact('data', 'organization'));
             return $pdf->download("informe_ficha_clinica_obstetrica.pdf");
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function fileClinicalNeonatologyIndex (Request $request) {
+        try {
+            $model = $this->service->fileClinicalNeonatologyIndex($request);
+            $data = FileClinicaNeonatologyShowResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function fileClinicalNeonatologyGenerate(Request $request) {
+        try {
+            $model = $this->service->fileClinicalNeonatologyIndex($request);
+            $data = FileClinicaNeonatologyShowResource::collection($model);
+            $organization = Organization::find(1);
+            $pdf = \PDF::loadView('report.fileClinicalNeonatology', compact('data', 'organization'));
+            return $pdf->download("Informe_ficha_clinica_neonatologia.pdf");
         } catch (Exception $e) {
             return $e;
         }

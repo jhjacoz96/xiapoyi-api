@@ -1,17 +1,13 @@
-<?php 
-use App\Utils\CalAge;
-use Carbon\Carbon;
-?>
 <html>
     <head>
-        <title>Reporte de las fichas familiares</title>
+        <title>Reporte de fichas clínicas de neonatología</title>
         @include('report.css')
     </head>
     <body>
         @include('report.header')
         @include('report.footer')
         <main>
-            <div class="title">Reporte de ficha familiar</div>
+            <div class="title">Reporte de fichas clínicas de neonatología</div>
             <br>
              <div class="section_title">Datos generales:</div>
             <table align="center" width="100%" style="background: #ebebeb" class="tab-font">
@@ -53,55 +49,37 @@ use Carbon\Carbon;
             <br>
             <table id="tblAcciones" align="center" width="100%"   class="tab-font">
                 <tr>
+                  <td>Numero de historia</td>
                   <td>Nombre</td>
-                  <td>Cédula</td>
-                  <td>Edad</td>
-                  <td>Grupo de edad</td>
-                  <td>Patologías</td>
-                  <td>Discapacidades</td>
                   <td>Genero</td>
-                  <td>Parroquia</td>
-                  <td>Dirección</td>
-                  <td>Vacunacíón</td>
+                  <td>Peso</td>
+                  <td>Edad gestacional</td>
+                  <td>Fecha de nacimiento</td>
                 </tr>
                 @foreach ($data as $item)
-                    @php
-                        $patologias = $item->pathologies->pluck('name')->toArray();
-                        $discapacidades = $item->disabilities->pluck('name')->toArray();
-                    @endphp
                     <tr>
-                        <td >{{ $item->nombre }} {{ $item->apellido }}</td>
-                        <td>{{ $item->cedula }}</td>
-                        <td>{{ CalAge::get(Carbon::parse($item->fecha_nacimiento)) }}</td>
-                        <td >{{ $item->groupAge ? $item->groupAge->name : '' }}</td>
+                        <td>{{ $item->numero_historia }}</td>
+                        <td>{{ $item->member->nombre }} {{ $item->member->apellido }}</td>
+                        <td>{{ $item->member->gender->nombre }}</td>
                         <td>
-                            @if (count($patologias) > 0)
-                                {{ implode(", ", $patologias) }}
+                            @if($item->peso)
+                                {{ $item->peso }} g
                             @else
                                 -
                             @endif
                         </td>
-                        <td >
-                            @if (count($discapacidades) > 0)
-                                {{ implode(", ", $discapacidades) }}
+                        <td>
+                            @if($item->pregnant->descripcion_gestacion)
+                                {{ $item->pregnant->descripcion_gestacion}}
                             @else
                                 -
                             @endif
                         </td>
-                        <td >{{ $item->gender->nombre }}</td>
-                        <td >{{ $item->fileFamily->zone ? $item->fileFamily->zone->name : '' }}</td>
-                        <td >{{ $item->fileFamily->direccion_habitual }}</td>
-                        <td>
-                            @if ($item->vacunacion)
-                            Completa
-                            @else
-                            Incompleta
-                            @endif
-                        </td>
+                        <td>{{ \Carbon\Carbon::parse($item->member->fecha_nacimiento)->format('d/m/Y') }}</td>
                     </tr>
                 @endforeach
                 <tr style="line-height: 4px;">
-                    <td colspan="10">&nbsp;</td>
+                    <td colspan="9">&nbsp;</td>
                 </tr>
             </table>
         </main>

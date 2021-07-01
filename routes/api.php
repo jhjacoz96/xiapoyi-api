@@ -262,6 +262,14 @@ Route::group([
             'uses' => 'ReportController@fileClinicalObstetricGenerate',
             'as' => 'api.report.fileClinicalObstetricGenerate.post'
         ]);
+        Route::post('file-clinical-neonatology', [
+              'uses' => 'ReportController@fileClinicalNeonatologyIndex',
+              'as' => 'api.report.fileClinicalNeonatologyIndex.post'
+          ]);
+        Route::post('file-clinical-neonatology/generate', [
+            'uses' => 'ReportController@fileClinicalNeonatologyGenerate',
+            'as' => 'api.report.fileClinicalNeonatologyGenerate.post'
+        ]);
 
       });
 
