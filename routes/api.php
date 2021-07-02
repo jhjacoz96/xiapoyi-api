@@ -270,6 +270,14 @@ Route::group([
             'uses' => 'ReportController@fileClinicalNeonatologyGenerate',
             'as' => 'api.report.fileClinicalNeonatologyGenerate.post'
         ]);
+        Route::post('diabetic-patient', [
+            'uses' => 'ReportController@diabeticPatientIndex',
+            'as' => 'api.report.diabeticPatientIndex.post'
+        ]);
+         Route::post('diabetic-patient/generate', [
+            'uses' => 'ReportController@diabeticPatientGenerate',
+            'as' => 'api.report.diabeticPatientGenerate.post'
+        ]);
 
       });
 

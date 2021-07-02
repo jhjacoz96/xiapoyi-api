@@ -16,6 +16,7 @@ use App\Organization;
 use App\Http\Resources\FileClinicalObstetricResource;
 use App\Http\Resources\FileClincalNeonatologyResource;
 use App\Http\Resources\FileClinicaNeonatologyShowResource;
+use App\Http\Resources\DiabeticPatientReportResource;
 use App\Resource;
 use DateTime;
 use PDF;
@@ -126,9 +127,31 @@ class ReportController extends Controller
         try {
             $model = $this->service->fileClinicalNeonatologyIndex($request);
             $data = FileClinicaNeonatologyShowResource::collection($model);
-            $organization = Organization::find(1);
+            $organization = Organization::find(3);
             $pdf = \PDF::loadView('report.fileClinicalNeonatology', compact('data', 'organization'));
             return $pdf->download("Informe_ficha_clinica_neonatologia.pdf");
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function diabeticPatientIndex (Request $request) {
+        try {
+            $model = $this->service->diabeticPatientIndex($request);
+            $data = DiabeticPatientReportResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function diabeticPatientGenerate(Request $request) {
+        try { 
+            $model = $this->service->diabeticPatientIndex($request);
+            $data = DiabeticPatientReportResource::collection($model);
+            $organization = Organization::find(1);
+            $pdf = \PDF::loadView('report.diabeticPatient', compact('data', 'organization'));
+            return $pdf->download("Informe_patiente_diabetico.pdf");
         } catch (Exception $e) {
             return $e;
         }

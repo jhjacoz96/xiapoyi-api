@@ -10,6 +10,7 @@ use App\FileFamily;
 use App\Pregnant;
 use App\Member;
 use App\FileClinicalNeonatology;
+use App\DiabeticPatient;
 
 class ReportService {
 
@@ -101,5 +102,49 @@ class ReportService {
             return $e;
         }
     }
+
+    public function diabeticPatientIndex ($request) {
+        try {
+            $now = Carbon::now();
+            $days1 = $now->format("Y-m-d");
+            $now = Carbon::now();
+            $days2 = $now->addDay(-1)->format("Y-m-d");
+            $now = Carbon::now();
+            $days3 = $now->addDay(-2)->format("Y-m-d");
+            
+            $q = DiabeticPatient::with('member');
+                            (count($request["groupAge"]) > 0)    ? $model =  $q->whereHas("member", function($query) use($request) {
+                                $query->whereIn("group_age_id", $request["groupAge"]);
+                            }) : "";
+                            (count($request["pathology"]) > 0)   ? $model = $q->whereHas("member", function($query) use($request) {
+                                $query->whereHas("pathologies", function ($query) use($request) {
+                                    $query->whereIn("pathologies.id", $request["pathology"]);
+                                });
+                            }) : "";
+                            (count($request["treatment"]) > 0)   ? $model = $q->whereHas("medicines", function ($query) use($request) {
+                                $query->whereIn("medicines.id",$request["treatment"]);
+                            }) : "";
+                            !empty($request["gender"])           ? $model = $q->whereHas("member", function ($query) use($request) {
+                                $query->where("gender_id", $request["gender"]);
+                            }) : "";
+
+                           !empty($request["alertTreatment"]) ? $model = $q->whereHas("patientTreatment", function ($query) use($request, $days1, $days2, $days3) {
+                                $query->whereDoesntHave("registerTreatment", function ($query) use($request, $days1, $days2, $days3) {
+                                    if ($request["alertTreatment"] == 1) $query->whereDate("fecha","=", $days1);
+                                    else if ($request["alertTreatment"] == 2) $query->whereDate("fecha",[$days1, $days2]);
+                                    else if ($request["alertTreatment"] == 3) $query->whereDate("fecha", [$days1, $days3]);
+                                });
+                            }) : "";
+
+                           !empty($request["startDate"]) &&
+                           !empty($request["endDate"])        ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
+
+                            $model = $q->orderBy('id', 'desc')->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
 
 }

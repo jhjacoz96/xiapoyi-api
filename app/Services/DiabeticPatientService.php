@@ -49,7 +49,7 @@ class DiabeticPatientService {
             $patient = \Auth::user()->diabeticPatient;
             $model = RegisterTreatment::create([
                 "patient_treatment_id" => $data["patient_treatment_id"],
-                "fecha" => Carbon::now()->toDateTimeString(),
+                "fecha" =>  isset($data["fecha"]) ? $data["fecha"] : Carbon::now()->toDateTimeString(),
             ]);
             $treatment = PatientTreatment::find($model->patient_treatment_id);
             return $treatment;

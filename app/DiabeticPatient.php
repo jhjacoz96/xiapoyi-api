@@ -19,6 +19,10 @@ class DiabeticPatient extends Model
         return  $this->belongsToMany('App\Medicine','patient_treatments', 'diabetic_patient_id','medicine_id')->withPivot('dosis', 'hora', 'measure_id', 'id');
     }
 
+    public function patientTreatment () {
+        return $this->hasMany('App\PatientTreatment', 'diabetic_patient_id', 'id');
+    }
+
     public function activityTreatments () {
         return $this->hasMany('App\ActivityTreatment', 'diabetic_patient_id', 'id');
     }
