@@ -30,12 +30,12 @@ Route::group([
     Route::post('login', 'AuthController@login');
     Route::post('login-diabetic', 'AuthController@loginDiabetic');
     Route::post('signup', 'AuthController@signUp');
+    Route::post('forgot-password', 'AuthController@forgot');
+    Route::post('reset-password', 'AuthController@reset');
     Route::group([
       'middleware' => 'auth:api'
     ], function() {
-
         Route::get('logout', 'AuthController@logout');
-
     });
 });
 
@@ -314,7 +314,14 @@ Route::group([
           ]);
        });
 
-       
+       Route::prefix('report-stadistic')->group(function () {
+          Route::post('risk', [
+              'uses' => 'ReportStadisticController@risk',
+          ]);
+          Route::post('evolution', [
+              'uses' => 'ReportStadisticController@evolution',
+          ]);
+       });
 
   });
 

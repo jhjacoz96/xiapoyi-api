@@ -1,0 +1,1 @@
+Modifique su contraseña <a href="http://localhost:8080/#/recuperar-contrasena?token={{$token}}">Aquí</a>

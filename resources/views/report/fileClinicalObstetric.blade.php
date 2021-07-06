@@ -62,7 +62,7 @@ use Carbon\Carbon;
                   <td>Embarazo planificado</td>
                   <td>Causa embarazo</td>
                   <td>Embarazo activo</td>
-                  <td>Fecha de incio</td>
+                  <td>Fecha de apertura de historia</td>
                 </tr>
                 @foreach ($data as $item)
                     <tr>

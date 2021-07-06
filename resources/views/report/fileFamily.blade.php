@@ -58,7 +58,7 @@
                   <td>Nivel de riesgo</td>
                   <td>Grupo cultural</td>
                   <td>Telefono</td>
-                  <td>Fecha</td>
+                  <td>Fecha de apertura de historia</td>
                 </tr>
                 @foreach ($data as $item)
                     <tr>

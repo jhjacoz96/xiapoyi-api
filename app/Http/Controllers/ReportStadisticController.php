@@ -13,6 +13,8 @@ use App\LevelTotal;
 use App\FileFamily;
 use App\Zone;
 use App\DiabeticPatient;
+use App\RiskFile;
+
 
 class ReportStadisticController extends Controller
 {
@@ -41,22 +43,6 @@ class ReportStadisticController extends Controller
                     ->where('group_age_id', $value["id"])
                     ->count();
             }
-
-            // $risks = Risk::All();
-            // $levelRisk = LevelRisk::All();
-            // $nivelRisk = [];
-            // foreach ($levelRisk as $key => $value) {
-            //     $nivelRisk[] = [
-            //         "name" => $value["name"],
-            //         "data" => [],
-            //     ];
-            // }
-            // $nameRisk = [];
-            // $cantRisk = [];
-            // foreach ($risks as $key => $value) {
-            //     $nameRisk[] = $value["name"];
-            //     $nivelRisk["data"] = FileFamily::where('');
-            // }
 
 
             $levelRisk = LevelTotal::All();
@@ -109,5 +95,64 @@ class ReportStadisticController extends Controller
         } catch (Exception $e) {
             return $e;
         }
+    }
+
+    public function risk (Request $request) {
+        $label = [];
+        $cant = [];
+        $model = LevelTotal::All();
+        foreach ($model as $key => $value) {
+           $label[] = $value["name"];
+           $q = FileFamily::where("level_total_id", $value["id"]);
+                count($request["culturalGroup"]) > 0 ? $result = $q->whereIn("cultural_group_id", $request["culturalGroup"]) : "";
+                count($request["zone"]) > 0          ? $result = $q->whereIn("zone_id", $request["zone"]) : "";
+                !empty($request["startDate"]) && 
+                !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
+                 $result = $q->get();
+            $cant[] = $result->count();
+        }
+
+        $data = [
+            "label" => $label,
+            "data" => $cant,
+        ];
+        return $data;
+    }
+    public function evolution (Request $request) {
+        $label = [];
+        $cant = [];
+        $model = collect([
+            [
+                "name" => "Si cumplió",
+                "value" => "si",
+            ],
+            [
+                "name" => "No cumplió",
+                "value" => "no",
+            ],
+            [
+                "name" => "Cumplió parcialmente",
+                "value" => "parcial",
+            ]
+        ]);
+
+        foreach ($model as $key => $value) {
+           $label[] = $value["name"];
+           $q = FileFamily::whereHas("riskFiles", function($query) use($value) {
+            $query->where("cumplio", $value["value"]);
+           });
+                count($request["culturalGroup"]) > 0 ? $result = $q->whereIn("cultural_group_id", $request["culturalGroup"]) : "";
+                count($request["zone"]) > 0          ? $result = $q->whereIn("zone_id", $request["zone"]) : "";
+                !empty($request["startDate"]) && 
+                !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
+                 $result = $q->get();
+            $cant[] = $result->count();
+        }
+
+        $data = [
+            "label" => $label,
+            "data" => $cant,
+        ];
+        return $data;
     }
 }

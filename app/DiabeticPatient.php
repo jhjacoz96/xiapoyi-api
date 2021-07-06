@@ -3,13 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class DiabeticPatient extends Model
 {
+    use Notifiable;
+
     protected $fillable = [
         'presion_arterial', 'pulso', 'respiracion', 'saturacion_oxigeno', 'temperatura', 'peso', 'altura', 'circunferencia', 'abdominal', 'nivel_glusemia', 'dieta', 'user_id', 'member_id'
     ];
-
 
     public function user () {
         return $this->belongsTo('App\User', 'user_id', 'id');

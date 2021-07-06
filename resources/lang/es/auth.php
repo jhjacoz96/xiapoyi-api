@@ -17,5 +17,6 @@ return [
     'failed_org' => 'Sus credenciales no estan asociadas a una organización. Consulte con el administrador del sistema',
     'throttle' => 'Demasiados intentos fallidos en muy poco tiempo. Por favor intente de nuevo en :seconds segundos.',
     'password_not' => 'Contraseña antigua no coincide con la existente',
-    'not_permissions' => 'No posee los permisos necesarios'
+    'not_permissions' => 'No posee los permisos necesarios',
+    'valid_user' => 'Usuario no existe',
 ];

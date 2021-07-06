@@ -30,6 +30,10 @@ class FileFamily extends Model
         return $this->hasMany('App\Mortality', 'file_famyly_id', 'id');
     }
 
+    public function riskFiles () {
+        return $this->hasMany('App\riskFile', 'file_family_id', 'id');
+    }
+
     public function contaminationPoints () {
         return $this->hasMany('App\ContaminationPoint', 'file_famyly_id', 'id');
     }

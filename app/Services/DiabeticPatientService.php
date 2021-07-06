@@ -17,6 +17,8 @@ use App\ActivityTreatment;
 use App\RegisterActivity;
 use DateTime;
 use App\Events\PostGlucoseEvent;
+use App\Events\TreatmentEvent;
+use App\Events\ActivityEvent;
 
 class DiabeticPatientService {
 
@@ -177,23 +179,32 @@ class DiabeticPatientService {
             $this->registerWeight($peso);
             
             $validar = $data['tratamiento_farmacologico']  ?? null;
+            $id_medicines = [];
             if (!is_null($validar)) {
                 $tratamiento_farmacologico = [];
                 foreach ($data['tratamiento_farmacologico'] as $item) {
-                        $tratamiento_farmacologico[$item["medicine_id"]] = [
-                            "dosis" => $item["dosis"],
-                            "hora" => $item["hora"],
-                            "measure_id" => $item["measure_id"],
-                            "presentation_id" => $item["presentation_id"],
-                        ];
+                   $new = $model->patientTreatment->where("medicine_id", $item["medicine_id"])->first();
+                   if (empty($new))  {
+                        $id_medicines[] = $item["medicine_id"];
+                    }
+                    $tratamiento_farmacologico[$item["medicine_id"]] = [
+                        "dosis" => $item["dosis"],
+                        "hora" => $item["hora"],
+                        "measure_id" => $item["measure_id"],
+                        "presentation_id" => $item["presentation_id"],
+                    ];
+
                 }
                 $model->medicines()->sync($tratamiento_farmacologico);
             }
-
             $validar2 = $data['tratamiento_no_farmacologico']  ?? null;
+            $id_activities = [];
             if (!is_null($validar2)) {
                 $tratamiento_no_farmacologico = [];
-                foreach ($data['tratamiento_no_farmacologico'] as $item) {
+                foreach ($data["tratamiento_no_farmacologico"] as $item) {
+                    if (!isset($item["id"])) {
+                       $id_activities[] = $item["actividad"];
+                    }
                     $tratamiento_no_farmacologico[] = [
                         "id" => $item['id'] ?? null,
                         "actividad" => $item['actividad'],
@@ -202,12 +213,18 @@ class DiabeticPatientService {
                         "diabetic_patient_id" => $model["id"],
                     ];
                 }
+
                 $model->assignTratamientoNoFarmacologico($tratamiento_no_farmacologico);
             }
 
-            
-
             DB::commit();
+            $event = [
+                "diabetic_patient" => $model,
+                "id_medicines" => $id_medicines,
+                "id_activities" => $id_activities,
+            ];
+            if (count($event["id_medicines"]) > 0) event(new TreatmentEvent($event));
+             if (count($event["id_activities"]) > 0) event(new ActivityEvent($event));
             return  $model;
         } catch (\Exception $e) {
             DB::rollback();

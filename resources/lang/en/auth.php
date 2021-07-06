@@ -18,5 +18,5 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'password_not' => 'Contraseña antigua no coincide con la existente',
     'not_permissions' => 'Not permissions',
-
+    'valid_user' => 'User doesnt\'t exist'
 ];

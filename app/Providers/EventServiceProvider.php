@@ -14,6 +14,10 @@ use App\Events\DiabeticPatientEvent;
 use App\Listeners\DiabeticPatientListener;
 use App\Events\PostGlucoseEvent;
 use App\Listeners\PostGlucoseListener;
+use App\Events\TreatmentEvent;
+use App\Listeners\TreatmentListener;
+use App\Events\ActivityEvent;
+use App\Listeners\ActivityListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -37,6 +41,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         PostGlucoseEvent::class => [
             PostGlucoseListener::class,
+        ],
+        ActivityEvent::class => [
+            ActivityListener::class,
         ],
         /*'App\Events\CommentAdultOldEvent' => [
             'App\Listeners\CommentAdultOldListener',
