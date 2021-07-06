@@ -31,7 +31,7 @@ class FileFamily extends Model
     }
 
     public function riskFiles () {
-        return $this->hasMany('App\riskFile', 'file_family_id', 'id');
+        return $this->hasMany('App\RiskFile', 'file_family_id', 'id');
     }
 
     public function contaminationPoints () {
