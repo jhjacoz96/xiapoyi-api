@@ -9,7 +9,8 @@ USE App\Member;
 class FileFamily extends Model
 {
     protected $fillable = [
-        'manzana', 'direccion_habitual', 'barrio', 'numero_familia', 'numero_historia', 'numero_telefono', 'numero_casa', 'total_risk', 'zone_id', 'level_total_id', 'cultural_group_id', 'created_at',
+        'manzana', 'direccion_habitual', 'barrio', 'numero_familia', 'numero_historia', 'numero_telefono', 'numero_casa', 'total_risk', 'zone_id', 'level_total_id', 'cultural_group_id', 'created_at', 'telefono_celular_uno',
+            'telefono_celular_dos', 'correo'
     ];
 
     public function zone () {
@@ -23,7 +24,7 @@ class FileFamily extends Model
     }
 
     public function risks () {
-        return  $this->belongsToMany('App\Risk','risk_files', 'file_family_id','risk_id')->withPivot('compromiso_familiar', 'compromiso_equipo', 'cumplio', 'causas', 'level_risk_id', 'id');
+        return  $this->belongsToMany('App\Risk','risk_files', 'file_family_id','risk_id')->withPivot('compromiso_id', 'cumplio', 'causas', 'level_risk_id', 'fecha_evaluacion', 'fecha_programacion', 'id');
     }
 
     public function mortalities () {
@@ -72,15 +73,16 @@ class FileFamily extends Model
                   
                 ],[
                     "nombre" => $model['nombre'],
-                        "apellido" => $model['apellido'],
-                        "edad" => $model["edad"],
-                        "causa" => $model["causa"],
-                        "relationship_id" => $model['relationship_id'],
+                    "apellido" => $model['apellido'],
+                    "edad" => $model["edad"],
+                    "relationship_id" => $model['relationship_id'],
                     "file_famyly_id" => $model['file_famyly_id'],
+                    "fecha_fallecimiento" => $model['fecha_fallecimiento'],
+                    "cause_mortality_id" => $model['cause_mortality_id'],
+                    "member_id" => $model['member_id'],
              ]);
             });
         });
-
 
         $attachments = $site_items->filter(function ($model) {
             return !isset($model['id']);
@@ -117,8 +119,8 @@ class FileFamily extends Model
                     'id' => $model['id'],
                   
                 ],[
-                    "tipo_contaminación" => $model['tipo_contaminación'],
-                    "causas" => $model['causas'],
+                    "contamination_id" => $model['contamination_id'],
+                    "cause_contamination_id" => $model['cause_contamination_id'],
                     "file_famyly_id" => $model['file_famyly_id'],
              ]);
             });
@@ -148,8 +150,6 @@ class FileFamily extends Model
                 return $id;
             });
         }
-
-        
 
         $updates = $site_items->filter(function ($model) {
             return isset($model['id']);

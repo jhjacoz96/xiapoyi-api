@@ -38,7 +38,7 @@ class SuscriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SuscriptionStoreRequest $request)
+    public function store(Request $request)
     {
         try {
             $data = $request->validated();
@@ -46,7 +46,7 @@ class SuscriptionController extends Controller
             $data = new SuscriptionResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
           } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+            return $e;
           }
     }
 

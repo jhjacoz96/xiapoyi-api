@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = [
-        'nombre', 'apellido', 'cedula', 'correo', 'ocupacion', 'fecha_nacimiento', 'vacunacion', 'salud_bucal', 'edad', 'embarazo', 'scholarship_id', 'relationship_id', 'gender_id', 'type_document_id', 'file_family_id', 'group_age_id', 'created_at',
+        'nombre', 'apellido', 'cedula', 'correo', 'ocupacion', 'fecha_nacimiento', 'vacunacion', 'salud_bucal', 'edad', 'embarazo', 'scholarship_id', 'relationship_id', 'gender_id', 'type_document_id', 'file_family_id', 'group_age_id', 'created_at', 'type_blood_id', 'fallecido'
     ];
     
 
     public function fileFamily () {
         return $this->belongsTo('App\FileFamily', 'file_family_id', 'id');
+    }
+
+    public function typeBlood () {
+        return $this->belongsTo('App\TypeBlood', 'type_blood_id', 'id');
     }
 
     public function scholarship () {

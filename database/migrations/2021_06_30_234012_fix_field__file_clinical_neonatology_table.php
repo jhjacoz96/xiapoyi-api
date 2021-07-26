@@ -13,7 +13,12 @@ class FixFieldFileClinicalNeonatologyTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('file_clinical_neonatologies', function (Blueprint $table) {
+            $table->dropColumn('peso');
+        });
+        Schema::table('file_clinical_neonatologies', function (Blueprint $table) {
+            $table->double('peso')->nullable();
+        });
     }
 
     /**
@@ -23,11 +28,6 @@ class FixFieldFileClinicalNeonatologyTable extends Migration
      */
     public function down()
     {
-        Schema::table('file_clinical_neonatologies', function (Blueprint $table) {
-            $table->dropColumn('peso');
-        });
-        Schema::table('file_clinical_neonatologies', function (Blueprint $table) {
-            $table->double('peso')->nullable();
-        });
+
     }
 }

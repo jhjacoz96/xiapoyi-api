@@ -26,6 +26,7 @@ class PublicationUpdateRequest extends FormRequest
         return [
             "name" => "required|string",
             "description" => "required|string",
+            "image_mini" => "sometimes|nullable",
             "filter_three_publication_id" => "sometimes|nullable",
             "filter_two_publication_id" => "required|integer",
             "filter_one_publication_id" => "required|integer",

@@ -42,7 +42,12 @@ class RiskService {
             DB::beginTransaction();
             $model = Risk::find($id);
             if(!$model) return null;
-            $model->update($data);
+            $model->name = $data["name"];
+            $model->risk_classification_id = $data["risk_classification"];
+            $validar = $data['activity_evolutions']  ?? null;
+            if (!is_null($validar)) {
+                $model->activityEvolutions()->sync($data['activity_evolutions']);
+            }
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

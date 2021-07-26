@@ -22,7 +22,7 @@ class PublicationService {
     public function index () {
         try {
             
-            $model = Publication::All();
+            $model = Publication::orderBy('id', 'desc')->get();;
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -66,8 +66,8 @@ class PublicationService {
                    'public_id' => $c['public_id'],
                 ]);
             } else if ($data["type_resource"] == 'document') {
-                $image = $data['resource'];
-                $publicId = \Str::random(4) . $data['resource']->getClientOriginalName();
+                $r = $data['resource'];
+                /*$publicId = \Str::random(4) . $data['resource']->getClientOriginalName();
                 \Cloudder::upload(
                     $image,
                     $publicId,
@@ -81,15 +81,20 @@ class PublicationService {
                 /*\Cloudder::rename($c["public_id"], 'hola'.$publicId, [
                         "folder" => $folder
                     ]);*/
+                $nombre = \Str::random(4). $r->getClientOriginalName();
+                $ruta = public_path().'/imagenPublication';
+                $r->move($ruta , $nombre);
+                
+                $c['url']='/imagenPublication/'.$nombre;
+
                 $resource = Resource::create([
                     "type_resource" => $data['type_resource'],
-                    "url"  => $c["url"],
+                    "url"  => $c['url'],
                     "publication_id" => $model["id"],
                 ]);
                 // $resources = $resource->assingResource($data['resource']);
                 $resources = $resource->image()->create([
-                   'url' => $c['url'],
-                   'public_id' => $c['public_id'],
+                   'url' => $c['url']
                 ]);
             } else {
                  $resource = Resource::create([
@@ -100,7 +105,15 @@ class PublicationService {
             }
 
             $modell = Publication::with('filterTwoPublication', 'filterOnePublication', 'filterThreePublication', 'resource')->find($model->id);
-            $suscription = Suscription::All();
+
+            $q = Suscription::with("filterOnePublication");
+                !empty($modell["filter_three_publication_id"]) ?  $suscription = $q->where("filter_three_publication_id", $modell["filter_three_publication_id"])->OrWhereNull("filter_three_publication_id") : "";
+                $suscription = $q->where("filter_two_publication_id", $modell["filter_two_publication_id"]);
+                $suscription = $q->OrWhereNull("filter_two_publication_id");
+                $suscription = $q->where("filter_one_publication_id", $modell["filter_one_publication_id"]);
+                $suscription = $q->OrWhereNull("filter_one_publication_id");
+                $suscription = $q->get();
+                
             foreach ($suscription as $key => $value) {    
                 $datosMensaje = [
                     "suscriptor" => $value,

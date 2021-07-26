@@ -47,6 +47,7 @@ class DiabeticPatientReportResource extends JsonResource
             "temperatura" => $this->temperatura,
             "peso" => $this->peso,
             "altura" => $this->altura,
+            "descripcion_imc" => $this->descripcion_imc,
             "abdominal" => $this->abdominal,
             "circunferencia" => $this->circunferencia,
             "nivel_glusemia" => $this->nivel_glusemia,

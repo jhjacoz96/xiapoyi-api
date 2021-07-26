@@ -19,7 +19,9 @@ class ServiceResource extends JsonResource
             "nombre" => $this->nombre,
             "descripcion" => $this->descripcion,
             "view_web" => $this->view_web,
-            "activities" => ActivityResource::collection($this->activities),
+            "activities" => $this->activities->map(function($query){
+                return $query->id;
+            }),
             "image" => $this->image ? $this->image->url : null,
         ];
     }

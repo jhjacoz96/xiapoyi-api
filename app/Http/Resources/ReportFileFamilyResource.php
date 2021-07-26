@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Member;
+use App\Contaminacion;
 
 class ReportFileFamilyResource extends JsonResource
 {
@@ -15,9 +16,12 @@ class ReportFileFamilyResource extends JsonResource
      */
     public function toArray($request)
     {
-        $jefe_familia = Member::whereHas('relationship', function($query) {
-            $query->where('relationships.id', 1);
-        })->first();
+        $contaminacion = $this->contaminationPoints;
+        $arrayContaminacion  = $contaminacion->map(function($query){
+            return $query->contamination ? $query->contamination->nombre : null;
+        });
+
+
        return [
             "id" => $this->id,
             "manzana" => $this->manzana,
@@ -31,11 +35,10 @@ class ReportFileFamilyResource extends JsonResource
             "cultural_group_id" => $this->culturalGroup,
             "miembros" => MemberResource::collection($this->members),
             "mortalidad" => MortalityResource::collection($this->mortalities),
-            "jefe_familia" => $jefe_familia ? $jefe_familia->nombre : null,
             "riesgos" => RiskFileFamilyResource::collection($this->risks),
             "total_risk" => $this->total_risk,
             "level_total_id" => $this->levelTotal,
-            "contaminacion" => $this->contaminationPoints,
+            "contaminacion" => $arrayContaminacion,
             "sitios_tratamiento" => $this->treatmentSites,
             "created_at"  => $this->created_at,
         ];  

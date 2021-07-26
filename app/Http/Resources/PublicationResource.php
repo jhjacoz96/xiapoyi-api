@@ -14,7 +14,7 @@ class PublicationResource extends JsonResource
      * @return array
      */
     public function toArray($request)
-    {;
+    {
         $resource = Resource::where('publication_id', $this->id)->first();
         return [
             "id" => $this->id,
@@ -27,7 +27,7 @@ class PublicationResource extends JsonResource
             "filter_three_publication_id" => $this->filter_three_publication_id ?? null,
             "resource" => $resource["url"] ?? null,
             "type_resource" => $resource["type_resource"] ?? null,
-            "image_mini" => $this->image ?? null,
+            "image_mini" => $this->image ? $this->image->url : null,
         ];
     }
 }

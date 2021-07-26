@@ -112,9 +112,9 @@ class ConfigWeb extends Controller
 
     public function organizationIndex() {
         try {
-            $data = Organization::with('province', 'institution', 'canton')->find(1); 
+            $data = Organization::with('province', 'institution', 'canton', 'image')->find(1); 
             if (!$data) {
-                 $data = Organization::with('province', 'institution', 'canton')->find(3); 
+                 $data = Organization::with('province', 'institution', 'canton', 'image')->find(3); 
             }
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
@@ -124,7 +124,7 @@ class ConfigWeb extends Controller
 
     public function organizationFind () {
         try {
-            $data = Organization::with('province', 'institution', 'canton')->get(); 
+            $data = Organization::with('province', 'institution', 'canton', 'image')->get(); 
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -134,38 +134,39 @@ class ConfigWeb extends Controller
     public function organizationStore(Request $request)
     {
         try {
-            $id = 1;
-            $idd = 3;
-            $o = Organization::find($id);
-            if ($o) {
-                $data = Organization::updateOrCreate(
-                [
-                  'id' => $id,
-                ],
-                [   
-                    'name' => $request['name'],
-                    'province_id' => $request['province_id'],
-                    'canton_id' => $request['canton_id'],
-                    'address' => $request['address'],
-                    'institution_id' => $request['institution_id'],
-                    'code_uo' => $request['code_uo'],
-                    'parroquia' => $request['parroquia'],
-                ]);
-            } else {
-                $data = Organization::updateOrCreate(
-                    [
-                      'id' => $idd,
-                    ],
-                    [
-                        'name' => $request['name'],
-                        'province_id' => $request['province_id'],
-                        'canton_id' => $request['canton_id'],
-                        'address' => $request['address'],
-                        'institution_id' => $request['institution_id'],
-                        'code_uo' => $request['code_uo'],
-                        'parroquia' => $request['parroquia'],
-                ]);
+            $o = Organization::find(1);
+            $data = Organization::updateOrCreate(
+            [
+              'id' => $o ? 1 : 3,
+            ],
+            [
+                'name' => $request['name'],
+                'province_id' => $request['province_id'],
+                'canton_id' => $request['canton_id'],
+                'address' => $request['address'],
+                'institution_id' => $request['institution_id'],
+                'code_uo' => $request['code_uo'],
+                'parroquia' => $request['parroquia'],
+            ]);
+
+            $folder = 'image/organization';
+            $imagen = $request["image"];
+            if ($imagen != "null") {
+                \Cloudder::upload($imagen, null, ['folder' => $folder], []);
+                $ruta = \Cloudder::getResult();
+                if (!empty($data->image)) {
+                    $data->image->url = $ruta['url'];
+                    $data->image->public_id = $ruta['public_id'];
+                    $data->push();
+                } else {
+                    $data->image()->create([
+                       'url' => $ruta['url'],
+                       'public_id' => $ruta['public_id'],
+                    ]);
+
+                }
             }
+            $data = Organization::with('image')->find($data["id"]);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -483,6 +484,7 @@ class ConfigWeb extends Controller
                 'title' => $request['title'],
                 'description1' => $request['description1'],
                 'description2' => $request['description2'],
+                'show' => $request['show']
             ]);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
@@ -497,12 +499,12 @@ class ConfigWeb extends Controller
                 'Content-Type: application/xlsx',
             );
             return \Response::download($file,"productos.xlsx",$header);*/
-             /*$file_path = public_path().$request["resource"];
+             $file_path = public_path().$request["resource"];
              $header=array(
                 'Content-Type: application/odt',
             );
-            return  response()->download($file_path, "productos.odt", $header);*/
-            $folder = 'image/publication';
+            return  response()->download($file_path, "productos.odt", $header);
+            /*$folder = 'image/publication';
             $c = \Cloudder::privateDownloadUrl (
                 "sample",
                 "jpg",
@@ -511,7 +513,7 @@ class ConfigWeb extends Controller
                     "attachment" => true
                 ]
             );
-            return $c;
+            return $c;*/
         } catch (Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.dowloandFile');
         }

@@ -188,6 +188,45 @@ class DiabeticPatientController extends Controller
 
     // movil //-----------------------------------------------
 
+    public function notifications()
+    {
+        try {
+            $model = \Auth::user()->diabeticPatient->unreadNotifications;
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function readNotifications($id)
+    {
+        try {
+            $notifications = \Auth::user()->diabeticPatient->unreadNotifications;
+            foreach ($notifications as $key => $value) {
+               if ($value->data["id"] == $id) {
+                    $value->markAsRead();
+               }
+            }
+            $model = \Auth::user()->diabeticPatient->unreadNotifications;
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function readAllNotifications()
+    {
+        try {
+            $model = \Auth::user()
+                ->diabeticPatient
+                ->notifications
+                ->markAsRead();
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $model);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     public function dashboardMovil () {
       try {
         $user = \Auth::user()->diabeticPatient;

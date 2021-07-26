@@ -20,7 +20,6 @@ class PregnantService {
 
     public function index () {
         try {
-            
             $model = Member::has('pregnant')->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
@@ -94,7 +93,7 @@ class PregnantService {
 
             $updateMember = Member::find($model["member_id"]);
 
-            if ($model["observacion_parto"] != '') {
+            if ($model["recomendaciones"] != '') {
                 $updateMember->update([
                     "embarazo" => false,
                 ]);
@@ -123,10 +122,6 @@ class PregnantService {
                 $model->vaccines()->sync($data['vacuna']);
             }
 
-             $validar7 = $data['senal_alarma']  ?? null;
-            if (!is_null($validar7)) {
-                $model->senalAlarms()->sync($data['senal_alarma']);
-            }
             
             $validar2 = $data['telefonos']  ?? null;
             if (!is_null($validar2)) {
@@ -148,9 +143,34 @@ class PregnantService {
                 $model->examRoutines()->sync($data['examenes_rutinarios']);
             }
 
-            $validar3 = $data['sustancias_sicotropicas']  ?? null;
-            if (!is_null($validar3)) {
+            $validar4 = $data['sustancias_sicotropicas']  ?? null;
+            if (!is_null($validar4)) {
                 $model->psychotrophics()->sync($data['sustancias_sicotropicas']);
+            }
+
+            $validar5 = $data['patologias_prenatales']  ?? null;
+            if (!is_null($validar5)) {
+                $model->pathologyPregnants()->sync($data['patologias_prenatales']);
+            }
+
+            $validar6 = $data['patologias_maternas']  ?? null;
+            if (!is_null($validar6)) {
+                $model->pathologyMothers()->sync($data['patologias_maternas']);
+            }
+
+            $validar7 = $data['patologias_paternas']  ?? null;
+            if (!is_null($validar7)) {
+                $model->pathologyFathers()->sync($data['patologias_paternas']);
+            }
+
+            $validar8 = $data['patologias']  ?? null;
+            if (!is_null($validar8)) {
+                $model->member->pathologies()->sync($data["patologias"]);
+            }
+
+             $validar9 = $data['senal_alarma']  ?? null;
+            if (!is_null($validar9)) {
+                $model->senalAlarms()->sync($data['senal_alarma']);
             }
 
             DB::commit();
@@ -161,59 +181,48 @@ class PregnantService {
         }
     }
 
-    public function search ($data) {
+    public function search ($request) {
         try {
-            $search = $data['search'];
-            $model = Member::has('pregnant')
-            /* $model = Member::whereHas('pregnant', function ($query) use($filter) {
-                $query->where('embarazo', $filter['embarazo'] ?? false)
-            })
-            ->whereBetween('created_at', [$filter['inicio'] ?? '2010-10-10', $filter['fin'] ?? '2030-10-10']) */
-            ->where('nombre','like','%'.$search .'%')
-            ->orWhere('cedula','like','%'.$search .'%')
-            ->orWhereHas('FileFamily', function ($query) use($search) {
-                $query->where('direccion_habitual','like','%'.$search .'%')
-                ->orWhere('manzana','like','%'.$search .'%')
-                ->orWhereHas('CulturalGroup', function ($query) use ($search) {
-                    $query->where('name', 'like','%'.$search .'%');
-                })
-                ->orWhereHas('Zone', function ($query) use ($search) {
-                    $query->where('name', 'like','%'.$search .'%');
+            $search = $request['search'];
+            $embarazo = $request['embarazo'];
+            $model = Pregnant::whereHas('member', function ($query) use($search) {
+                $query->where('nombre','like','%'.$search .'%')
+                ->orWhere('cedula','like','%'.$search .'%')
+                ->orWhereHas('pregnant', function ($query) use($search){
+                    $query->Where('numero_historia', 'like','%'.$search .'%');
                 });
-            })
-            ->orWhereHas('pregnant', function ($query) use($search) {
-                $query->where('numero_historia', 'like','%'.$search .'%');
-            })
-            ->orderBy('id', 'desc')->get();
-
-            return $model;
+            });
+            /*->whereHas("member", function ($query) use($embarazo) {
+                $query->where("embarazo", $embarazo);
+            })*/
+            $embarazo ? $result = $model->whereHas("member", function ($query) use($embarazo) {
+                                               $query->where("embarazo", $embarazo);
+                                          })->whereNull("recomendaciones") : "";
+            !$embarazo ? $result = $model->whereNotNull("recomendaciones") : "";
+            $result = $model->orderBy('id', 'desc')->get();
+            return $result;
         } catch (\Exception $e) {
             return $e;
         }
     }
 
-    public function filter ($data) {
+    public function filter ($request) {
         try {
-            $group_ages = $data["group_age_id"];
-            $gestacion = $data["embarazo"];
-            // $semana_gestacion = $data["semana_gestacion"];
-            if (count($group_ages) > 0 && !empty($gestacion)) {
-                $model = Member::has('pregnant')
-                    ->where('embarazo', true)
-                    ->whereIn('group_age_id', $group_ages)
-                    ->orderBy('id', 'desc')->get();
-            } else if (count($group_ages) > 0) {
-                $model = Member::has('pregnant')
-                    ->whereIn('group_age_id', $group_ages)
-                    ->orderBy('id', 'desc')->get();
-            } else if (!empty($gestacion)) {
-                 $model = Member::has('pregnant')
-                    ->where('embarazo', true)
-                    ->orderBy('id', 'desc')->get();
-            } else {
-                $model = Member::has('pregnant')
-                    ->orderBy('id', 'desc')->get();
-            }
+            $q = Pregnant::with('member');
+                            (count($request["gestacion"]) > 0)             ? $model = $q->whereIn("descripcion_gestacion", $request["gestacion"]) : "";
+                            (count($request["groupAge"]) > 0)              ? $model = $q->whereHas("member", function ($query) use($request) {
+                                $query->whereIn("group_age_id", $request["groupAge"]);
+                            }) : "";
+                            (count($request["tipo_parto"]) > 0)            ? $model = $q->whereIn("tipo_parto", $request["tipo_parto"]) : "";
+                            ($request["embarazo_planificado"] !== null)    ? $model = $q->where("embarazo_planificado", $request["embarazo_planificado"]) : "";
+                            (count($request["causa_embarazo"]) > 0)        ? $model = $q->whereIn("causa_embarazo", $request["causa_embarazo"]) : "";
+                            ($request["embarazo"] === true)                ? $model = $q->whereHas("member", function ($query) use($request) {
+                                $query->where("embarazo", $request["embarazo"]);
+                            })->whereNull("recomendaciones") : "";
+                            ($request["embarazo"] === false)               ? $model = $q->whereNotNull("recomendaciones") : "";
+                            !empty($request["startDate"]) &&
+                            !empty($request["endDate"])                    ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
+                            $model = $q->orderBy('id', 'desc')->get();
 
             return $model;
         } catch (\Exception $e) {
@@ -287,7 +296,7 @@ class PregnantService {
                 "gestation_week_id" => $data["gestation_week_id"],
             ]);
 
-            if ($model["observacion_parto"] != '') {
+            if ($model["recomendaciones"] != '') {
                 $updateMember->update([
                     "embarazo" => false,
                 ]);
@@ -316,11 +325,6 @@ class PregnantService {
             if (!is_null($validar1)) {
                 $model->vaccines()->sync($data['vacuna']);
             }
-
-            $validar7 = $data['senal_alarma']  ?? null;
-            if (!is_null($validar7)) {
-                $model->senalAlarms()->sync($data['senal_alarma']);
-            }
             
             $validar2 = $data['telefonos']  ?? null;
             if (!is_null($validar2)) {
@@ -342,9 +346,34 @@ class PregnantService {
                 $model->examRoutines()->sync($data['examenes_rutinarios']);
             }
 
-            $validar3 = $data['sustancias_sicotropicas']  ?? null;
-            if (!is_null($validar3)) {
+            $validar4 = $data['sustancias_sicotropicas']  ?? null;
+            if (!is_null($validar4)) {
                 $model->psychotrophics()->sync($data['sustancias_sicotropicas']);
+            }
+
+            $validar5 = $data['patologias_prenatales']  ?? null;
+            if (!is_null($validar5)) {
+                $model->pathologyPregnants()->sync($data['patologias_prenatales']);
+            }
+
+            $validar6 = $data['patologias_maternas']  ?? null;
+            if (!is_null($validar6)) {
+                $model->pathologyMothers()->sync($data['patologias_maternas']);
+            }
+
+            $validar7 = $data['patologias_paternas']  ?? null;
+            if (!is_null($validar7)) {
+                $model->pathologyFathers()->sync($data['patologias_paternas']);
+            }
+
+            $validar8 = $data['patologias']  ?? null;
+            if (!is_null($validar8)) {
+                $model->member->pathologies()->sync($data["patologias"]);
+            }
+
+            $validar9 = $data['senal_alarma']  ?? null;
+            if (!is_null($validar9)) {
+                $model->senalAlarms()->sync($data['senal_alarma']);
             }
 
             DB::commit();
@@ -368,10 +397,22 @@ class PregnantService {
         }
     }
 
-    public function check ($data) {
+    public function checkDocument ($data) {
         try {
             DB::beginTransaction();
             $model = Member::where('cedula', $data)->where('gender_id', 2)->first();
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+    public function checkPregnant ($data) {
+        try {
+            DB::beginTransaction();
+            $model = Member::where('cedula', $data)->where('gender_id', 2)->where('embarazo', false)->first();
             if(!$model) return null;
             DB::commit();
             return $model;

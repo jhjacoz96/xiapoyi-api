@@ -14,9 +14,13 @@ class RiskShowResource extends JsonResource
      */
     public function toArray($request)
     {
+        $activityEvolutions = $this->activityEvolutions->map(function($query){
+            return $query->id;
+        });
         return [
             "id" => $this->id,
             "name" => $this->name,
+            "activity_evolutions" => $activityEvolutions,
             "risk_classification_id" => $this->risk_classification_id,
         ];
     }

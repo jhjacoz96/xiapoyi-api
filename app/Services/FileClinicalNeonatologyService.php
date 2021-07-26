@@ -125,8 +125,8 @@ class FileClinicalNeonatologyService {
 
             
 
-            $validar1 = $data['patologias_maternas']  ?? null;
-            if (!is_null($validar1)) {
+            $validar = $data['patologias_maternas']  ?? null;
+            if (!is_null($validar)) {
                 $m = Member::with('pathologies')->find($pregnant->member->id);
                 $m->pathologies()->sync($data["patologias_maternas"]);
             }
@@ -236,8 +236,8 @@ class FileClinicalNeonatologyService {
 
             
 
-            $validar1 = $data['patologias_maternas']  ?? null;
-            if (!is_null($validar1)) {
+            $validar = $data['patologias_maternas']  ?? null;
+            if (!is_null($validar)) {
                 $m = Member::with('pathologies')->find($pregnant->member->id);
                 $m->pathologies()->sync($data["patologias_maternas"]);
             }

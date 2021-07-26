@@ -92,6 +92,18 @@ class Pregnant extends Model
         return  $this->belongsToMany('App\ExamRoutine','exam_pregnants','pregnant_id','exam_routine_id');
     }
 
+    public function pathologyPregnants () {
+        return  $this->belongsToMany('App\PathologyPregnant', 'pathology_pregnant_pregnants', 'pregnant_id', 'pathology_pregnant_id');
+    }
+
+    public function pathologyMothers () {
+        return  $this->belongsToMany('App\Pathology', 'pathology_mother_pregnants', 'pregnant_id', 'pathology_mother_pregnant_id');
+    }
+
+    public function pathologyFathers () {
+        return  $this->belongsToMany('App\Pathology', 'pathology_father_pregnants', 'pregnant_id', 'pathology_father_pregnant_id');
+    }
+
     public function fileClinicalNeonatology () {
         return  $this->hasMany('App\FileClinicalNeonatology','file_clinical_neonatology_id', 'id');
     }

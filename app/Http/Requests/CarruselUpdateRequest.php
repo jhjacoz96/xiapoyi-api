@@ -27,7 +27,7 @@ class CarruselUpdateRequest extends FormRequest
             "title" => "required|string",
             "description" => "required|string",
             "url" => "sometimes|nullable|string",
-            "image" => "sometimes|nullable|file",
+            "image" => "sometimes|nullable",
         ];
     }
 }

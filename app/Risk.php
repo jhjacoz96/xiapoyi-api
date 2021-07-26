@@ -15,6 +15,10 @@ class Risk extends Model
     }
 
     public function FileFamilies () {
-        return  $this->belongsToMany('App\FileFamily','risk_files','risk_id','file_family_id')->withPivot('compromiso_familiar', 'compromiso_equipo', 'cumplio', 'causas', 'level_risk_id', 'id');
+        return  $this->belongsToMany('App\FileFamily','risk_files','risk_id','file_family_id')->withPivot('compromiso_id', 'cumplio', 'causas', 'level_risk_id', 'fecha_evaluacion', 'fecha_programacion', 'id');
+    }
+
+    public function activityEvolutions () {
+        return  $this->belongsToMany('App\ActivityEvolution','risk_activity_evolutions','risk_id','activity_evolution_id');
     }
 }

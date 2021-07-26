@@ -40,7 +40,7 @@ class PregnantController extends Controller
     {
         try {
             $model = $this->service->search($request);
-            $data = MemberShowResource::collection($model);
+            $data = FileClinicalObstetricResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -51,7 +51,7 @@ class PregnantController extends Controller
     {
       try {
             $model = $this->service->filter($request);
-            $data = MemberShowResource::collection($model);
+            $data = FileClinicalObstetricResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
@@ -71,7 +71,7 @@ class PregnantController extends Controller
         $data = new FileClinicalObstetricResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
-        return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        return $e;
       }
     }
 
@@ -135,16 +135,40 @@ class PregnantController extends Controller
     public function check($cedula)
     {
         try {
-            $model = $this->service->check($cedula);
+            $model = $this->service->checkDocument($cedula);
             if (!$model) {
                 $data = [
                     'message' => __('response.bad_request_long')
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
-            } else {
-                $data = new MemberShowResource($model);
-                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
             }
+            $model = null;
+            $model = $this->service->checkPregnant($cedula);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.has_pregnancy')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            }
+            $data = new MemberShowResource($model);
+            return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    public function checkFile($cedula)
+    {
+        try {
+            $model = $this->service->checkDocument($cedula);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            }
+            $data = new MemberShowResource($model);
+            return bodyResponseRequest(EnumResponse::SUCCESS, $data);
         } catch (\Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
         }

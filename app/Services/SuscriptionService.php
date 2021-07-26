@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Suscription;
+use Illuminate\Support\Facades\Mail;
 
 class SuscriptionService {
 
@@ -28,6 +29,12 @@ class SuscriptionService {
         try {
             DB::beginTransaction();
             $model = Suscription::create($data);
+            $datosMensaje = [
+                "suscriptor" => $model,
+            ];
+            Mail::send('correos.suscripcion', $datosMensaje,function($mensaje) use($model){
+                $mensaje->to($model["correo"])->subject('Suscriptión - KA-THANI');
+            });
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

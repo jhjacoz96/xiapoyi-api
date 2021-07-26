@@ -33,5 +33,6 @@ return [
 	'response_success_long' => 'Operación realizada exitosamente',
 	'response_post_success' => '¡Exitoso!',
 	'response_post_success_long' => 'Transacción efectuada exitosamente',
-	'successfully_deleted' => 'Registro eliminado exitosamente'
+	'successfully_deleted' => 'Registro eliminado exitosamente',
+	'has_pregnancy' => 'Ya posee una ficha clinica de obstetricia sin culminar'
 ];

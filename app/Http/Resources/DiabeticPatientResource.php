@@ -27,7 +27,7 @@ class DiabeticPatientResource extends JsonResource
             "abdominal" => $this->abdominal,
             "circunferencia" => $this->circunferencia,
             "nivel_glusemia" => $this->nivel_glusemia,
-
+            "descripcion_imc" => $this->descripcion_imc,
             "dieta" => $this->dieta,
             "tratamiento_farmacologico" => PatientTreatment::where('diabetic_patient_id', $this->id)->get(),
             "tratamiento_no_farmacologico" => ActivityTreatmentResource::collection($this->activityTreatments),

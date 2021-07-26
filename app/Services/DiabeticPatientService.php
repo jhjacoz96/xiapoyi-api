@@ -261,8 +261,11 @@ class DiabeticPatientService {
             DB::beginTransaction();
             $model = DiabeticPatient::find($data["id"]);
             if(!$model) return null;
+            $calImc = $data["peso"] && $model["altura"] ? $data["peso"] / pow($model["altura"], 2) : null;
+            $imc = $this->calImc($calImc);
             $model->update([
               "peso" => $data["peso"],
+              "descripcion_imc" => $imc["nombre"],
             ]);
             $date = Carbon::now()->toDateTimeString();
             $diabetic = RegisterwWight::create([
@@ -319,8 +322,11 @@ class DiabeticPatientService {
             DB::beginTransaction();
             $model = \Auth::user()->diabeticPatient;
             if(!$model) return null;
+            $calImc = $data["peso"] && $model["altura"] ? $data["peso"] / pow($model["altura"], 2) : null;
+            $imc = $this->calImc($calImc);
             $model->update([
               "peso" => $data["peso"],
+              "descripcion_imc" => $imc["nombre"],
             ]);
             $date = Carbon::now()->toDateTimeString();
             $diabetic = RegisterwWight::create([
@@ -336,6 +342,31 @@ class DiabeticPatientService {
             DB::rollback();
             return $e;
         }
+    }
+
+    public function calImc ($data) {
+        $c = collect([
+            [
+              "nombre" => 'Desnutrición', 
+              "value" => [0, 18.5],
+            ],
+            [
+              "nombre" => 'Peso normal',
+              "value" => [18.6, 25],
+            ],
+            [
+              "nombre" => 'Sobrepeso',
+              "value" => [26, 30],
+            ],
+            [
+              "nombre" => 'Obesidad',
+              "value" => [31, 200],
+            ]
+        ]);
+        $imc = $c->filter(function($query)use($data){
+            return $query["value"][0] <= $data && $data <= $query["value"][1];
+        })->first();
+        return $imc;
     }
 
     public function indexRegisterGlucoseMovil () {

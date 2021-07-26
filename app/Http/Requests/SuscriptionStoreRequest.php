@@ -26,6 +26,9 @@ class SuscriptionStoreRequest extends FormRequest
     {
         return [
             "nombre" => "required|string",
+            "filter_three_publication_id" => "sometimes|nullable",
+            "filter_one_publication_id" => "sometimes|nullable",
+            "filter_two_publication_id" => "sometimes|nullable",
             'correo' => [
                 "required", "string",
                  Rule::unique('suscriptions')

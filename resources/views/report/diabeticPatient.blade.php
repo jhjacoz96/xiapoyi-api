@@ -11,16 +11,16 @@
         @include('report.header')
         @include('report.footer')
         <main>
-            <div class="title">Reporte de pacientes diabeticos</div>
+            <div class="title">Reporte estructurado de pacientes diabeticos</div>
             <br>
-             <div class="section_title">Datos generales:</div>
+             <div class="section_title">Criterios de busqueda:</div>
             <table align="center" width="100%" style="background: #ebebeb" class="tab-font">
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
-                        <label for="p1">Cantón:</label><br>
+                        <label for="p1">Grupo de edad:</label><br>
                         <input type="text" value="
-                            {{ isset($organization->canton) ? $organization->canton->name : '' }}
+                            {{ count($criterios['groupAge']) > 0 ? implode(', ', $criterios['groupAge']) : 'Todos' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -28,9 +28,49 @@
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
-                        <label for="p1">Provincia:</label><br>
+                        <label for="p1">Patología (Comorbidades):</label><br>
                         <input type="text" value="
-                            {{ isset( $organization->province) ? $organization->province->name : '' }}
+                            {{ count($criterios['pathology']) > 0 ? implode(', ', $criterios['pathology']) : 'Todas' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Medicamento:</label><br>
+                        <input type="text" value="
+                            {{ count($criterios['pathology']) > 0 ? implode(', ', $criterios['pathology']) : 'Todas' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Genero:</label><br>
+                        <input type="text" value="
+                            {{ count($criterios['gender']) > 0 ? implode(', ', $criterios['gender']) : 'Todos' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Clasificación de imc:</label><br>
+                        <input type="text" value="
+                            {{ count($criterios['imc']) > 0 ? implode(', ', $criterios['imc']) : 'Todos' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Incumplimiento de tratamiento farmacologíco:</label><br>
+                        <input type="text" value="
+                            {{ $criterios['alertTreatment'] ?? '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -51,16 +91,16 @@
                 </tr>
             </table>
             <br>
-            <table id="tblAcciones" align="center" width="100%"   class="tab-font">
+            <table id="tblAcciones"style="page-break-inside: auto;"  align="center" width="100%"   class="tab-font">
                 <tr>
                   <td>Nombre</td>
                   <td>Cédula</td>
                   <td>Genero</td>
                   <td>Grupo de edad</td>
                   <td>Edad</td>
-                  <td>Tratamiento farmacológico</td>
+                  <td>Medicamento</td>
                   <td>Patologías (Comorbidades)</td>
-                  <td>Fecha de apertura historia</td>
+                  <td>Clasificación de imc</td>
                 </tr>
                 @foreach ($data as $item)
                     <?php 
@@ -87,7 +127,7 @@
                                 -
                             @endif
                         </td>
-                        <td>{{ Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
+                        <td>{{ $item->descripcion_imc }}</td>
                     </tr>
                 @endforeach
                 <tr style="line-height: 4px;">

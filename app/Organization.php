@@ -14,6 +14,10 @@ class Organization extends Model
     	return $this->belongsTo('App\Institution', 'institution_id', 'id');
     }
 
+    public function image(){
+        return $this->morphOne('App\Image','imageable');
+    }
+
     public function canton () {
     	return $this->belongsTo('App\Canton', 'canton_id', 'id');
     }

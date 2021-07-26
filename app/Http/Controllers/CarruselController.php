@@ -25,7 +25,7 @@ class CarruselController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = CarruselResource::collection($model);
+            $data = new CarruselResource($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;

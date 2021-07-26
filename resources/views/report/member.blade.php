@@ -11,16 +11,16 @@ use Carbon\Carbon;
         @include('report.header')
         @include('report.footer')
         <main>
-            <div class="title">Reporte de ficha familiar</div>
+            <div class="title">Reporte estructurado de fichas familiares</div>
             <br>
-             <div class="section_title">Datos generales:</div>
+             <div class="section_title">Criterios de busqueda:</div>
             <table align="center" width="100%" style="background: #ebebeb" class="tab-font">
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
-                        <label for="p1">Cantón:</label><br>
+                        <label for="p1">Patología:</label><br>
                         <input type="text" value="
-                            {{ isset($organization->canton) ? $organization->canton->name : '' }}
+                            {{ count($criterios['pathology']) > 0 ? implode(', ', $criterios['pathology']) : 'Todas' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -28,9 +28,50 @@ use Carbon\Carbon;
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
-                        <label for="p1">Provincia:</label><br>
+                        <label for="p1">Discapacidad:</label><br>
                         <input type="text" value="
-                            {{ isset( $organization->province) ? $organization->province->name : '' }}
+                            {{ count($criterios['disability']) > 0 ? implode(', ', $criterios['disability']) : 'Todas' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Grupo de edad:</label><br>
+                        <input type="text" value="
+                            {{ count($criterios['groupAge']) > 0 ? implode(', ', $criterios['groupAge']) : 'Todos' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Genero:</label><br>
+                        <input type="text" value="
+                            {{ count($criterios['gender']) > 0 ? implode(', ', $criterios['gender']) : 'Todos' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Esqueda de vacunación:</label><br>
+                        <input type="text" value="
+                            {{ $criterios['vaccine'] ? 'Completa' : 'Incompleta' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Rango de fecha de nacimiento:</label><br>
+                        <input type="text" value="
+                            {{ $criterios['startDate'] ? $criterios['startDate'] : ' ' }} - {{  $criterios['startDate'] ? $criterios['endDate'] : ' ' }}
+
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -51,7 +92,7 @@ use Carbon\Carbon;
                 </tr>
             </table>
             <br>
-            <table id="tblAcciones" align="center" width="100%"   class="tab-font">
+            <table id="tblAcciones" style="page-break-inside: auto;" align="center" width="100%"   class="tab-font">
                 <tr>
                   <td>Nombre</td>
                   <td>Cédula</td>

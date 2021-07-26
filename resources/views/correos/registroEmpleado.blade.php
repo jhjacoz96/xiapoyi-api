@@ -28,6 +28,6 @@
 </table>
 <br>
 &nbsp;
-<span>!Tu salud es nuestro compromiso!</span>
+<span>¡Tu salud es nuestro compromiso!</span>
 </body>
 </html>

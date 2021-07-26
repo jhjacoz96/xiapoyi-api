@@ -19,7 +19,7 @@ class CarruselResource extends JsonResource
             "title" => $this->title,
             "description" => $this->description,
             "url" => $this->url,
-            "image" => $this->image
+            "image" => $this->image ? $this->image->url : null,
         ];
     }
 }

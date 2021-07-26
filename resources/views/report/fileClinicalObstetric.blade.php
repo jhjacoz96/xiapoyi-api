@@ -11,16 +11,16 @@ use Carbon\Carbon;
         @include('report.header')
         @include('report.footer')
         <main>
-            <div class="title">Reporte de ficha clinica obstetrica</div>
+            <div class="title">Reporte estructurado de fichas clinicas de obstetrica</div>
             <br>
-             <div class="section_title">Datos generales:</div>
+             <div class="section_title">Critrios de busqueda:</div>
             <table align="center" width="100%" style="background: #ebebeb" class="tab-font">
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
-                        <label for="p1">Cantón:</label><br>
+                        <label for="p1">Edad gestacional:</label><br>
                         <input type="text" value="
-                            {{ isset($organization->canton) ? $organization->canton->name : '' }}
+                             {{ count($criterios['gestacion']) > 0 ? implode(', ', $criterios['gestacion']) : 'Todas' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -28,9 +28,71 @@ use Carbon\Carbon;
                 <tr>
                     <td width="3%">&nbsp;</td>
                     <td width="94%">
-                        <label for="p1">Provincia:</label><br>
+                        <label for="p1">Grupo de edad:</label><br>
                         <input type="text" value="
-                            {{ isset( $organization->province) ? $organization->province->name : '' }}
+                             {{ count($criterios['groupAge']) > 0 ? implode(', ', $criterios['groupAge']) : 'Todos' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Tipo de parto:</label><br>
+                        <input type="text" value="
+                             {{ count($criterios['tipo_parto']) > 0 ? implode(', ', $criterios['tipo_parto']) : 'Todos' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Embarazo planificado:</label><br>
+                        <input type="text" value="
+                             @if($criterios['embarazo_planificado'] === null)
+                                Todos
+                            @elseif($criterios['embarazo_planificado'] === true)
+                                Si
+                            @else
+                                No
+                            @endif
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Causa de embarazo:</label><br>
+                        <input type="text" value="
+                             {{ count($criterios['causa_embarazo']) > 0 ? implode(', ', $criterios['causa_embarazo']) : 'Todos' }}
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Estado:</label><br>
+                        <input type="text" value="
+                             @if($criterios['embarazo_planificado'] === null)
+                                Todos
+                            @elseif($criterios['embarazo_planificado'] === true)
+                                Control activo
+                            @else
+                                Historial
+                            @endif
+                        "/>
+                    </td>
+                    <td width="3%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="3%">&nbsp;</td>
+                    <td width="94%">
+                        <label for="p1">Rango de fecha apertura:</label><br>
+                        <input type="text" value="
+                            {{ $criterios['startDate'] ? \Carbon\Carbon::parse($criterios['startDate'])->format('d/m/Y') : '' }} {{ $criterios['startDate']  ? '-' : '-' }} {{  $criterios['startDate'] ? \Carbon\Carbon::parse($criterios['endDate'])->format('d/m/Y') : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -51,7 +113,7 @@ use Carbon\Carbon;
                 </tr>
             </table>
             <br>
-            <table id="tblAcciones" align="center" width="100%"   class="tab-font">
+            <table id="tblAcciones" style="page-break-inside: auto;" align="center" width="100%"   class="tab-font">
                 <tr>
                   <td>Número de historia</td>
                   <td>Nombre</td>

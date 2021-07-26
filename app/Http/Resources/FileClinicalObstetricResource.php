@@ -9,6 +9,10 @@ use App\PsychotrophicPregnant;
 use App\MemberDisability;
 use App\MedicinePregnant;
 use App\SenalAlarmPregnant;
+use App\PathologyPregnantPregnant;
+use App\PathologyMotherPregnant;
+use App\PathologyFatherPregnant;
+
 class FileClinicalObstetricResource extends JsonResource
 {
     /**
@@ -46,6 +50,25 @@ class FileClinicalObstetricResource extends JsonResource
             return $query->senal_alarm_id;
         });
 
+        $pathologyPregnantPregnant = PathologyPregnantPregnant::where('pregnant_id', $this->id)->get();
+        $arrayPathologyPregnantPregnant = $pathologyPregnantPregnant->map(function($query) {
+            return $query->pathology_pregnant_id;
+        });
+
+        $pathologyMotherPregnant = PathologyMotherPregnant::where('pregnant_id', $this->id)->get();
+        $arrayPathologyMotherPregnant = $pathologyMotherPregnant->map(function($query) {
+            return $query->pathology_mother_pregnant_id;
+        });
+
+        $pathologyFatherPregnant = PathologyFatherPregnant::where('pregnant_id', $this->id)->get();
+        $arrayPathologyFatherPregnant = $pathologyFatherPregnant->map(function($query) {
+            return $query->pathology_father_pregnant_id;
+        });
+
+        $arrayPathology = $miembro->pathologies->map(function($query){
+            return $query->id;
+        });
+
         return [
             "nombre" => $miembro->nombre,
             "apellido" => $miembro->apellido,
@@ -80,6 +103,10 @@ class FileClinicalObstetricResource extends JsonResource
             "antecentedes_maternos" => $this->antecentedes_maternos ?? null,
             "antecentedes_prenatales" => $this->antecentedes_prenatales ?? null,
             "antecedentes_patologicos" => $this->antecedentes_patologicos ?? null,
+            "patologias_prenatales" => $arrayPathologyPregnantPregnant,
+            "patologias_maternas" => $arrayPathologyMotherPregnant,
+            "patologias_paternas" => $arrayPathologyFatherPregnant,
+            "patologias" => $arrayPathology,
             "medicamentos" => $this->medicamentos ?? null,
             "embarazo_planificado" => $this->embarazo_planificado ?? null,
             "causa_embarazo" => $this->causa_embarazo ?? null,
@@ -121,7 +148,7 @@ class FileClinicalObstetricResource extends JsonResource
             "examenes_rutinarios" => $arrayExam,
             "sustancias_sicotropicas" => $arrayPsychotrophicPregnant,
             "recomendaciones" => $this->recomendaciones ?? null,
-            "created_At" => $this->created_at ?? null,
+            "created_at" => $this->created_at ?? null,
             "gestation_week_id" => $this->gestation_week_id ?? null,
        ];
     }

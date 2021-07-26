@@ -15,8 +15,9 @@ class OldAdultResource extends JsonResource
      */
     public function toArray($request)
     {
-        $lastsPublications = Publication::latest()->take(3)->get();
+        $lastsPublications = Publication::latest()->take($this->show)->get();
          return [
+            "show" => $this->show,
             "title" => $this->title,
             "description1" => $this->description1,
             "description2" => $this->description2,

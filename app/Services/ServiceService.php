@@ -32,9 +32,8 @@ class ServiceService {
             $model = Service::create($data);
             $model->view_web = false;
             $model->save();
-            /*if (isset($data['image_service'])) $model->assignImage($data['image_service']);*/
-            if ($data['image'] != "null") {
-                $image = $data['image']->getRealPath();
+            if ($data['imagen'] != "null") {
+                $image = $data['imagen']->getRealPath();
                 $folder = 'image/service';
                 \Cloudder::upload($image, null, ['folder' => $folder], []);
                 $c = \Cloudder::getResult();
@@ -57,13 +56,15 @@ class ServiceService {
             
             $children = $model->activities;
             $activitiesItems = $data["activities"];
-            $deletedIds = $children->filter(function ($child) use ($activitiesItems) {
+            if (count($children) > 0){
+                 $deletedIds = $children->filter(function ($child) use ($activitiesItems) {
                 return !in_array($child->id, $activitiesItems);
-            })->map(function ($child) {
-                $id = $child->id;
-                $child->update(["service_id" => null]);
-                return $id;
-            });
+                })->map(function ($child) {
+                    $id = $child->id;
+                    $child->update(["service_id" => null]);
+                    return $id;
+                });
+            }
             foreach ($activitiesItems as $item) {
                $model = Activity::find($item);
                $model->update(["service_id" => $id]);
@@ -84,8 +85,8 @@ class ServiceService {
             $model->update($data);
             if (isset($data['view_web'])) $model->view_web = $data["view_web"];
             $model->save();
-            if ($data['image'] != "null") {
-                $image = $data['image']->getRealPath();
+            if ($data['imagen'] != "null") {
+                $image = $data['imagen']->getRealPath();
                 $folder = 'image/service';
                 \Cloudder::upload($image, null, ['folder' => $folder], []);
                 $c = \Cloudder::getResult();

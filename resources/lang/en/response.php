@@ -33,6 +33,6 @@ return [
 	'response_success_long' => 'Operation successfully performed',
 	'response_post_success' => 'Successful!',
 	'response_post_success_long' => 'Transaction successfully completed',
-	'successfully_deleted' => 'Registry deleted successfully'
-
+	'successfully_deleted' => 'Registry deleted successfully',
+	'has_pregnancy' => 'You already have a clinical record of obstetrics without completing'
 ];

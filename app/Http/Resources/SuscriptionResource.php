@@ -18,6 +18,9 @@ class SuscriptionResource extends JsonResource
             "id" => $this->id,
             "nombre" => $this->nombre,
             "correo" => $this->correo,
+            "filter_two_publication_id" => $this->filter_two_publication_id,
+            "filter_one_publication_id" => $this->filter_one_publication_id,
+            "filter_three_publication_id" => $this->filter_three_publication_id,
         ];
     }
 }

@@ -23,7 +23,7 @@ class FileClincalNeonatologyResource extends JsonResource
     {
         $member = $this->member;
 
-        $pathologies = MemberPathology::where('member_id', $member["id"])->get();
+        $pathologies = MemberPathology::where('member_id', $this->pregnant->member->id)->get();
         $arrayPathologiesMother = $pathologies->map(function($query) {
             return $query->pathology_id;
         });

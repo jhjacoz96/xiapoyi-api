@@ -17,8 +17,8 @@ class CarruselService {
 
     public function index () {
         try {
-            
-            $model = Carrusel::All();
+            $model = Carrusel::with('image')->find(1);
+            if (!$model) return $model = null;
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -51,10 +51,33 @@ class CarruselService {
     public function update ($data, $id) {
         try {
             DB::beginTransaction();
-            $model = Carrusel::find($id);
-            if(!$model) return null;
-            $model->update($data);
-            if ($data['image_service']) $model->assignImage($data['image']);
+            $model = Carrusel::updateOrCreate(
+            [
+              'id' => 1,
+            ],
+            [
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'url' => $data['url'],
+            ]);
+
+            $folder = 'image/web';
+            $imagen = $data["image"];
+            if ($imagen != "null") {
+                \Cloudder::upload($imagen, null, ['folder' => $folder], []);
+                $ruta = \Cloudder::getResult();
+                if (!empty($model->image)) {
+                    $model->image->url = $ruta['url'];
+                    $model->image->public_id = $ruta['public_id'];
+                    $model->push();
+                } else {
+                    $model->image()->create([
+                       'url' => $ruta['url'],
+                       'public_id' => $ruta['public_id'],
+                    ]);
+
+                }
+            }
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

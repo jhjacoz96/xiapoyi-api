@@ -19,11 +19,11 @@ class MemberShowResource extends JsonResource
     {
         $pathologies = MemberPathology::where('member_id', $this->id)->get();
         $arrayPathologies = $pathologies->map(function($query) {
-            return $query->pathology->name;
+            return $query->pathology->id;
         });
         $disability = MemberDisability::where('member_id', $this->id)->get();
         $arrayDisability = $disability->map(function($query) {
-            return $query->disability->name;
+            return $query->disability->id;
         });
         $prenatal = Pregnant::where('member_id', $this->id)->get();
          $fileFamily = $this->fileFamily;
@@ -35,6 +35,7 @@ class MemberShowResource extends JsonResource
             "apellido" => $this->apellido,
             "nombre" => $this->nombre,
             "type_document_id" =>$this->typeDocument,
+            "type_blood_id" =>$this->typeBlood,
             "cedula" => $this->cedula,
             "correo" => $this->correo,
             "ocupacion" => $this->ocupacion,
@@ -48,6 +49,7 @@ class MemberShowResource extends JsonResource
             "patologias" => $arrayPathologies,
             "discapacidades" => $arrayDisability,
             "embarazo" => $this->embarazo,
+            "fallecido" => $this->fallecido,
             "prenatal" => count( $prenatal) > 0 ? new PregnantResource($prenatal->last()->first()) : null ,
             "prenatal_todos" => count( $prenatal) > 0 ? PregnantResource::collection($prenatal) : null,
             "file_family_id" => $this->file_family_id,

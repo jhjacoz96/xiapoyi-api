@@ -11,16 +11,16 @@
    &nbsp;
     Titulo de la publicación: <strong>{{ $publicacion->name }}</strong>
     &nbsp;
-    @if ($publicacion->filter_one_publication)    
-        Primer filtro: <strong>{{ $publicacion->filter_one_publication->name }}</strong>
+    @if ($publicacion->filterOnePublication)    
+        ¿A quién va dirigido?: <strong>{{ $publicacion->filterOnePublication->name }}</strong>
         &nbsp;
     @endif
-    @if ($publicacion->filter_two_publication)    
-        Segundo filtro: <strong>{{ $publicacion->filter_two_publication->name }}</strong>
+    @if ($publicacion->filterTwoPublication)    
+        Patrón funcional general: <strong>{{ $publicacion->filterTwoPublication->name }}</strong>
         &nbsp;
     @endif
-    @if ($publicacion->filter_three_publication !== null)    
-        Tercer filtro: <strong>{{ $publicacion->filter_three_publication->name }}</strong>
+    @if ($publicacion->filterThreePublication !== null)    
+        Patrón funcional específico: <strong>{{ $publicacion->filterThreePublication->name }}</strong>
         &nbsp;
     @endif
     @if ($publicacion->resource)

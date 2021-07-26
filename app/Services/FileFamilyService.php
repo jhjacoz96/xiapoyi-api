@@ -41,6 +41,7 @@ class FileFamilyService {
                                     $query->where('cedula', 'like','%'.$search .'%');
                                 })
                                 ->orWhere('numero_casa','like','%'.$search .'%')
+                                ->orWhere('numero_familia','like','%'.$search .'%')
                                  ->orWhere('direccion_habitual','like','%'.$search .'%')
                                   ->orWhere('manzana','like','%'.$search .'%')
                                 ->orWhereHas('CulturalGroup', function ($query) use ($search) {
@@ -63,55 +64,18 @@ class FileFamilyService {
             $zones = $data["zone_id"];
             $level_totals = $data["level_total_id"];
             $pathology = $data["pathology_id"];
+            $cultural_group = $data["group_cultural_id"];
 
-            if (count($zones) > 0 && count($level_totals) > 0 &&  count($pathology) > 0) {
-                $model = FileFamily::whereIn('level_total_id', $level_totals)
-                ->whereIn('zone_id', $zones)
-                ->whereHas('members', function ($query) use($pathology) {
-                    $query->whereHas('pathologies', function ($query) use($pathology) {
-                       $query->whereIn('pathologies.id', $pathology);
-                    });
-                })->orderBy('id', 'desc')->get();
-            }
-            else if (count($zones) > 0 && count($level_totals) == 0 &&  count($pathology) == 0) {
-                $model = FileFamily::whereIn('zone_id', $zones)->orderBy('id', 'desc')->get();
-            }
-            else if (count($zones) == 0 && count($level_totals) > 0 &&  count($pathology) == 0) {
-                $model = FileFamily::whereIn('level_total_id', $level_totals)->orderBy('id', 'desc')->get();
-            }
-            else if (count($zones) == 0 && count($level_totals) == 0 &&  count($pathology) > 0) {
-                $model = FileFamily::whereHas('members', function ($query) use($pathology) {
-                    $query->whereHas('pathologies', function ($query) use($pathology) {
-                       $query->whereIn('pathologies.id', $pathology);
-                    });
-                })->orderBy('id', 'desc')->get();
-            }
-            else if (count($zones) > 0 && count($level_totals) > 0 &&  count($pathology) == 0) {
-                $model = FileFamily::whereIn('zone_id', $zones)
-                ->whereIn('level_total_id', $level_totals)
-                ->orderBy('id', 'desc')->get();
-            }
-            else if (count($zones) > 0 && count($level_totals) == 0 &&  count($pathology) > 0) {
-                $model = FileFamily::whereIn('zone_id', $zones)
-                ->whereHas('members', function ($query) use($pathology) {
-                    $query->whereHas('pathologies', function ($query) use($pathology) {
-                       $query->whereIn('pathologies.id', $pathology);
-                    });
-                })
-                ->orderBy('id', 'desc')->get();
-            }
-            else if (count($zones) == 0 && count($level_totals) > 0 &&  count($pathology) > 0) {
-                $model = FileFamily::whereIn('level_total_id', $level_totals)
-                ->whereHas('members', function ($query) use($pathology) {
-                    $query->whereHas('pathologies', function ($query) use($pathology) {
-                       $query->whereIn('pathologies.id', $pathology);
-                    });
-                })
-                ->orderBy('id', 'desc')->get();
-            }
-            else if (count($zones) == 0 && count($level_totals) == 0 &&  count($pathology) == 0) {
-                $model = FileFamily::orderBy('id', 'desc')->get();
-            }
+            $q = FileFamily::with("zone");
+                    count($zones) > 0 ? $model = $q->whereIn('zone_id', $zones) : "";
+                    count($cultural_group) > 0 ? $model = $q->whereIn('cultural_group_id', $cultural_group) : "";
+                    count($level_totals) > 0 ? $model = $q->whereIn('level_total_id', $level_totals) : "";
+                    count($pathology) > 0 ? $model = $q->whereHas('members', function ($query) use($pathology) {
+                        $query->whereHas('pathologies', function ($query) use($pathology) {
+                           $query->whereIn('pathologies.id', $pathology);
+                        });
+                    }) : "";
+                    $model = $q->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;
@@ -130,6 +94,9 @@ class FileFamilyService {
                 "numero_familia" => $data["numero_familia"],
                 "numero_historia" => $data["numero_historia"],
                 "numero_telefono" => $data["numero_telefono"],
+                "telefono_celular_uno" => $data["telefono_celular_uno"],
+                "telefono_celular_dos" => $data["telefono_celular_dos"],
+                "correo" => $data["correo"],
                 "numero_casa" => $data["numero_casa"],
                 "zone_id" => $data["zone_id"],
                 "cultural_group_id" => $data["cultural_group_id"],
@@ -143,6 +110,7 @@ class FileFamilyService {
                         "nombre" => $item['nombre'],
                         "apellido" => $item['apellido'],
                         "type_document_id" => $item['type_document_id'],
+                        "type_blood_id" => $item['type_blood_id'] ?? null,
                         "cedula" => $item['cedula'],
                         "correo" => $item['correo'],
                         "ocupacion" => $item['ocupacion'],
@@ -154,6 +122,7 @@ class FileFamilyService {
                         "scholarship_id" => $item['scholarship_id'],
                         "relationship_id" => $item['relationship_id'],
                         "gender_id" => $item['gender_id'],
+                        "fallecido" => $item['fallecido'],
                         "file_family_id" => $model->id
                     ];
                 }
@@ -185,6 +154,7 @@ class FileFamilyService {
                             "type_document_id" => $model['type_document_id'] ?? null,
                             "cedula" => $model['cedula'] ?? null,
                             "correo" => $model['correo'] ?? null,
+                            "type_blood_id" => $model['type_blood_id'] ?? null,
                             "ocupacion" => $model['ocupacion'] ?? null,
                             "fecha_nacimiento" => $model['fecha_nacimiento'],
                             "group_age_id" => $model['group_age_id'],
@@ -194,6 +164,7 @@ class FileFamilyService {
                             "scholarship_id" => $model['scholarship_id'] ?? null,
                             "relationship_id" => $model['relationship_id'],
                             "gender_id" => $model['gender_id'],
+                            "fallecido" => $model['fallecido'],
                      ]);
                     });
                 });
@@ -205,7 +176,7 @@ class FileFamilyService {
                     if (count($deleted_ids) > 0) $model['id'] = $deleted_ids->pop();
                     return $model;
                 })->toArray();
-        
+                
                 // $members = $this->members()->createMany($attachments);
 
 
@@ -214,6 +185,7 @@ class FileFamilyService {
                     $m->nombre = $member['nombre'];
                     $m->apellido = $member['apellido'];
                     $m->type_document_id = $member['type_document_id'] ?? null;
+                    $m->type_blood_id = $member['type_blood_id'] ?? null;
                     $m->cedula = $member['cedula'] ?? null;
                     $m->correo = $member['correo'] ?? null;
                     $m->ocupacion = $member['ocupacion'] ?? null;
@@ -225,6 +197,7 @@ class FileFamilyService {
                     $m->scholarship_id = $member['scholarship_id'] ?? null;
                     $m->relationship_id = $member['relationship_id'];
                     $m->gender_id = $member['gender_id'];
+                    $m->fallecido = $member['fallecido'];
                     $m->file_family_id = $model->id;
                     $m->save();
                     //captar pacientes con diabetes
@@ -245,10 +218,10 @@ class FileFamilyService {
                                 "password" =>  $password,
                             ];
                             Mail::send('correos.registroDiabetico', $datosMensaje,function($mensaje) use($m){
-                                $mensaje->to($m["correo"])->subject('Registro de paciente diabético - Xiaoyi');
+                                $mensaje->to($m["correo"])->subject('Registro de paciente diabético - KA-THANI');
                             });
-
-                            event(new DiabeticPatientEvent($diabetic_patient));
+                            $d = DiabeticPatient::with('member')->find($diabetic_patient["id"]);
+                            event(new DiabeticPatientEvent($d));
 
                         }
                     }
@@ -284,14 +257,17 @@ class FileFamilyService {
             if (!is_null($validar1)) {
                 $mortalidad = [];
                 foreach ($data['mortalidad'] as $item) {
+                    $m = Member::where('cedula',  $item["member_id"])->first();
                     $mortalidad[] = [
                         "id" => $item['id'] ?? null,
                         "nombre" => $item['nombre'],
                         "apellido" => $item['apellido'],
                         "edad" => $item["edad"],
-                        "causa" => $item["causa"],
                         "relationship_id" => $item['relationship_id'],
-                        "file_famyly_id" => $model->id
+                        "file_famyly_id" => $model->id,
+                        "fecha_fallecimiento" => $item['fecha_fallecimiento'],
+                        "cause_mortality_id" => $item['cause_mortality_id'],
+                        "member_id" => $m['id'],
                     ];
                 }
 
@@ -311,19 +287,18 @@ class FileFamilyService {
                 "total_risk" => $data["total_risk"],
                 "level_total_id" => $data["level_total_id"],
             ]);
-            
             $validar3 = $data['evaluacion']  ?? null;
             if (!is_null($validar3)) {
                 foreach ($data['evaluacion'] as $item) {
                     $model->risks()->updateExistingPivot(
                         $item["id"], [
-                        "compromiso_familiar" => $item["compromiso_familiar"]  ?? null,
-                        "compromiso_equipo" => $item["compromiso_equipo"]  ?? null,
+                        "compromiso_id" => $item["compromiso_id"]  ?? null,
+                        "fecha_evaluacion" => $item["fecha_evaluacion"]  ?? null,
+                        "fecha_programacion" => $item["fecha_programacion"]  ?? null,
                         "cumplio" => $item["cumplio"] ?? null,
                         "causas" => $item["causas"]  ?? null,
                     ]);
                 }
-
             }
 
         
@@ -333,8 +308,8 @@ class FileFamilyService {
                 foreach ($data['contaminacion'] as $item) {
                     $contaminacion[] = [
                         "id" => $item['id'] ?? null,
-                        "tipo_contaminación" => $item['tipo_contaminación'],
-                        "causas" => $item['causas'],
+                        "contamination_id" => $item['contamination_id'],
+                        "cause_contamination_id" => $item['cause_contamination_id'],
                         "file_famyly_id" => $model->id
                     ];
                 }
@@ -381,6 +356,9 @@ class FileFamilyService {
                 "numero_telefono" => $data["numero_telefono"],
                 "numero_casa" => $data["numero_casa"],
                 "zone_id" => $data["zone_id"],
+                "telefono_celular_uno" => $data["telefono_celular_uno"],
+                "telefono_celular_dos" => $data["telefono_celular_dos"],
+                "correo" => $data["correo"],
                 "cultural_group_id" => $data["cultural_group_id"],
             ]);
             $validar = $data['miembros']  ?? null;
@@ -392,6 +370,7 @@ class FileFamilyService {
                         "nombre" => $item['nombre'],
                         "apellido" => $item['apellido'],
                         "type_document_id" => $item['type_document_id'],
+                        "type_blood_id" => $item['type_blood_id'] ?? null,
                         "cedula" => $item['cedula'],
                         "correo" => $item['correo'],
                         "ocupacion" => $item['ocupacion'],
@@ -407,6 +386,7 @@ class FileFamilyService {
                         "patologias" => $item['patologias'],
                         "discapacidades" => $item['discapacidades'],
                         "prenatal" => $item['prenatal'],
+                        "fallecido" => $item['fallecido'],
                         "file_family_id" => $model['id'],
                     ];
                 }
@@ -434,6 +414,7 @@ class FileFamilyService {
                             "nombre" => $miembros['nombre'],
                             "apellido" => $miembros['apellido'],
                             "type_document_id" => $miembros['type_document_id'],
+                            "type_blood_id" => $miembros['type_blood_id'] ?? null,
                             "cedula" => $miembros['cedula'],
                             "correo" => $miembros['correo'],
                             "ocupacion" => $miembros['ocupacion'],
@@ -446,6 +427,7 @@ class FileFamilyService {
                             "relationship_id" => $miembros['relationship_id'],
                             "gender_id" => $miembros['gender_id'],
                             "file_family_id" => $miembros["file_family_id"],
+                            "fallecido" => $miembros['fallecido'],
                      ]);
                     });
                 });
@@ -464,6 +446,7 @@ class FileFamilyService {
                     $m->nombre = $member['nombre'];
                     $m->apellido = $member['apellido'];
                     $m->type_document_id = $member['type_document_id'];
+                    $m->type_blood_id = $member['type_blood_id'];
                     $m->cedula = $member['cedula'];
                     $m->correo = $member['correo'];
                     $m->ocupacion = $member['ocupacion'];
@@ -475,6 +458,7 @@ class FileFamilyService {
                     $m->scholarship_id = $member['scholarship_id'];
                     $m->relationship_id = $member['relationship_id'];
                     $m->gender_id = $member['gender_id'];
+                    $m->fallecido = $member['fallecido'];
                     $m->file_family_id = $model->id;
                     $m->save();
 
@@ -498,9 +482,10 @@ class FileFamilyService {
                                 "password" =>  $password,
                             ];
                             Mail::send('correos.registroDiabetico', $datosMensaje,function($mensaje) use($m){
-                                $mensaje->to($m["correo"])->subject('Registro - Xiaoyi');
+                                $mensaje->to($m["correo"])->subject('Registro - KA-THANI');
                             });
-                            event(new DiabeticPatientEvent($diabetic_patient));
+                            $d = DiabeticPatient::with("member")->find($diabetic_patient["id"]);
+                            event(new DiabeticPatientEvent($d));
                         }
                     }
                     //asignar patologias
@@ -539,17 +524,19 @@ class FileFamilyService {
             if (!is_null($validar1)) {
                 $mortalidad = [];
                 foreach ($data['mortalidad'] as $item) {
+                    $m = Member::where('cedula',  $item["member_id"])->first();
                     $mortalidad[] = [
                         "id" => $item['id'] ?? null,
                         "nombre" => $item['nombre'],
                         "apellido" => $item['apellido'],
                         "edad" => $item["edad"],
-                        "causa" => $item["causa"],
                         "relationship_id" => $item['relationship_id'],
-                        "file_famyly_id" => $model->id
+                        "file_famyly_id" => $model->id,
+                        "fecha_fallecimiento" => $item['fecha_fallecimiento'],
+                        "cause_mortality_id" => $item['cause_mortality_id'],
+                        "member_id" => $m['id'],
                     ];
                 }
-
                 $model->assignMortalities($mortalidad);
 
             }
@@ -574,8 +561,9 @@ class FileFamilyService {
                 foreach ($data['evaluacion'] as $item) {
                     $model->risks()->updateExistingPivot(
                         $item["id"], [
-                        "compromiso_familiar" => $item["compromiso_familiar"]  ?? null,
-                        "compromiso_equipo" => $item["compromiso_equipo"]  ?? null,
+                        "compromiso_id" => $item["compromiso_id"]  ?? null,
+                        "fecha_evaluacion" => $item["fecha_evaluacion"]  ?? null,
+                        "fecha_programacion" => $item["fecha_programacion"]  ?? null,
                         "cumplio" => $item["cumplio"] ?? null,
                         "causas" => $item["causas"]  ?? null,
                     ]);
@@ -589,9 +577,9 @@ class FileFamilyService {
                 $contaminacion = [];
                 foreach ($data['contaminacion'] as $item) {
                     $contaminacion[] = [
-                        "id" => $item['id'] ?? null,
-                        "tipo_contaminación" => $item['tipo_contaminación'],
-                        "causas" => $item['causas'],
+                       "id" => $item['id'] ?? null,
+                        "contamination_id" => $item['contamination_id'],
+                        "cause_contamination_id" => $item['cause_contamination_id'],
                         "file_famyly_id" => $model->id
                     ];
                 }

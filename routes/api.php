@@ -79,8 +79,13 @@ Route::group([
       Route::ApiResource('risk', 'RiskController');
       Route::ApiResource('level-risk', 'LevelRiskController');
       Route::ApiResource('level-total', 'LevelTotalController');
+      Route::ApiResource('cause-mortality', 'CauseMortalityController');
+      Route::ApiResource('contamination', 'ContaminationController');
+      Route::get('cause-contamination/find/{id}', 'CauseContaminationController@find');
+      Route::ApiResource('cause-contamination', 'CauseContaminationController');
       Route::ApiResource('vaccine', 'VaccineController');
       Route::ApiResource('exam-routine', 'ExamRoutineController');
+      Route::ApiResource('activity-evolution', 'ActivityEvaluationController');
 
       Route::get('reflex', 'OtherParameterController@reflexIndex');
       Route::get('senal-alarm', 'OtherParameterController@senalAlarmIndex');
@@ -106,6 +111,10 @@ Route::group([
             Route::get('', [
                 'uses' => 'DiabeticPatientController@index',
                 'as' => 'api.controlDiabetic.index'
+            ]);
+            Route::get('{id}', [
+                'uses' => 'DiabeticPatientController@show',
+                'as' => 'api.controlDiabetic.show'
             ]);
             Route::put('{id}', [
                 'uses' => 'DiabeticPatientController@update',
@@ -193,6 +202,7 @@ Route::group([
       Route::post('file-clinical-obstetric/search', 'PregnantController@search');
       Route::post('file-clinical-obstetric/filter', 'PregnantController@filter');
       Route::get('file-clinical-obstetric/check/{cedula}', 'PregnantController@check');
+      Route::get('file-clinical-obstetric/check-pregnant/{cedula}', 'PregnantController@checkFile');
       Route::ApiResource('file-clinical-obstetric', 'PregnantController');
 
       Route::post('file-family/search', 'FileFamilyController@search');
@@ -315,11 +325,53 @@ Route::group([
        });
 
        Route::prefix('report-stadistic')->group(function () {
-          Route::post('risk', [
+          Route::post('level-total-risk', [
+              'uses' => 'ReportStadisticController@levelTotalRisk',
+          ]);
+           Route::post('risk', [
               'uses' => 'ReportStadisticController@risk',
           ]);
           Route::post('evolution', [
               'uses' => 'ReportStadisticController@evolution',
+          ]);
+          Route::post('pathology', [
+              'uses' => 'ReportStadisticController@pathology',
+          ]);
+          Route::post('disability', [
+              'uses' => 'ReportStadisticController@disability',
+          ]);
+          Route::post('vaccine', [
+              'uses' => 'ReportStadisticController@vaccine',
+          ]);
+          Route::post('pregnant', [
+              'uses' => 'ReportStadisticController@pregnant',
+          ]);
+          Route::post('type-birth', [
+              'uses' => 'ReportStadisticController@typeBirth',
+          ]);
+          Route::post('planned-pregnancy', [
+              'uses' => 'ReportStadisticController@plannedPregnancy',
+          ]);
+          Route::post('characteristic', [
+              'uses' => 'ReportStadisticController@characteristic',
+          ]);
+          Route::post('gestation', [
+              'uses' => 'ReportStadisticController@gestation',
+          ]);
+          Route::post('vaccine-neonatology', [
+              'uses' => 'ReportStadisticController@vaccineNeonatology',
+          ]);
+          Route::post('glucose', [
+              'uses' => 'ReportStadisticController@glucose',
+          ]);
+          Route::post('weight', [
+              'uses' => 'ReportStadisticController@weight',
+          ]);
+          Route::post('comorbid', [
+              'uses' => 'ReportStadisticController@comorbid',
+          ]);
+          Route::post('mortality', [
+              'uses' => 'ReportStadisticController@mortality',
           ]);
        });
 
