@@ -51,9 +51,10 @@ class CarruselService {
     public function update ($data, $id) {
         try {
             DB::beginTransaction();
+            $o = Carrusel::find(1);
             $model = Carrusel::updateOrCreate(
             [
-              'id' => 1,
+              'id' => $o ? 1 : 3,
             ],
             [
                 'title' => $data['title'],
