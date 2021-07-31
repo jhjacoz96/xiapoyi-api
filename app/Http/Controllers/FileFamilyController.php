@@ -156,6 +156,23 @@ class FileFamilyController extends Controller
             return $e;
         }
     }
+    public function searchHistory($history)
+    {
+        try {
+            $model = $this->service->searchHistory($history);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data = new FileFamilyResource($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
 
     public function filter(Request $request)
     {

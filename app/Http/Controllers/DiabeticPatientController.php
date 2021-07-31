@@ -18,6 +18,7 @@ use App\Http\Resources\PatientTreatmentResource;
 use App\Http\Resources\ActivityTreatmentResource;
 use App\Http\Resources\RegisterTreatmentResource;
 use App\Http\Resources\MemberDiabeticPatientResource;
+use App\Http\Resources\DiabeticPatientShowResource;
 use App\Http\Resources\MemberResource;
 use App\Services\DiabeticPatientService;
 use Carbon\Carbon;
@@ -43,6 +44,17 @@ class DiabeticPatientController extends Controller
             return $e;
         }
     }
+
+    public function indexRecent() {
+        try {
+            $model = $this->service->indexRecent();
+             $data = MemberDiabeticPatientResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+             return $e;
+        }
+    }
+
     public function indexRegisterGlucose($id)
     {
         try {
@@ -405,7 +417,7 @@ class DiabeticPatientController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new DiabeticPatientResource($model);
+                $data = new DiabeticPatientShowResource($model);
                 return bodyResponseRequest(EnumResponse::SUCCESS, $data);
             }
         } catch (\Exception $e) {

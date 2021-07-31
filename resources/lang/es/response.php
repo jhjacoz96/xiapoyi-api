@@ -34,5 +34,7 @@ return [
 	'response_post_success' => '¡Exitoso!',
 	'response_post_success_long' => 'Transacción efectuada exitosamente',
 	'successfully_deleted' => 'Registro eliminado exitosamente',
-	'has_pregnancy' => 'Ya posee una ficha clinica de obstetricia sin culminar'
+	'has_pregnancy' => 'Posee una ficha clinica de obstetricia sin culminar',
+	'has_pregnancy_not_neonatology' => 'Debe asignar una ficha clinica de neonatología a su ultima ficha clinica de obstetricía',
+	'pregnant_has_neonatology' => 'Su ultima ficha de obstetricia ya posee una ficha de neonatología asignada'
 ];

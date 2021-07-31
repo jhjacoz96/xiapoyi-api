@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PathologyNeonatalStoreRequest;
+use App\Http\Requests\PathologyNeonatalUpdateRequest;
 use App\Utils\Enums\EnumResponse;
-use App\FileClinicalNeonatology;
-use App\Http\Resources\FileClincalNeonatologyResource;
-use App\Http\Resources\MemberShowResource;
-use App\Services\FileClinicalNeonatologyService;
+use App\PathologyNeonatal;
+use App\Http\Resources\PathologyNeonatalResource;
+use App\Services\PathologyNeonatalService;
 
-class FileClinicalNeonatologyController extends Controller
+class PathologyNeonatalController extends Controller
 {
-    function __construct(FileClinicalNeonatologyService $_FileClinicalNeonatologyService)
+    function __construct(PathologyNeonatalService $_PathologyNeonatalService)
     {
-        $this->service = $_FileClinicalNeonatologyService;
+        $this->service = $_PathologyNeonatalService;
     }
     /**
      * Display a listing of the resource.
@@ -24,67 +25,12 @@ class FileClinicalNeonatologyController extends Controller
     {
         try {
             $model = $this->service->index();
-            $data = FileClincalNeonatologyResource::collection($model);
+            $data = PathologyNeonatalResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
         }
     }
-
-    public function checkFile($cedula)
-    {
-        try {
-            $model = $this->service->checkDocument($cedula);
-            if (!$model) {
-                $data = [
-                    'message' => __('response.bad_request_long')
-                ];
-                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
-            }
-            $model = null;
-            $model = $this->service->checkPregnant($cedula);
-            if (!$model) {
-                $data = [
-                    'message' => __('response.pregnant_has_neonatology')
-                ];
-                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
-            }
-            $data = new MemberShowResource($model);
-            return bodyResponseRequest(EnumResponse::SUCCESS, $data);
-        } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
-        }
-    }
-
-    public function searchHistory($history)
-    {
-        try {
-            $model = $this->service->searchHistory($history);
-            if (!$model) {
-                $data = [
-                    'message' => __('response.bad_request_long')
-                ];
-                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
-            } else {
-                $data = new FileClincalNeonatologyResource($model);
-                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
-            }
-        } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
-        }
-    }
-
-    public function search(Request $request)
-    {
-        try {
-            $model = $this->service->search($request);
-            $data = FileClincalNeonatologyResource::collection($model);
-            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
-        } catch (Exception $e) {
-            return $e;
-        }
-    }
-
 
     /**
      * Store a newly created resource in storage.
@@ -92,11 +38,11 @@ class FileClinicalNeonatologyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(PathologyNeonatalStoreRequest $request) {
       try {
-        // $data = $request->validated();
-        $model = $this->service->store($request);
-        $data = new FileClincalNeonatologyResource($model);
+        $data = $request->validated();
+        $model = $this->service->store($data);
+        $data = new PathologyNeonatalResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
         return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
@@ -117,18 +63,18 @@ class FileClinicalNeonatologyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PathologyNeonatalUpdateRequest $request, $id)
     {
         try {
-            // $data = $request->validated();
-            $model = $this->service->update($request, $id);
+            $data = $request->validated();
+            $model = $this->service->update($data, $id);
             if (!$model) {
                 $data = [
                     'message' => __('response.bad_request_long')
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new FileClincalNeonatologyResource($model);
+                $data = new PathologyNeonatalResource($model);
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
           } catch (\Exception $e) {
@@ -153,7 +99,7 @@ class FileClinicalNeonatologyController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
-                $data = new FileClincalNeonatologyResource($model);
+                $data = new PathologyNeonatalResource($model);
                 return bodyResponseRequest(EnumResponse::SUCCESS, $data);
             }
         } catch (\Exception $e) {

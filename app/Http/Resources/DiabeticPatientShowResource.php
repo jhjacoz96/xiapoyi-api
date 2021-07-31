@@ -46,6 +46,7 @@ class DiabeticPatientShowResource extends JsonResource
             "registro_peso" => RegisterwWight::where('diabetic_patient_id', $this->id)->orderBy('id', 'desc')->latest()->take(10) ->get(),
             "registro_tratamiento" => RegisterTreatmentResource::collection($registerTreatment),
             "registro_actividad" => RegisterActivityResource::collection($registerActivity),
+            "created_at" => $this->created_at,
         ];
     }
 }

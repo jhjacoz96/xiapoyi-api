@@ -32,6 +32,21 @@ class FileFamilyService {
         }
     }
 
+    public function searchHistory ($history) {
+         try {
+            DB::beginTransaction();
+            $model = FileFamily::where('numero_historia', $history)->orWhereHas('member', function($query)use($history){
+                $query->where("cedula", $history);
+            })->first();
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
     public function search ($data) {
         try {
             // $filter = $data['filter'];

@@ -105,7 +105,7 @@ class Pregnant extends Model
     }
 
     public function fileClinicalNeonatology () {
-        return  $this->hasMany('App\FileClinicalNeonatology','file_clinical_neonatology_id', 'id');
+        return  $this->hasMany('App\FileClinicalNeonatology','pregnant_id', 'id');
     }
 
 

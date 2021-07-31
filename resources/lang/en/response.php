@@ -34,5 +34,7 @@ return [
 	'response_post_success' => 'Successful!',
 	'response_post_success_long' => 'Transaction successfully completed',
 	'successfully_deleted' => 'Registry deleted successfully',
-	'has_pregnancy' => 'You already have a clinical record of obstetrics without completing'
+	'has_pregnancy' => 'You already have a clinical record of obstetrics without completing',
+	'has_pregnancy_not_neonatology' => 'You must assign a neonatology chart to your last obstetric chart',
+	'pregnant_has_neonatology' => 'The last obstetrics file already has a neonatology file assigned'
 ];

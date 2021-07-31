@@ -36,6 +36,17 @@ class PregnantController extends Controller
         }
     }
 
+    public function indexNotNeonatology()
+    {
+        try {
+            $model = $this->service->indexNotNeonatology();
+            $data = FileClinicalObstetricResource::collection($model);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
     public function search(Request $request)
     {
         try {
@@ -44,6 +55,24 @@ class PregnantController extends Controller
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
+        }
+    }
+
+    public function searchHistory(Request $request, $history)
+    {
+         try {
+            $model = $this->service->searchHistory($request, $history);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            } else {
+                $data =  new FileClinicalObstetricResource($model);
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            }
+        } catch (\Exception $e) {
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
         }
     }
 
@@ -147,6 +176,14 @@ class PregnantController extends Controller
             if (!$model) {
                 $data = [
                     'message' => __('response.has_pregnancy')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            }
+            $model = null;
+            $model = $this->service->checkPregnantNotNeonatology($cedula);
+            if (!$model) {
+                $data = [
+                    'message' => __('response.has_pregnancy_not_neonatology')
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             }

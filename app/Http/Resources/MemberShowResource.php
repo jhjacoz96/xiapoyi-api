@@ -50,7 +50,7 @@ class MemberShowResource extends JsonResource
             "discapacidades" => $arrayDisability,
             "embarazo" => $this->embarazo,
             "fallecido" => $this->fallecido,
-            "prenatal" => count( $prenatal) > 0 ? new PregnantResource($prenatal->last()->first()) : null ,
+            "prenatal" => count( $prenatal) > 0 ? new PregnantResource($prenatal->last()) : null ,
             "prenatal_todos" => count( $prenatal) > 0 ? PregnantResource::collection($prenatal) : null,
             "file_family_id" => $this->file_family_id,
             "diabetic_patient" => new DiabeticPatientShowResource($this->diabeticPatient) ?? null,

@@ -87,11 +87,11 @@ Route::group([
       Route::ApiResource('exam-routine', 'ExamRoutineController');
       Route::ApiResource('activity-evolution', 'ActivityEvaluationController');
 
-      Route::get('reflex', 'OtherParameterController@reflexIndex');
-      Route::get('senal-alarm', 'OtherParameterController@senalAlarmIndex');
-      Route::get('alteration-pregnant', 'OtherParameterController@alterationPregnantIndex');
-      Route::get('pathology-neonatal', 'OtherParameterController@pathologyNeonatalIndex');
-      Route::get('pathology-pregnant', 'OtherParameterController@pathologyPregnantIndex');
+      Route::ApiResource('reflex', 'ReflexController');
+      Route::ApiResource('senal-alarm', 'SenalAlarmController');
+      Route::ApiResource('alteration-pregnant', 'AlterationPregnantController');
+      Route::ApiResource('pathology-neonatal', 'PathologyNeonatalController');
+      Route::ApiResource('pathology-pregnant', 'PathologyPregnantController');
 
       Route::get('relationship', 'OtherParameterController@relationshipIndex');
       Route::get('psyshotrophic', 'OtherParameterController@psyshotrophicIndex');
@@ -111,6 +111,10 @@ Route::group([
             Route::get('', [
                 'uses' => 'DiabeticPatientController@index',
                 'as' => 'api.controlDiabetic.index'
+            ]);
+            Route::get('index-recent', [
+                'uses' => 'DiabeticPatientController@indexRecent',
+                'as' => 'api.controlDiabetic.indexRecent'
             ]);
             Route::get('{id}', [
                 'uses' => 'DiabeticPatientController@show',
@@ -195,21 +199,37 @@ Route::group([
             ]);
       });
 
-      Route::post('file-clinical-neonatology/search', 'FileClinicalNeonatologyController@search');
-      Route::post('file-clinical-neonatology/filter', 'FileClinicalNeonatologyController@filter');
       Route::ApiResource('file-clinical-neonatology', 'FileClinicalNeonatologyController');
+       Route::prefix('file-clinical-neonatology')->group(function () {
+        Route::post('search', 'FileClinicalNeonatologyController@search');
+        Route::get('search/{history}', 'FileClinicalNeonatologyController@searchHistory');
+        Route::post('filter', 'FileClinicalNeonatologyController@filter');
+        Route::get('check-pregnant/{cedula}', 'FileClinicalNeonatologyController@checkFile');
+      });
 
-      Route::post('file-clinical-obstetric/search', 'PregnantController@search');
-      Route::post('file-clinical-obstetric/filter', 'PregnantController@filter');
-      Route::get('file-clinical-obstetric/check/{cedula}', 'PregnantController@check');
-      Route::get('file-clinical-obstetric/check-pregnant/{cedula}', 'PregnantController@checkFile');
-      Route::ApiResource('file-clinical-obstetric', 'PregnantController');
+      
+      Route::prefix('file-clinical-obstetric')->group(function () {
+        Route::get('not-neonatology', 'PregnantController@indexNotNeonatology');
+        Route::get('', 'PregnantController@index');
+        Route::post('', 'PregnantController@store');
+        Route::put('{id}', 'PregnantController@update');
+        Route::get('{id}', 'PregnantController@show');
+        Route::delete('{id}', 'PregnantController@delete');
+        Route::post('search', 'PregnantController@search');
+        Route::get('search/{history}', 'PregnantController@searchHistory');
+        Route::post('filter', 'PregnantController@filter');
+        Route::get('check/{cedula}', 'PregnantController@check');
+        Route::get('check-pregnant/{cedula}', 'PregnantController@checkFile');
+      });
 
-      Route::post('file-family/search', 'FileFamilyController@search');
-      Route::post('file-family/filter', 'FileFamilyController@filter');
-      Route::get('file-family/member/verify-document/{cedula}', 'FileFamilyController@verifyDocument');
-      Route::get('file-family/member/verify-email/{email}', 'FileFamilyController@verifyEmail');
       Route::ApiResource('file-family', 'FileFamilyController');
+      Route::prefix('file-family')->group(function () {
+        Route::post('search', 'FileFamilyController@search');
+        Route::post('filter', 'FileFamilyController@filter');
+        Route::get('member/verify-document/{cedula}', 'FileFamilyController@verifyDocument');
+        Route::get('member/verify-email/{email}', 'FileFamilyController@verifyEmail');
+        Route::get('search/{history}', 'FileFamilyController@searchHistory');
+      });
 
       Route::prefix('employee')->group(function () {
         Route::post('password', 'EmployeeController@updatePassword');
@@ -321,6 +341,9 @@ Route::group([
        Route::prefix('dashboard')->group(function () {
           Route::get('', [
               'uses' => 'ReportStadisticController@dashboard',
+          ]);
+          Route::get('report-pathology', [
+              'uses' => 'ReportStadisticController@reportPathology',
           ]);
        });
 

@@ -27,6 +27,16 @@ class PregnantService {
         }
     }
 
+    public function indexNotNeonatology () {
+        try {
+            $model = Pregnant::doesntHave('fileClinicalNeonatology')->whereNotNull("recomendaciones")
+            ->orderBy('id', 'desc')->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
     public function store ($data) {
         try {
             DB::beginTransaction();
@@ -397,6 +407,18 @@ class PregnantService {
         }
     }
 
+    public function searchHistory ($request, $history) {
+        try {
+            DB::beginTransaction();
+            $model = Pregnant::where("numero_historia", $history)->first();
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
     public function checkDocument ($data) {
         try {
             DB::beginTransaction();
@@ -409,10 +431,31 @@ class PregnantService {
             return $e;
         }
     }
+    
     public function checkPregnant ($data) {
         try {
             DB::beginTransaction();
-            $model = Member::where('cedula', $data)->where('gender_id', 2)->where('embarazo', false)->first();
+            $model = Member::where('cedula', $data)->where('gender_id', 2)
+                ->where('embarazo', false)
+                ->first();
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function checkPregnantNotNeonatology ($data) {
+        try {
+            DB::beginTransaction();
+            $model = Member::where('cedula', $data)->where('gender_id', 2)
+                ->where('embarazo', false)
+                ->whereDoesntHave("pregnant", function($query){
+                    $query->doesntHave("fileClinicalNeonatology");
+                })
+                ->first();
             if(!$model) return null;
             DB::commit();
             return $model;

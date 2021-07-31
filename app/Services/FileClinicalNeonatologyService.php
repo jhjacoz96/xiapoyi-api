@@ -28,6 +28,53 @@ class FileClinicalNeonatologyService {
         }
     }
 
+    public function checkDocument ($data) {
+        try {
+            DB::beginTransaction();
+            $model = Member::where('cedula', $data)->where('gender_id', 2)->first();
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+    
+    public function checkPregnant ($data) {
+        try {
+            DB::beginTransaction();
+            $model = Member::where('cedula', $data)->where('gender_id', 2)
+                ->where('embarazo', false)
+                ->whereHas("pregnant", function($query){
+                    $query->whereNotNull("recomendaciones")
+                    ->doesntHave("fileClinicalNeonatology");
+                })
+                ->first();
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
+    public function searchHistory ($history) {
+        try {
+            DB::beginTransaction();
+            $model = FileClinicalNeonatology::where("numero_historia", $history)->orWhereHas('member', function($query)use($history){
+                $query->where("cedula", $history);
+            })->first();
+            if(!$model) return null;
+            DB::commit();
+            return $model;
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+    }
+
     public function search ($data) {
         try {
             $search = $data['search'];

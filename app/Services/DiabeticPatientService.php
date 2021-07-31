@@ -29,7 +29,18 @@ class DiabeticPatientService {
 
     public function index () {
         try { 
-            $model = Member::has('DiabeticPatient')->orderBy('id', 'desc')->get();
+            $model = Member::has('diabeticPatient')->orderBy('id', 'desc')->get();
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexRecent () {
+        try {
+            $model = Member::whereHas('diabeticPatient',function($query){
+                $query->whereDoesntHave('patientTreatment')->whereDoesntHave('activityTreatments');
+            })->orderBy('id', 'desc')->get();
             return $model;
         } catch (\Exception $e) {
             return $e;

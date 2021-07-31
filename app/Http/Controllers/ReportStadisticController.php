@@ -21,6 +21,13 @@ use App\FileClinicalNeonatology;
 use App\GestationWeek;
 use App\Mortality;
 use App\CauseMortality;
+use App\Comment;
+use App\Medicine;
+use App\TypeComment;
+use App\FilterTwoPublication;
+use App\Utils\CalAge;
+use Carbon\Carbon;
+
 
 
 class ReportStadisticController extends Controller
@@ -28,16 +35,26 @@ class ReportStadisticController extends Controller
      public function dashboard()
     {
         try {
-            $pathologies = pathology::All();
-            $namePathology = [];
-            $cantPathology = [];
-            foreach ($pathologies as $key => $value) {
-            	$namePathology[] = $value['name'];  
+            $genders = Gender::All();
+            $nameGender = [];
+            $cantGender = [];
+            foreach ($genders as $key => $value) {
+            	$nameGender[] = $value['nombre'];  
+            	$cantGender[] = Member::where('gender_id', $value["id"])->count();
+            }
 
-            	$cantPathology[] = Member::whereHas('pathologies', function ($query) use($value) {
-            			$query->where('name', $value["name"]);
-            	})->count();
-   	
+            $medicines = Medicine::has("diabeticPatients")->orHas("pregnants")->get();
+            $nameMedicine = [];
+            $cantMedicine = [];
+            foreach ($medicines as $key => $value) {
+                $nameMedicine[] = $value['name'];  
+                $cantDiabetic = DiabeticPatient::whereHas("medicines", function($query)use($value){
+                    $query->where("medicines.id", $value["id"]);
+                })->count();
+                $cantPregnant = Pregnant::whereHas("medicines", function($query)use($value){
+                    $query->where("medicines.id", $value["id"]);
+                })->count();
+                $cantMedicine[] = $cantDiabetic + $cantPregnant;
             }
 
             $groupAges = GroupAge::where('id','>=',4)->get();
@@ -50,6 +67,32 @@ class ReportStadisticController extends Controller
                     ->where('group_age_id', $value["id"])
                     ->count();
             }
+
+            $parroquias = Zone::All();
+            $nameParroquia = [];
+            $cantParroquia = [];
+            foreach ($parroquias as $key => $value) {
+                $d = FileFamily::where('zone_id', $value["id"])->count();
+                $nameParroquia[] = $value["name"] . ' ' . '(' . $d  . ')';
+                $cantParroquia[] = $d;
+            }
+
+            $typeComment = typeComment::All();
+            $nametypeComment = [];
+            $cantTypeComment = [];
+            foreach ($typeComment as $key => $value) {
+                $nametypeComment[] = $value["nombre"];
+                $cantTypeComment[] = Comment::where('type_comment_id', $value["id"])->count();
+            }
+
+            $typeComment = typeComment::All();
+            $nametypeComment = [];
+            $cantTypeComment = [];
+            foreach ($typeComment as $key => $value) {
+                $nametypeComment[] = $value["nombre"];
+                $cantTypeComment[] = Comment::where('type_comment_id', $value["id"])->count();
+            }
+
 
 
             $levelRisk = LevelTotal::All();
@@ -75,10 +118,32 @@ class ReportStadisticController extends Controller
 
              }
 
+
+             $diabetic = DiabeticPatient::count();
+             $member = Member::count();
+             $adultOld = Member::where("group_age_id", ">=", 7)->count();
+             $precoz = Pregnant::whereHas("member", function($query){
+                $query->where("group_age_id", 4);
+             })->count();
+             $pregnant =  Pregnant::All();
+             $agePregnant = collect([]);
+             foreach ($pregnant as $key => $query) {
+                $age = Carbon::parse($query->member["fecha_nacimiento"])->age;
+                $agePregnant[] = $age;
+             }
+
             $data = [
-            	"estadisticaPatologias" => [
-            		"patologias" =>  $namePathology,
-            		"cantidades" => $cantPathology,
+                "estadisticaMedinas" => [
+                    "medicinas" =>  $nameMedicine,
+                    "cantidades" => $cantMedicine,
+                ],
+                "estadisticaComentarios" => [
+                    "tipoComentarios" =>  $nametypeComment,
+                    "cantidades" => $cantTypeComment,
+                ],
+            	"estadisticaMiembros" => [
+            		"generos" =>  $nameGender,
+            		"cantidades" => $cantGender,
                 ],
                 "estadisticaEmbarazadas" => [
                     "grupoEdades" =>  $nameGroupAge,
@@ -89,14 +154,62 @@ class ReportStadisticController extends Controller
                     "nivelRiesgo" => $nivelRisk,
                     "color" => $colorRisk,
                 ],
+                "estadisticasParroquias" => [
+                    "parroquias" => $nameParroquia,
+                    "cantidades" => $cantParroquia,
+                ],
+                "dataInterest" => [
+                    "diabeticos" => round(($diabetic / $member)*100)."%",
+                    "adultosMayores" => round(($adultOld / $member)*100)."%",
+                    "embarazoPrecoz" => round(($precoz / $member)*100)."%",
+                    "promedioEmbarazo" =>  round($agePregnant->avg()),
+                ],
                 "cantidadFichasFamiliares" => FileFamily::count(),
                 "cantidadEmbarazadas" => Member::where('embarazo', 1)->where('gender_id', 2)->count(),
                 "cantidadDiabeticos" => DiabeticPatient::count(),
+                "cantidadNeonatos" => FileClinicalNeonatology::count(),
+                "cantidadComentarios" => Comment::whereNull("respuesta")->count(),
             ];
 
 
 
             return bodyResponseRequest(EnumResponse::ACCEPTED,  $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function reportPathology (Request $request) {
+        try {
+            $label = [];
+            $gender = Gender::All();
+            $data = [];
+            foreach ($gender as $key => $value) {
+                $data[] = [
+                    "name" => $value["nombre"],
+                    "data" => [],
+                ];
+            }
+
+            $pathology = Pathology::All();
+            $cantMember = [];
+            foreach ($pathology as $key => $value) {
+                foreach ($gender as $key => $v) {
+                    $q = Member::where("gender_id", $v["id"]);
+                    $request["group_age_id"] != "null" ? $cant = $q->where("group_age_id", $request["group_age_id"]) : "";
+                    $cant = $q->whereHas("pathologies", function($query)use($value){
+                        $query->where("pathologies.id", $value["id"]);
+                    })->count();
+                    $data[$key]["data"][] = $cant;
+                }
+
+             }
+             $data = [
+                "label" => $label,
+                "data" => $data,
+            ];
+            return bodyResponseRequest( EnumResponse::ACCEPTED, $data);
+              
         } catch (Exception $e) {
             return $e;
         }
@@ -110,7 +223,6 @@ class ReportStadisticController extends Controller
             $legend = [];
             $model = LevelTotal::All();
             foreach ($model as $key => $value) {
-               $label[] = $value["name"];
                $color[] = $value["color"];
                $q = FileFamily::where("level_total_id", $value["id"]);
                     count($request["culturalGroup"]) > 0 ? $result = $q->whereIn("cultural_group_id", $request["culturalGroup"]) : "";
@@ -120,6 +232,7 @@ class ReportStadisticController extends Controller
                     !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
                      $result = $q->get();
                 $cant[] = $result->count();
+                $label[] = $value["name"] . " " . "(" . $result->count() .")";
                 $legend[] = $value["name"] . " " . "(" . $result->count() . ")";
             }
 
@@ -143,7 +256,6 @@ class ReportStadisticController extends Controller
             $total = collect([]);
             $model = Risk::All();
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = FileFamily::whereHas("riskFiles", function($query)use($request, $value){
                     $query->whereHas('risk', function($query)use($request, $value){
                         $query->where("name", $value["name"]);
@@ -160,7 +272,8 @@ class ReportStadisticController extends Controller
                     }) : "";
                     $result = $q->get();
                     $total[] = $q->get();
-                $cant[] = $result->count();
+                    $cant[] = $result->count();
+                    $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
 
             $data = [
@@ -194,7 +307,6 @@ class ReportStadisticController extends Controller
             ]);
 
             foreach ($model as $key => $value) {
-               $label[] = $value["name"];
                $q = FileFamily::whereHas("riskFiles", function($query) use($value, $request) {
                     $query->where("cumplio", $value["value"]);
                     !empty($request["risk"]) ? $query->where("risk_id", $request["risk"]) : "";
@@ -207,6 +319,7 @@ class ReportStadisticController extends Controller
                     count($request["zone"]) > 0          ? $result = $q->whereIn("zone_id", $request["zone"]) : "";
                      $result = $q->get();
                 $cant[] = $result->count();
+                $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
 
             $data = [
@@ -226,7 +339,6 @@ class ReportStadisticController extends Controller
             $cant = [];
             $model = Pathology::All();
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = Member::whereHas("pathologies", function($query) use($value) {
                     $query->where("pathologies.id", $value["id"]);
                 });
@@ -240,6 +352,7 @@ class ReportStadisticController extends Controller
                 !empty($request["endDate"])          ? $result = $q->whereBetween("fecha_nacimiento", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -258,7 +371,6 @@ class ReportStadisticController extends Controller
             $cant = [];
             $model = Disability::All();
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = Member::whereHas("disabilities", function($query) use($value) {
                     $query->where("disabilities.id", $value["id"]);
                 });
@@ -272,6 +384,7 @@ class ReportStadisticController extends Controller
                 !empty($request["endDate"])          ? $result = $q->whereBetween("fecha_nacimiento", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -299,7 +412,6 @@ class ReportStadisticController extends Controller
                 ],
             ]);
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = Member::where("vacunacion", $value["value"]);
 
                 count($request["groupAge"]) > 0 ? $result = $q->whereIn("group_age_id", $request["groupAge"]) : "";
@@ -312,6 +424,7 @@ class ReportStadisticController extends Controller
                 !empty($request["endDate"])     ? $result = $q->whereBetween("fecha_nacimiento", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -330,7 +443,6 @@ class ReportStadisticController extends Controller
             $cant = [];
             $model = GroupAge::where("id", ">", 3)->get();
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = Pregnant::whereHas("member", function($query)use($value, $request){
                     $query->where("group_age_id", $value["id"]);
                     count($request["discapacidad"]) > 0 ? $query->whereHas("disabilities", function($query)use($request){
@@ -349,6 +461,7 @@ class ReportStadisticController extends Controller
                 ($request["embarazo"] === false)     ? $result = $q->whereNotNull("recomendaciones") : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -376,7 +489,6 @@ class ReportStadisticController extends Controller
                 ]
             ]);
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = Pregnant::where("tipo_parto", $value["value"]);
                 count($request["gestation"]) > 0 ? $result = $q->whereIn("descripcion_gestacion", $request["gestation"]) : "";
                 count($request["groupAge"]) > 0 ? $result = $q->whereHas("member", function($query) use($request) {
@@ -410,6 +522,7 @@ class ReportStadisticController extends Controller
                     return $findImc["rank"][0] <= $imc && $findImc["rank"][1] >= $imc;
                  }) : "";*/
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -437,7 +550,6 @@ class ReportStadisticController extends Controller
                 ]
             ]);
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = Pregnant::where("embarazo_planificado", $value["value"]);
                 count($request["groupAge"]) > 0 ? $result = $q->whereHas("member", function($query) use($request) {
                     $query->whereIn("group_age_id", $request["groupAge"]);
@@ -451,6 +563,7 @@ class ReportStadisticController extends Controller
                 !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -486,7 +599,6 @@ class ReportStadisticController extends Controller
                 ],
             ]);
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = Pregnant::where($value["model"], true);
                 count($request["groupAge"]) > 0 ? $result = $q->whereHas("member", function($query) use($request) {
                     $query->whereIn("group_age_id", $request["groupAge"]);
@@ -500,6 +612,7 @@ class ReportStadisticController extends Controller
                 !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -518,7 +631,6 @@ class ReportStadisticController extends Controller
             $cant = [];
             $model = GestationWeek::All();
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = FileClinicalNeonatology::whereHas("pregnant", function($query) use($value, $request) {
                     $query->where("descripcion_gestacion", $value["name"]);
                     $query->whereHas("member", function($query) use($request) {
@@ -535,6 +647,7 @@ class ReportStadisticController extends Controller
                 !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -634,7 +747,6 @@ class ReportStadisticController extends Controller
                 ]
             ]);
             foreach ($d as $key => $value) {
-                $label[] = $value["name"];
                 $q = DiabeticPatient::with("member");
                 switch ($value["name"]) {
                     case 'Riesgo alto':
@@ -664,6 +776,7 @@ class ReportStadisticController extends Controller
                 }) : "";
                 $result = $q->get();
                 $cant[] = $result->count();
+                $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -705,7 +818,6 @@ class ReportStadisticController extends Controller
             ]);
             !empty($request["glucose"]) ? $d = $p->where("name", $request["glucose"])->first() : "";
             foreach ($model as $key => $value) {
-                $label[] = $value;
                 $q = DiabeticPatient::where("descripcion_imc", $value);
                 count($request["pathology"]) > 0 ? $result = $q->whereHas("member", function($query)use($request){
                     $query->whereHas("pathologies", function($query)use($request){
@@ -721,6 +833,7 @@ class ReportStadisticController extends Controller
                 }) : "";
                 $result = $q->get();
                 $cant[] = $result->count();
+                $label[] = $value . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -739,7 +852,6 @@ class ReportStadisticController extends Controller
             $cant = [];
             $model = Pathology::where("id", ">=", 2)->get();
             foreach ($model as $key => $value) {
-                $label[] = $value["name"];
                 $q = DiabeticPatient::whereHas("member", function($query)use($request, $value){
                     $query->whereHas("pathologies", function($query)use($request, $value){
                         $query->where("pathologies.id", $value["id"]);
@@ -749,6 +861,7 @@ class ReportStadisticController extends Controller
                 count($request["groupAge"]) > 0 ? $result = $q->whereIn("group_age_id", $request["groupAge"]) : "";
                 $result = $q->get();
                 $cant[] = $result->count();
+                $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
@@ -767,7 +880,6 @@ class ReportStadisticController extends Controller
             $cant = [];
             $model = CauseMortality::All();
             foreach ($model as $key => $value) {
-                 $label[] = $value["nombre"];
                  $q = Mortality::whereHas("causeMortality",function($query)use($request, $value){
                     $query->where("cause_mortalities.id", $value["id"]);
                  });
@@ -783,6 +895,7 @@ class ReportStadisticController extends Controller
                 });
                 $result = $q->get();
                 $cant[] = $result->count();
+                $label[] = $value["nombre"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
