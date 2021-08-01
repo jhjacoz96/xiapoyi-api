@@ -572,7 +572,7 @@ class ReportStadisticController extends Controller
         try {
             $label = [];
             $cant = [];
-            $total = ([]);
+            $total = collect([]);
             $model = collect([
                 [
                     "model" => "episiorria",
