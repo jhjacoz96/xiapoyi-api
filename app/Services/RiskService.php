@@ -44,9 +44,9 @@ class RiskService {
             if(!$model) return null;
             $model->name = $data["name"];
             $model->risk_classification_id = $data["risk_classification"];
-            $validar = $data['activity_evolutions']  ?? null;
+            $validar = $data['activity_evolutions_id']  ?? null;
             if (!is_null($validar)) {
-                $model->activityEvolutions()->sync($data['activity_evolutions']);
+                $model->activityEvolutions()->sync($data['activity_evolutions_id']);
             }
             DB::commit();
             return  $model;
