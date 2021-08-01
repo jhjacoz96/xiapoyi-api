@@ -67,7 +67,7 @@ Route::group([
       Route::get('gender', 'GenderController@index');
       Route::get('type-document', 'TypeDocumentController@index');
 
-      Route::ger('delete-mortality', function(){
+      Route::get('delete-mortality', function(){
         $d = Mortality::whereNotNull("id")->delete();
         $w = "listo";
         return $w;
