@@ -572,6 +572,7 @@ class ReportStadisticController extends Controller
         try {
             $label = [];
             $cant = [];
+            $total = ([]);
             $model = collect([
                 [
                     "model" => "episiorria",
@@ -604,12 +605,13 @@ class ReportStadisticController extends Controller
                 !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
+                 $total[] = $q->get();
                  $label[] = $value["name"] . " " . "(" . $result->count() .")";
             }
             $data = [
                 "label" => $label,
                 "data" => $cant,
-                "total" => array_sum($cant)
+                "total" => $total->collapse()->unique("id")->values()->count(),
             ];
             return bodyResponseRequest( EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
