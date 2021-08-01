@@ -11,7 +11,7 @@ class RiskFile extends Model
     ];
 
     public function levelRisk () {
-    	return $this->belongsTo('App\levelRisk', 'level_risk_id', 'id');
+    	return $this->belongsTo('App\LevelRisk', 'level_risk_id', 'id');
     }
 
     public function risk () {

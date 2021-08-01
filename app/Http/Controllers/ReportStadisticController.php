@@ -220,7 +220,7 @@ class ReportStadisticController extends Controller
                $color[] = $value["color"];
                $q = FileFamily::where("level_total_id", $value["id"]);
                     count($request["culturalGroup"]) > 0 ? $result = $q->whereIn("cultural_group_id", $request["culturalGroup"]) : "";
-                     $result = $q->withCount('members')->havingRaw('members_count BETWEEN ? AND ?', [$request["member"][0], $request["member"][1]]);
+                     /*$result = $q->withCount('members')->havingRaw('members_count BETWEEN ? AND ?', [$request["member"][0], $request["member"][1]]);*/
                     count($request["zone"]) > 0          ? $result = $q->whereIn("zone_id", $request["zone"]) : "";
                     !empty($request["startDate"]) && 
                     !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
