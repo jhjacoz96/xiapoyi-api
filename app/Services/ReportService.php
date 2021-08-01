@@ -113,9 +113,7 @@ class ReportService {
                             (count($request["tipo_parto"]) > 0)            ? $model = $q->whereIn("tipo_parto", $request["tipo_parto"]) : "";
                             ($request["embarazo_planificado"] !== null)    ? $model = $q->where("embarazo_planificado", $request["embarazo_planificado"]) : "";
                             (count($request["causa_embarazo"]) > 0)        ? $model = $q->whereIn("causa_embarazo", $request["causa_embarazo"]) : "";
-                            ($request["embarazo"] === true)                ? $model = $q->whereHas("member", function ($query) use($request) {
-                                $query->where("embarazo", $request["embarazo"]);
-                            })->whereNull("recomendaciones") : "";
+                            ($request["embarazo"] === true)                ? $model = $q->whereNull("recomendaciones") : "";
                             ($request["embarazo"] === false)               ? $model = $q->whereNotNull("recomendaciones") : "";
                             !empty($request["startDate"]) &&
                             !empty($request["endDate"])                    ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
