@@ -123,6 +123,7 @@ class PublicationService {
                     $mensaje->to($value["correo"])->subject('Nueva publicacion - KA-THANI');
                 });
             }
+            DB::commit();
             return  $modell;
         } catch (\Exception $e) {
             DB::rollback();
