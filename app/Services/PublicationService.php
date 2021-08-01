@@ -106,15 +106,15 @@ class PublicationService {
 
             $modell = Publication::with('filterTwoPublication', 'filterOnePublication', 'filterThreePublication', 'resource')->find($model->id);
 
-            $q = Suscription::with("filterOnePublication");
-                !empty($modell["filter_three_publication_id"]) ?  $suscription = $q->where("filter_three_publication_id", $modell["filter_three_publication_id"])->OrWhereNull("filter_three_publication_id") : "";
+            /*$q = Suscription::with("filterOnePublication");
+                !empty($modell["filter_three_publication_id"]) ?  $suscription = $q->where("filter_three_publication_id", $modell["filter_three_publication_id"])->orWhereNull("filter_three_publication_id") : "";
                 $suscription = $q->where("filter_two_publication_id", $modell["filter_two_publication_id"]);
-                $suscription = $q->OrWhereNull("filter_two_publication_id");
+                $suscription = $q->orWhereNull("filter_two_publication_id");
                 $suscription = $q->where("filter_one_publication_id", $modell["filter_one_publication_id"]);
-                $suscription = $q->OrWhereNull("filter_one_publication_id");
+                $suscription = $q->orWhereNull("filter_one_publication_id");
                 $suscription = $q->get();
                 
-            foreach ($suscription as $key => $value) {    
+            foreach ($suscription as $key => $value) {
                 $datosMensaje = [
                     "suscriptor" => $value,
                     "publicacion" => $modell,
@@ -122,7 +122,7 @@ class PublicationService {
                 Mail::send('correos.publicacion', $datosMensaje,function($mensaje) use($value){
                     $mensaje->to($value["correo"])->subject('Nueva publicacion - KA-THANI');
                 });
-            }
+            }*/
 
             DB::commit();
             return  $modell;
