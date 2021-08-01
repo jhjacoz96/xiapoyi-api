@@ -43,6 +43,7 @@ class PublicationController extends Controller
         $data = $request->validated();
         $model = $this->service->store($data);
         $data = new PublicationResource($model);
+        return $data;
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
         return $e;
