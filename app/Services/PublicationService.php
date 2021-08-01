@@ -114,7 +114,7 @@ class PublicationService {
                 $suscription = $q->orWhereNull("filter_one_publication_id");
                 $suscription = $q->get();
                 
-            /* foreach ($suscription as $key => $value) {
+            foreach ($suscription as $key => $value) {
                 $datosMensaje = [
                     "suscriptor" => $value,
                     "publicacion" => $modell,
@@ -122,13 +122,7 @@ class PublicationService {
                 Mail::send('correos.publicacion', $datosMensaje,function($mensaje) use($value){
                     $mensaje->to($value["correo"])->subject('Nueva publicacion - KA-THANI');
                 });
-            }*/
-
-            DB::commit();
-            return [
-                "model"=> $modell,
-                "suscription" => $suscription,
-            ];
+            }
             return  $modell;
         } catch (\Exception $e) {
             DB::rollback();

@@ -11,7 +11,7 @@
    &nbsp;
     Titulo de la publicación: <strong>{{ $publicacion->name }}</strong>
     &nbsp;
-    @if ($publicacion->filterOnePublication)    
+    <!-- @if ($publicacion->filterOnePublication)    
         ¿A quién va dirigido?: <strong>{{ $publicacion->filterOnePublication->name }}</strong>
         &nbsp;
     @endif
@@ -19,12 +19,12 @@
         Patrón funcional general: <strong>{{ $publicacion->filterTwoPublication->name }}</strong>
         &nbsp;
     @endif
-    @if ($publicacion->filterThreePublication !== null)    
+    @if ($publicacion->filterThreePublication != null)    
         Patrón funcional específico: <strong>{{ $publicacion->filterThreePublication->name }}</strong>
         &nbsp;
     @endif
     @if ($publicacion->resource)
         Tipo de recurso: <strong>{{ $publicacion->resource->type_resource }}</strong>
-    @endif
+    @endif -->
 </body>
 </html>
