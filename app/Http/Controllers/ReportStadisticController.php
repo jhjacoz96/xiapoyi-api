@@ -472,12 +472,12 @@ class ReportStadisticController extends Controller
             $cant = [];
             $model = collect([
                 [
-                    "name" => "vaginal",
-                    "value" => "vaginal",
+                    "name" => "Vaginal",
+                    "value" => "Vaginal",
                 ],
                 [
                     "name" => "Cesarea",
-                    "value" => "cesarea",
+                    "value" => "Cesarea",
                 ]
             ]);
             foreach ($model as $key => $value) {
