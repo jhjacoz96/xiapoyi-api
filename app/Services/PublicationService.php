@@ -106,7 +106,7 @@ class PublicationService {
 
             $modell = Publication::with('filterTwoPublication', 'filterOnePublication', 'filterThreePublication', 'resource')->find($model->id);
 
-            /*$q = Suscription::with("filterOnePublication");
+            $q = Suscription::with("filterOnePublication");
                 !empty($modell["filter_three_publication_id"]) ?  $suscription = $q->where("filter_three_publication_id", $modell["filter_three_publication_id"])->orWhereNull("filter_three_publication_id") : "";
                 $suscription = $q->where("filter_two_publication_id", $modell["filter_two_publication_id"]);
                 $suscription = $q->orWhereNull("filter_two_publication_id");
@@ -114,7 +114,7 @@ class PublicationService {
                 $suscription = $q->orWhereNull("filter_one_publication_id");
                 $suscription = $q->get();
                 
-            foreach ($suscription as $key => $value) {
+            /* foreach ($suscription as $key => $value) {
                 $datosMensaje = [
                     "suscriptor" => $value,
                     "publicacion" => $modell,
