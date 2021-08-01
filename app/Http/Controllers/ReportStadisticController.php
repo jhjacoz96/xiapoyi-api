@@ -449,7 +449,7 @@ class ReportStadisticController extends Controller
                 count($request["psicotropica"]) > 0  ? $result = $q->whereHas("psychotrophics", function($query)use($request){
                     $query->whereIn("psychotrophic_substances.id", $request["psicotropica"]);
                 }) : "";
-                ($request["embarazo"] === true)      ? $result = $q->->whereNull("recomendaciones") : "";
+                ($request["embarazo"] === true)      ? $result = $q->whereNull("recomendaciones") : "";
                 ($request["embarazo"] === false)     ? $result = $q->whereNotNull("recomendaciones") : "";
                  $result = $q->get();
                  $cant[] = $result->count();
