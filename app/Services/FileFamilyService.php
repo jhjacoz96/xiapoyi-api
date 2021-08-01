@@ -125,7 +125,7 @@ class FileFamilyService {
                         "nombre" => $item['nombre'],
                         "apellido" => $item['apellido'],
                         "type_document_id" => $item['type_document_id'],
-                        // "type_blood_id" => $item['type_blood_id'] ?? null,
+                        "type_blood_id" => $item['type_blood_id'] ?? null,
                         "cedula" => $item['cedula'],
                         "correo" => $item['correo'],
                         "ocupacion" => $item['ocupacion'],
@@ -169,7 +169,7 @@ class FileFamilyService {
                             "type_document_id" => $model['type_document_id'] ?? null,
                             "cedula" => $model['cedula'] ?? null,
                             "correo" => $model['correo'] ?? null,
-                            // "type_blood_id" => $model['type_blood_id'] ?? null,
+                            "type_blood_id" => $model['type_blood_id'] ?? null,
                             "ocupacion" => $model['ocupacion'] ?? null,
                             "fecha_nacimiento" => $model['fecha_nacimiento'],
                             "group_age_id" => $model['group_age_id'],
@@ -200,7 +200,7 @@ class FileFamilyService {
                     $m->nombre = $member['nombre'];
                     $m->apellido = $member['apellido'];
                     $m->type_document_id = $member['type_document_id'] ?? null;
-                    // $m->type_blood_id = $member['type_blood_id'] ?? null;
+                    $m->type_blood_id = $member['type_blood_id'] ?? null;
                     $m->cedula = $member['cedula'] ?? null;
                     $m->correo = $member['correo'] ?? null;
                     $m->ocupacion = $member['ocupacion'] ?? null;
@@ -385,7 +385,7 @@ class FileFamilyService {
                         "nombre" => $item['nombre'],
                         "apellido" => $item['apellido'],
                         "type_document_id" => $item['type_document_id'],
-                        // "type_blood_id" => $item['type_blood_id'] ?? null,
+                        "type_blood_id" => $item['type_blood_id'] ?? null,
                         "cedula" => $item['cedula'],
                         "correo" => $item['correo'],
                         "ocupacion" => $item['ocupacion'],
@@ -429,7 +429,7 @@ class FileFamilyService {
                             "nombre" => $miembros['nombre'],
                             "apellido" => $miembros['apellido'],
                             "type_document_id" => $miembros['type_document_id'],
-                            // "type_blood_id" => $miembros['type_blood_id'] ?? null,
+                            "type_blood_id" => $miembros['type_blood_id'] ?? null,
                             "cedula" => $miembros['cedula'],
                             "correo" => $miembros['correo'],
                             "ocupacion" => $miembros['ocupacion'],
@@ -461,7 +461,7 @@ class FileFamilyService {
                     $m->nombre = $member['nombre'];
                     $m->apellido = $member['apellido'];
                     $m->type_document_id = $member['type_document_id'];
-                    // $m->type_blood_id = $member['type_blood_id'];
+                    $m->type_blood_id = $member['type_blood_id'];
                     $m->cedula = $member['cedula'];
                     $m->correo = $member['correo'];
                     $m->ocupacion = $member['ocupacion'];
