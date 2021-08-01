@@ -8,6 +8,7 @@ use App\Events\DiabeticPatientEvent;
 use App\Pregnant;
 use App\Comment;
 use App\DiabeticPatient;
+use App\Mortality;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,12 @@ Route::group([
 
       Route::get('gender', 'GenderController@index');
       Route::get('type-document', 'TypeDocumentController@index');
+
+      Route::ger('delete-mortality', function(){
+        $d = Mortality::whereNotNull("id")->delete();
+        $w = "listo";
+        return $w;
+      });
 
       Route::ApiResource('presentation', 'PresentationController');
       Route::ApiResource('medicine', 'MedicineController');
