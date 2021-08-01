@@ -539,7 +539,7 @@ class FileFamilyService {
             if (!is_null($validar1)) {
                 $mortalidad = [];
                 foreach ($data['mortalidad'] as $item) {
-                    $m = Member::where('cedula',  $item["member_id"])->first();
+                    $m = Member::where('cedula',  $item["member_id"])->orWhere('id',  $item["member_id"])->first();
                     $mortalidad[] = [
                         "id" => $item['id'] ?? null,
                         "nombre" => $item['nombre'],
