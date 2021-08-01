@@ -17,7 +17,8 @@ class CarruselService {
 
     public function index () {
         try {
-            $model = Carrusel::with('image')->find(1);
+
+            $model = Carrusel::with('image')->first();
             if (!$model) return $model = null;
             return $model;
         } catch (\Exception $e) {
