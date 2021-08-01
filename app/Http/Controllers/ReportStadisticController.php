@@ -598,7 +598,7 @@ class ReportStadisticController extends Controller
                 }) : "";
                 count($request["typeBirth"]) > 0 ? $result = $q->whereIn("tipo_parto", $request["typeBirth"]) : "";
                 count($request["gestation"]) > 0 ? $result = $q->whereIn("descripcion_gestacion", $request["gestation"]) : "";
-                count($request["pathologyPregnant"]) > 0 ? $result = $q->whereHas("pathologyPregnants", function($query){
+                count($request["pathologyPregnant"]) > 0 ? $result = $q->whereHas("pathologyPregnants", function($query)use($request){
                     $query->whereIn("pathology_pregnants.id", $request["pathologyPregnant"]);
                 }) : "";
                 !empty($request["startDate"]) && 
