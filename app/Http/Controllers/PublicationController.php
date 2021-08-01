@@ -45,7 +45,7 @@ class PublicationController extends Controller
         $data = new PublicationResource($model);
         return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
       } catch (\Exception $e) {
-        return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        return $e;
       }
     }
 
