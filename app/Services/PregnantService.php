@@ -195,19 +195,15 @@ class PregnantService {
         try {
             $search = $request['search'];
             $embarazo = $request['embarazo'];
-            $model = Pregnant::whereHas('member', function ($query) use($search) {
+            $model = Pregnant::where('numero_historia', 'like','%'.$search .'%')
+            ->orWhereHas('member', function ($query) use($search) {
                 $query->where('nombre','like','%'.$search .'%')
-                ->orWhere('cedula','like','%'.$search .'%')
-                ->orWhereHas('pregnant', function ($query) use($search){
-                    $query->Where('numero_historia', 'like','%'.$search .'%');
-                });
+                ->orWhere('cedula','like','%'.$search .'%');
             });
             /*->whereHas("member", function ($query) use($embarazo) {
                 $query->where("embarazo", $embarazo);
             })*/
-            $embarazo ? $result = $model->whereHas("member", function ($query) use($embarazo) {
-                                               $query->where("embarazo", $embarazo);
-                                          })->whereNull("recomendaciones") : "";
+            $embarazo ? $result = $model->whereNull("recomendaciones") : "";
             !$embarazo ? $result = $model->whereNotNull("recomendaciones") : "";
             $result = $model->orderBy('id', 'desc')->get();
             return $result;
@@ -226,9 +222,7 @@ class PregnantService {
                             (count($request["tipo_parto"]) > 0)            ? $model = $q->whereIn("tipo_parto", $request["tipo_parto"]) : "";
                             ($request["embarazo_planificado"] !== null)    ? $model = $q->where("embarazo_planificado", $request["embarazo_planificado"]) : "";
                             (count($request["causa_embarazo"]) > 0)        ? $model = $q->whereIn("causa_embarazo", $request["causa_embarazo"]) : "";
-                            ($request["embarazo"] === true)                ? $model = $q->whereHas("member", function ($query) use($request) {
-                                $query->where("embarazo", $request["embarazo"]);
-                            })->whereNull("recomendaciones") : "";
+                            ($request["embarazo"] === true)                ? $model = $q->whereNull("recomendaciones") : "";
                             ($request["embarazo"] === false)               ? $model = $q->whereNotNull("recomendaciones") : "";
                             !empty($request["startDate"]) &&
                             !empty($request["endDate"])                    ? $model = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";

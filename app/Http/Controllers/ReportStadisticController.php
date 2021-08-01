@@ -46,26 +46,28 @@ class ReportStadisticController extends Controller
             $medicines = Medicine::has("diabeticPatients")->orHas("pregnants")->get();
             $nameMedicine = [];
             $cantMedicine = [];
-            foreach ($medicines as $key => $value) {
-                $nameMedicine[] = $value['name'];  
+            foreach ($medicines as $key => $value) { 
                 $cantDiabetic = DiabeticPatient::whereHas("medicines", function($query)use($value){
                     $query->where("medicines.id", $value["id"]);
                 })->count();
                 $cantPregnant = Pregnant::whereHas("medicines", function($query)use($value){
                     $query->where("medicines.id", $value["id"]);
                 })->count();
-                $cantMedicine[] = $cantDiabetic + $cantPregnant;
+                $sum = $cantDiabetic + $cantPregnant;
+                $cantMedicine[] = $sum;
+                $nameMedicine[] = $value['name'] . " " . "(" . $sum . ")"; 
             }
 
             $groupAges = GroupAge::where('id','>=',4)->get();
             $nameGroupAge = [];
             $cantGroupAge = [];
             foreach ($groupAges as $key => $value) {
-                $nameGroupAge[] = $value["name"];
-                $cantGroupAge[] = Member::where('gender_id', 2)
+                $memberr = Member::where('gender_id', 2)
                     ->has('pregnant')
                     ->where('group_age_id', $value["id"])
                     ->count();
+                $cantGroupAge[] = $memberr;
+                $nameGroupAge[] = $value["name"] . " " . "(" . $memberr . ")";
             }
 
             $parroquias = Zone::All();
@@ -77,23 +79,14 @@ class ReportStadisticController extends Controller
                 $cantParroquia[] = $d;
             }
 
-            $typeComment = typeComment::All();
+            $typeComment = TypeComment::All();
             $nametypeComment = [];
             $cantTypeComment = [];
             foreach ($typeComment as $key => $value) {
-                $nametypeComment[] = $value["nombre"];
-                $cantTypeComment[] = Comment::where('type_comment_id', $value["id"])->count();
+                $comment = Comment::where('type_comment_id', $value["id"])->count();
+                $cantTypeComment[] = $comment ;
+                $nametypeComment[] = $value["nombre"] . ' ' . '(' . $comment . ')';
             }
-
-            $typeComment = typeComment::All();
-            $nametypeComment = [];
-            $cantTypeComment = [];
-            foreach ($typeComment as $key => $value) {
-                $nametypeComment[] = $value["nombre"];
-                $cantTypeComment[] = Comment::where('type_comment_id', $value["id"])->count();
-            }
-
-
 
             $levelRisk = LevelTotal::All();
             $nivelRisk = [];
@@ -194,6 +187,7 @@ class ReportStadisticController extends Controller
             $pathology = Pathology::All();
             $cantMember = [];
             foreach ($pathology as $key => $value) {
+                $label[] = $value["name"];
                 foreach ($gender as $key => $v) {
                     $q = Member::where("gender_id", $v["id"]);
                     $request["group_age_id"] != "null" ? $cant = $q->where("group_age_id", $request["group_age_id"]) : "";
