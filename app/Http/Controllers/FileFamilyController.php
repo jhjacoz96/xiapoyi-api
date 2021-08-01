@@ -77,6 +77,7 @@ class FileFamilyController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
+                return $model;
                 $data = new FileFamilyResource($model);
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
