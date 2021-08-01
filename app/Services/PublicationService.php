@@ -125,6 +125,10 @@ class PublicationService {
             }*/
 
             DB::commit();
+            return [
+                "model"=> $modell,
+                "suscription" => $suscription,
+            ];
             return  $modell;
         } catch (\Exception $e) {
             DB::rollback();
