@@ -9,6 +9,7 @@ use App\Pregnant;
 use App\Comment;
 use App\DiabeticPatient;
 use App\Mortality;
+use App\Member;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,9 +68,8 @@ Route::group([
       Route::get('gender', 'GenderController@index');
       Route::get('type-document', 'TypeDocumentController@index');
 
-      Route::get('delete-mortality', function(){
-        $d = Mortality::whereNotNull("id")->delete();
-        $w = "listo";
+      Route::get('get-member', function(){
+        $w = Member::All();
         return $w;
       });
 

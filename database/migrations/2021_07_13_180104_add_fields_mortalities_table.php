@@ -18,7 +18,7 @@ class AddFieldsMortalitiesTable extends Migration
         });
         Schema::table('mortalities', function (Blueprint $table) {
             $table->dateTime('fecha_fallecimiento')->nullable();
-            $table->integer('member_id')->unsigned()->nullable();;
+            $table->integer('member_id')->unsigned()->nullable();
             $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
             $table->integer('cause_mortality_id')->unsigned()->nullable();
             $table->foreign('cause_mortality_id')->references('id')->on('cause_mortalities')->onDelete('cascade');
