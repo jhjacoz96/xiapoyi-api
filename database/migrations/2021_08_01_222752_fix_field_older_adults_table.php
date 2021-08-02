@@ -14,7 +14,7 @@ class FixFieldOlderAdultsTable extends Migration
     public function up()
     {
         Schema::table('older_adults', function (Blueprint $table) {
-            $table->integer("show")->nullable();
+            // $table->integer("show")->nullable();
         });
     }
 

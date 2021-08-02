@@ -49,7 +49,7 @@ class ReportService {
 
     public function fileFamilyCriterion ($request) {
         $zone = Zone::whereIn('id', $request["zone"])->pluck("name")->toArray();
-        $levelTotalRisk = levelTotal::whereIn('id', $request["levelTotalRisk"])->pluck("name")->toArray();
+        $levelTotalRisk = LevelTotal::whereIn('id', $request["levelTotalRisk"])->pluck("name")->toArray();
         $culturalGroup = CulturalGroup::whereIn('id', $request["culturalGroup"])->pluck("name")->toArray();
         $contamination = Contamination::whereIn('id', $request["contamination"])->pluck("nombre")->toArray();
         $data = collect([
