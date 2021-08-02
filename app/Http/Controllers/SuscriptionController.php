@@ -38,7 +38,7 @@ class SuscriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SuscriptionStoreRequest $request)
     {
         try {
             $data = $request->validated();
