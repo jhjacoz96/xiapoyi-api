@@ -7,7 +7,7 @@
         <title>Document</title>
     </head>
 <body>
-   Hola {{ $suscriptor->nombre }} gracias por suscribirte a KA-THANI. Ahora te mantendremos informado a través de tu correo electronico sobre todas las nuevas publicaciones que sean de tu interezan.
+   Hola {{ $suscriptor->nombre }} gracias por suscribirte a KA-THANI. Ahora te mantendremos informado a través de tu correo electronico sobre todas las nuevas publicaciones que sean de tu interés.
    <br>
            <span>¡Tu salud es nuestro compromiso!</span>
 </html>

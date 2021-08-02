@@ -33,7 +33,7 @@ class SuscriptionService {
                 "suscriptor" => $model,
             ];
             Mail::send('correos.suscripcion', $datosMensaje,function($mensaje) use($model){
-                $mensaje->to($model["correo"])->subject('Suscriptión - KA-THANI');
+                $mensaje->to($model["correo"])->subject('Suscripción - KA-THANI');
             });
             DB::commit();
             return  $model;
