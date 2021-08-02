@@ -58,7 +58,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna bcg:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['bcg']) > 0 ? implode(', ', $criterios['bcg']) : 'Todas las dosis' }}
+                            {{ count($criterios['bcg']) > 0 ? implode(', ', $criterios['bcg']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -68,7 +68,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna hb:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['hb']) > 0 ? implode(', ', $criterios['hb']) : 'Todas las dosis' }}
+                            {{ count($criterios['hb']) > 0 ? implode(', ', $criterios['hb']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -78,7 +78,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna rotavirus:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['rotavirus']) > 0 ? implode(', ', $criterios['rotavirus']) : 'Todas las dosis' }}
+                            {{ count($criterios['rotavirus']) > 0 ? implode(', ', $criterios['rotavirus']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -88,7 +88,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna fipv:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['fipv']) > 0 ? implode(', ', $criterios['fipv']) : 'Todas las dosis' }}
+                            {{ count($criterios['fipv']) > 0 ? implode(', ', $criterios['fipv']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -98,7 +98,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna bopv:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['bopv']) > 0 ? implode(', ', $criterios['bopv']) : 'Todas las dosis' }}
+                            {{ count($criterios['bopv']) > 0 ? implode(', ', $criterios['bopv']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -108,7 +108,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna pentavaliente:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['pentavaliente']) > 0 ? implode(', ', $criterios['pentavaliente']) : 'Todas las dosis' }}
+                            {{ count($criterios['pentavaliente']) > 0 ? implode(', ', $criterios['pentavaliente']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
