@@ -18,8 +18,8 @@ class ActivityResource extends JsonResource
         return [
             "id" => $this->id,
             "nombre" => $this->nombre,
-            "descripcion" $this->descripcion,
-            "service_id" $this->service_id,
+            "descripcion" => $this->descripcion,
+            "service_id" => $this->service_id,
         ];
     }
 }
