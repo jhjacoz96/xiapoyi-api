@@ -118,7 +118,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna neumococo:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['neumococo']) > 0 ? implode(', ', $criterios['neumococo']) : 'Todas las dosis' }}
+                            {{ count($criterios['neumococo']) > 0 ? implode(', ', $criterios['neumococo']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>
@@ -128,7 +128,7 @@
                     <td width="94%">
                         <label for="p1">Vacuna influenza estacionaria:</label><br>
                         <input type="text" value="
-                            {{ count($criterios['influenza_estacionaria']) > 0 ? implode(', ', $criterios['influenza_estacionaria']) : 'Todas las dosis' }}
+                            {{ count($criterios['influenza_estacionaria']) > 0 ? implode(', ', $criterios['influenza_estacionaria']) : '-' }}
                         "/>
                     </td>
                     <td width="3%">&nbsp;</td>

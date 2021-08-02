@@ -17,8 +17,9 @@ class ActivityResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "compromiso_familiar" => $this->compromiso_familiar,
-            "compromiso_equipo" => $this->compromiso_equipo,
+            "nombre" => $this->nombre,
+            "descripcion" $this->descripcion,
+            "service_id" $this->service_id,
         ];
     }
 }
