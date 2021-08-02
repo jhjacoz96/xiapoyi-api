@@ -108,7 +108,7 @@ class ServiceController extends Controller
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
           } catch (\Exception $e) {
-            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+            return $e;
           }
     }
 
