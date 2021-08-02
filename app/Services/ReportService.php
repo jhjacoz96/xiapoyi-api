@@ -12,7 +12,7 @@ use App\Member;
 use App\FileClinicalNeonatology;
 use App\DiabeticPatient;
 use App\Zone;
-use App\levelTotal;
+use App\LevelTotal;
 use App\CulturalGroup;
 use App\Contamination;
 use App\Pathology;
