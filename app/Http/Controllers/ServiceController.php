@@ -104,6 +104,7 @@ class ServiceController extends Controller
                 ];
                 return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
             } else {
+                return $model;
                 $data = new ServiceResource($model);
                 return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
             }
