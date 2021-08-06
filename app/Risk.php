@@ -3,9 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Risk extends Model
+
+class Risk extends Model  implements Auditable
 {
+    use AuditableTrait;
+
     protected $fillable = [
         'name', 'risk_classification_id'
     ];

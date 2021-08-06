@@ -405,6 +405,18 @@ Route::group([
           ]);
        });
 
+       Route::prefix('administration-system')->group(function () {
+          Route::prefix('/backup-db')->group(function () {
+            Route::get('', 'BackupController@index');
+            Route::get('store', 'BackupController@store');
+            Route::get('download/{filename}', 'BackupController@download');
+            Route::get('destroy/{filename}', 'BackupController@destroy');
+          });
+          Route::prefix('/audit')->group(function () {
+            Route::post('', 'AuditController@index');
+          });
+       });
+
   });
 
   Route::group([

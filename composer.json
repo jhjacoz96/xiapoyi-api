@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5|^8.0",
+        "ext-gd": "*",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -18,8 +19,10 @@
         "laravel/passport": "^9.4",
         "laravel/tinker": "^2.5",
         "myclabs/php-enum": "^1.7",
+        "owen-it/laravel-auditing": "^10.0",
         "pusher/pusher-php-server": "^4.1",
-        "ext-gd": "*",
+        "spatie/flysystem-dropbox": "^1.0.0",
+        "spatie/laravel-backup": "^6.11",
         "spatie/laravel-permission": "^4.0"
     },
     "require-dev": {

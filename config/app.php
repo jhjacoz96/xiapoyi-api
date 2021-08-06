@@ -175,8 +175,10 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\DropboxServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-
+        Spatie\Backup\BackupServiceProvider::class,
+        OwenIt\Auditing\AuditingServiceProvider::class,
     ],
 
     /*

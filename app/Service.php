@@ -4,9 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Activity;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Service extends Model
+class Service extends Model implements Auditable
 {
+    use AuditableTrait;
+    
     protected $fillable = [
         'nombre', 'descripcion',
     ];

@@ -3,9 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Publication extends Model
+
+class Publication extends Model  implements Auditable
 {
+    use AuditableTrait;
+    
     protected $fillable = [
         'name', 'description', 'employee_id', 'filter_two_publication_id', 'filter_one_publication_id', 'filter_three_publication_id'
     ];

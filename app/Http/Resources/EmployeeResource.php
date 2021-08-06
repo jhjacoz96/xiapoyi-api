@@ -28,6 +28,7 @@ class EmployeeResource extends JsonResource
             "type_employee_id" => $this->type_employee_id,
             "specialty_id" => $this->specialty_id,
             "role_id" => $this->user->roles[0]->name ?? null,
+            "user_id" => $this->user->id,
             "image" => $this->image ?? null,
         ];
     }

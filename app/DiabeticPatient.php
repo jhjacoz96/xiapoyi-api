@@ -4,9 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class DiabeticPatient extends Model
+class DiabeticPatient extends Model implements Auditable
 {
+    use AuditableTrait;
+
     use Notifiable;
 
     protected $fillable = [

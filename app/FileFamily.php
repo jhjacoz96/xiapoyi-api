@@ -5,13 +5,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 USE App\Pregnant;
 USE App\Member;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class FileFamily extends Model
+class FileFamily extends Model implements Auditable
 {
-    protected $fillable = [
+    use AuditableTrait;
+
+    protected $fillable  = [
         'manzana', 'direccion_habitual', 'barrio', 'numero_familia', 'numero_historia', 'numero_telefono', 'numero_casa', 'total_risk', 'zone_id', 'level_total_id', 'cultural_group_id', 'created_at', 'telefono_celular_uno',
             'telefono_celular_dos', 'correo'
     ];
+    
 
     public function zone () {
         return $this->belongsTo('App\Zone', 'zone_id', 'id');

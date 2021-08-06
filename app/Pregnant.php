@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Pregnant extends Model
+class Pregnant extends Model implements Auditable
 {
+    use AuditableTrait;
+    
     protected $fillable = [
         'fum', 'fpp', 'antecentedes_patologicos', 'semana_gestacion', 'gestas', 'partos', 'abortos', 'cesarias', 'member_id', 'created_at', 'employee_id',
         'type_blood_id',

@@ -14,8 +14,8 @@ class AddFieldssssMembersTable extends Migration
     public function up()
     {
         Schema::table('members', function (Blueprint $table) {
-            $table->integer('type_blood_id')->unsigned()->nullable();
-                $table->foreign('type_blood_id')->references('id')->on('type_bloods')->onDelete('cascade');
+            // $table->integer('type_blood_id')->unsigned()->nullable();
+            // $table->foreign('type_blood_id')->references('id')->on('type_bloods')->onDelete('cascade');
         });
     }
 

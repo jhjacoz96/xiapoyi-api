@@ -48,19 +48,24 @@ return [
             'root' => storage_path('app'),
         ],
 
-        /*'public' => [
+        'dropbox' => [
+            'driver' => 'dropbox',
+            'authorization_token' => env('DROPBOX_AUTH_TOKEN'),
+        ],
+
+        'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-        ],*/
+        ],
 
-        'public' => [
+        /*'public' => [
             'driver' => 'local',
            'root' => public_path(),
             'url' => env('APP_URL').'/public',
             'visibility' => 'public',
-        ],
+        ],*/
 
         's3' => [
             'driver' => 's3',
