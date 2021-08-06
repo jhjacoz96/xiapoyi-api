@@ -61,9 +61,12 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
-            'dump' => [
-               'dump_binary_path' => '/path/to/the/binary', // only the path, so without `mysqldump` or `pg_dump`
-            ] 
+           'dump' => [
+               'dump_command_path' => 'D:\Programas\laragon\bin\mysql\mysql-5.7.24-winx64\bin', // only the path, so without 'mysqldump' or 'pg_dump'
+                'dump_command_timeout' => 60 * 5, // 5 minute timeout
+                'dump_using_single_transaction' => true, // perform dump using a single transaction
+                'driver'    => 'mysql',
+            ]
         ],
 
         'pgsql' => [
@@ -79,6 +82,9 @@ return [
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
+            'dump' => [
+                'add_extra_option' => '--format=c', // and any other pg_dump flags
+            ]
         ],
 
         'sqlsrv' => [
