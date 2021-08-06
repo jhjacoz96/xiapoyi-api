@@ -36,5 +36,5 @@ return [
 	'successfully_deleted' => 'Registro eliminado exitosamente',
 	'has_pregnancy' => 'Posee una ficha clinica de obstetricia sin culminar',
 	'has_pregnancy_not_neonatology' => 'Debe asignar una ficha clinica de neonatología a su ultima ficha clinica de obstetricía',
-	'pregnant_has_neonatology' => 'Su ultima ficha de obstetricia ya posee una ficha de neonatología asignada'
+	'pregnant_has_neonatology' => 'No posee ficha de obstetricía sin una ficha de neonatología asignada',
 ];
