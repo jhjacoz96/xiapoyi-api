@@ -11,6 +11,7 @@ use App\Publication;
 use App\Employee;
 use App\Resource;
 use App\Suscription;
+use Illuminate\Support\Facades\Storage;
 
 class PublicationService {
 
@@ -81,25 +82,22 @@ class PublicationService {
                 /*\Cloudder::rename($c["public_id"], 'hola'.$publicId, [
                         "folder" => $folder
                     ]);*/
-                $nombre = \Str::random(4). $r->getClientOriginalName();
-                $ruta = public_path().'/imagenPublication';
-                $r->move($ruta , $nombre);
-                
-                $c['url']='/imagenPublication/'.$nombre;
-
+                $nombre = \Str::random(6) . "." . $r->extension();
+                $ruta = "publication/resource/";
+                \Storage::disk('public')->put($ruta . $nombre, \File::get($r));
+                $url = $ruta . $nombre;
                 $resource = Resource::create([
                     "type_resource" => $data['type_resource'],
-                    "url"  => $c['url'],
-                    "publication_id" => $model["id"],
+                    "url"  => $url,
+                    "publication_id" => $model["id"]
                 ]);
-                // $resources = $resource->assingResource($data['resource']);
                 $resources = $resource->image()->create([
-                   'url' => $c['url']
+                   'url' => $url
                 ]);
             } else {
                  $resource = Resource::create([
                     'type_resource' => $data['type_resource'],
-                    'url'  => $data['resource'],
+                    'url'  => $url,
                     'publication_id' => $model["id"],
                 ]);
             }

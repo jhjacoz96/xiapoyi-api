@@ -48,6 +48,7 @@ class RiskService {
             if (!is_null($validar)) {
                 $model->activityEvolutions()->sync($data['activity_evolutions_id']);
             }
+            $model->save();
             DB::commit();
             return  $model;
         } catch (\Exception $e) {

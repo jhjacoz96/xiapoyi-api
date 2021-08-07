@@ -499,11 +499,13 @@ class ConfigWeb extends Controller
                 'Content-Type: application/xlsx',
             );
             return \Response::download($file,"productos.xlsx",$header);*/
-             $file_path = public_path().$request["resource"];
+             $file_path = $request["resource"];
+             $extension = explode('.', $file_path);
+             $extension = end($extension);
              $header=array(
-                'Content-Type: application/odt',
+                "Content-Type: application/" . $extension,
             );
-            return  response()->download($file_path, "productos.odt", $header);
+            return  \Storage::disk('public')->download($file_path, "recurso." . $extension, $header);
             /*$folder = 'image/publication';
             $c = \Cloudder::privateDownloadUrl (
                 "sample",
