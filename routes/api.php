@@ -342,7 +342,7 @@ Route::group([
       Route::get('/event', function () {
         $comment = Comment::find(1);
         event(new CommentAdultOldEvent($comment));
-        return 'send';
+        return 'notification send';
       });
 
        Route::prefix('dashboard')->group(function () {
