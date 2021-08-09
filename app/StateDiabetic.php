@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class StateDiabetic extends Model
 {
-    //
+     protected $fillable = [];
 }
