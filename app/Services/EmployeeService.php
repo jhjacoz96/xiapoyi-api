@@ -42,7 +42,6 @@ class EmployeeService {
             \Cloudder::upload($image, null, ['folder' => $folder], []);
             $c = \Cloudder::getResult();
             if ($employee->image) {
-               \Cloudder::destroyImage($employee->image->public_id, ['folder' => $folder]);
                $employee->image->url = $c['url'];
                $employee->image->public_id = $c['public_id'];
                $employee->push();
@@ -115,7 +114,7 @@ class EmployeeService {
             $modelEmployee->save();
             if (!empty($data['role_id'])) {
                 $user = User::find($modelEmployee->user_id);
-               $user->assignRole($data['role_id']);
+               $user->syncRoles([$data['role_id']]);
             }
             DB::commit();
             return  $modelEmployee;
