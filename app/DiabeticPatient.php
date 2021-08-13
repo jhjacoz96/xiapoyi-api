@@ -14,7 +14,7 @@ class DiabeticPatient extends Model implements Auditable
     use Notifiable;
 
     protected $fillable = [
-        'presion_arterial', 'pulso', 'respiracion', 'saturacion_oxigeno', 'temperatura', 'peso', 'altura', 'descripcion_imc', 'circunferencia', 'abdominal', 'nivel_glusemia', 'dieta', 'user_id', 'member_id'
+        'presion_arterial', 'pulso', 'respiracion', 'saturacion_oxigeno', 'temperatura', 'peso', 'altura', 'descripcion_imc', 'circunferencia', 'abdominal', 'nivel_glusemia', 'dieta', 'user_id', 'member_id', 'fcm_token'
     ];
 
     public function user () {

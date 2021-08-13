@@ -179,6 +179,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
         OwenIt\Auditing\AuditingServiceProvider::class,
+        Kutia\Larafirebase\Providers\LarafirebaseServiceProvider::class,
     ],
 
     /*

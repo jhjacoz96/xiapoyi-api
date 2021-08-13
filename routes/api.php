@@ -204,6 +204,10 @@ Route::group([
                 'uses' => 'DiabeticPatientController@stadististicWeight',
                 'as' => 'api.diabeticPatientController.stadististicWeight'
             ]);
+            Route::prefix('/notification')->group(function () {
+                Route::patch('fcm-token', 'NotificationMovilController@updateToken');
+                Route::post('/send-notification','NotificationMovilController@notification');
+            });
       });
 
       Route::ApiResource('file-clinical-neonatology', 'FileClinicalNeonatologyController');
