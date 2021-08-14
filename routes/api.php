@@ -412,6 +412,7 @@ Route::group([
        Route::prefix('administration-system')->group(function () {
           Route::prefix('/backup-db')->group(function () {
             Route::get('', 'BackupController@index');
+            Route::get('dropbox', 'BackupController@indexDropbox');
             Route::get('store', 'BackupController@store');
             Route::get('download/{filename}', 'BackupController@download');
             Route::get('destroy/{filename}', 'BackupController@destroy');

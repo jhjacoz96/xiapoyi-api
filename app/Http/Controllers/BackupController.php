@@ -23,7 +23,7 @@ class BackupController extends Controller
                if (substr($f, -4) == '.zip' && $disk->exists($f)) {
                    $backups[] = [
                    'file_path' => $f,
-                   'file_name' => str_replace(config('backup.name') . 'Laravel/', '', $f),
+                   'file_name' => str_replace(config('backup.destination.disks') . '/Laravel/', '', $f),
                    'file_size' => $this->humanFileSize($disk->size($f)),
                    'last_modified' => $disk->lastModified($f),
                     ];
@@ -35,6 +35,31 @@ class BackupController extends Controller
             return $e;
         }        
     }
+
+     public function indexDropbox(){
+        try {
+            $disk = Storage::disk('dropbox');
+            $files = $disk->files('/Laravel/');
+            // $files = $disk->files(config('backup.name'));
+            $backups = [];
+            foreach ($files as $k => $f) {
+               if (substr($f, -4) == '.zip' && $disk->exists($f)) {
+                   $backups[] = [
+                   'file_path' => $f,
+                   'file_name' => str_replace(config('backup.destination.disks') . '/Laravel/', '', $f),
+                   'file_size' => $this->humanFileSize($disk->size($f)),
+                   'last_modified' => $disk->lastModified($f),
+                    ];
+               }
+            }
+            $data = array_reverse($backups);
+            return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }        
+    }
+
+
 
     public static function humanFileSize($size,$unit="") {
           if( (!$unit && $size >= 1<<30) || $unit == "GB")
