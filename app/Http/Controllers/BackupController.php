@@ -92,13 +92,14 @@ class BackupController extends Controller
           }
     }
 
-     public function download($file_name) {
+     public function download(Request $request, $file_name) {
         try {
-            $file = config('backup.destination.disks') .'/Laravel/'. $file_name;
-            $disk = Storage::disk(config('backup.destination.disks'));
-
+            $selectDisk = $request["select_disk"];
+            $dir = $selectDisk == 'dropbox' ? 'dropbox' : config('backup.destination.disks');
+            $disk = Storage::disk($dir);
+            $file = $selectDisk == 'dropbox' ? 'Laravel/'. $file_name : config('backup.destination.disks') .'/Laravel/'. $file_name;
             if ($disk->exists($file)) {
-                $fs = Storage::disk(config('backup.destination.disks'))->getDriver();
+                $fs = Storage::disk($dir)->getDriver();
                 $stream = $fs->readStream($file);
 
                 return \Response::stream(function () use ($stream) {
@@ -146,13 +147,15 @@ class BackupController extends Controller
         }
     }
 
-    public function destroy($file_name)
+    public function destroy(Request $request, $file_name)
     {
         try {
-            $disk = Storage::disk(config('backup.destination.disks'));
-            $dir = config('backup.destination.disks') . '/Laravel/' . $file_name;
-            if ($disk->exists($dir)) {
-                $disk->delete($dir);
+            $selectDisk = $request["select_disk"];
+            $dir = $selectDisk == 'dropbox' ? 'dropbox' : config('backup.destination.disks');
+            $disk = Storage::disk($dir);
+            $file = $selectDisk == 'dropbox' ? 'Laravel/'. $file_name : config('backup.destination.disks') .'/Laravel/'. $file_name;
+            if ($disk->exists($file)) {
+                $disk->delete($file);
                 $data = [
                     'message' => __('response.successfully_deleted')
                 ];
