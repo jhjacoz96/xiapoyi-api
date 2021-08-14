@@ -20,7 +20,7 @@ class BackupController extends Controller
            if (substr($f, -4) == '.zip' && $disk->exists($f)) {
                $backups[] = [
                'file_path' => $f,
-               'file_name' => str_replace($dir . '/Laravel/', '', $f),
+               'file_name' => str_replace($dir . '/Laravel/', '', substr($f, 8)),
                'file_size' => $this->humanFileSize($disk->size($f)),
                'last_modified' => $disk->lastModified($f),
                 ];
@@ -35,7 +35,7 @@ class BackupController extends Controller
             $data = $this->listBackup($request["select_disk"]);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
-            return $e;
+            return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.index');
         }        
     }
 
@@ -74,7 +74,7 @@ class BackupController extends Controller
           return number_format($size)." bytes";
     }
 
-    public function store()
+    public function store(Request $request)
     {
           try {
                /* only database backup*/
@@ -83,9 +83,7 @@ class BackupController extends Controller
                /* Artisan::call('backup:run'); */
                $output = Artisan::output();
                Log::info("Backpack\BackupManager -- new backup started \r\n" . $output);
-               $data = [
-                    'message' => __('response.response_post_success_long')
-                ];
+               $data = $this->listBackup($request["select_disk"]);
                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
           } catch (Exception $e) {
             return $e;
