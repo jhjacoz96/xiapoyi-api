@@ -415,6 +415,7 @@ Route::group([
             Route::get('dropbox', 'BackupController@indexDropbox');
             Route::get('store', 'BackupController@store');
             Route::get('download/{filename}', 'BackupController@download');
+            Route::get('dropbox/download/{filename}', 'BackupController@downloadDropbox');
             Route::get('destroy/{filename}', 'BackupController@destroy');
           });
           Route::prefix('/audit')->group(function () {

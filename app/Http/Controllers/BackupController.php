@@ -116,6 +116,33 @@ class BackupController extends Controller
         }
     }
 
+    public function downloadDropbox($file_name) {
+        try {
+            $file = 'dropbox' .'/Laravel/'. $file_name;
+            $disk = Storage::disk('dropbox');
+
+            if ($disk->exists($file)) {
+                $fs = Storage::disk('dropbox')->getDriver();
+                $stream = $fs->readStream($file);
+
+                return \Response::stream(function () use ($stream) {
+                    fpassthru($stream);
+                }, 200, [
+                    "Content-Type" => $fs->getMimetype($file),
+                    "Content-Length" => $fs->getSize($file),
+                    "Content-disposition" => "attachment; filename=\"" . basename($file) . "\"",
+                ]);
+            } else {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            }   
+        } catch (Exception $e) {
+            return $e;   
+        }
+    }
+
     public function destroy($file_name)
     {
         try {
