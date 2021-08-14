@@ -147,8 +147,31 @@ class BackupController extends Controller
     {
         try {
             $disk = Storage::disk(config('backup.destination.disks'));
-            if ($disk->exists(config('backup.destination.disks') . '/Laravel/' . $file_name)) {
-                $disk->delete(config('backup.destination.disks') . '/Laravel/' . $file_name);
+            $dir = config('backup.destination.disks') . '/Laravel/' . $file_name;
+            if ($disk->exists($dir)) {
+                $disk->delete($dir);
+                $data = [
+                    'message' => __('response.successfully_deleted')
+                ];
+                return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+            } else {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+     public function destroyDropbox($file_name)
+    {
+        try {
+            $disk = Storage::disk('dropbox');
+            $dir = 'Laravel/' . $file_name;
+            if ($disk->exists($dir)) {
+                $disk->delete($dir);
                 $data = [
                     'message' => __('response.successfully_deleted')
                 ];
