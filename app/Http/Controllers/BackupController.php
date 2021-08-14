@@ -11,32 +11,35 @@ use App\Utils\Enums\EnumResponse;
 
 class BackupController extends Controller
 {
+    public function listBackup ($selectDisk) {
+       $dir = $selectDisk == 'dropbox' ? 'dropbox' : config('backup.destination.disks');
+       $disk = Storage::disk($dir);
+       $files = $disk->files('/Laravel/');
+       $backups = [];
+       foreach ($files as $k => $f) {
+           if (substr($f, -4) == '.zip' && $disk->exists($f)) {
+               $backups[] = [
+               'file_path' => $f,
+               'file_name' => str_replace($dir . '/Laravel/', '', $f),
+               'file_size' => $this->humanFileSize($disk->size($f)),
+               'last_modified' => $disk->lastModified($f),
+                ];
+           }
+        }
+        $data = array_reverse($backups);
+        return $data;
+    }
 
-    public function index(){
+    public function index(Request $request){
         try {
-            
-            $disk = Storage::disk(config('backup.destination.disks'));
-            $files = $disk->files('/Laravel/');
-            // $files = $disk->files(config('backup.name'));
-            $backups = [];
-            foreach ($files as $k => $f) {
-               if (substr($f, -4) == '.zip' && $disk->exists($f)) {
-                   $backups[] = [
-                   'file_path' => $f,
-                   'file_name' => str_replace(config('backup.destination.disks') . '/Laravel/', '', $f),
-                   'file_size' => $this->humanFileSize($disk->size($f)),
-                   'last_modified' => $disk->lastModified($f),
-                    ];
-               }
-            }
-            $data = array_reverse($backups);
+            $data = $this->listBackup($request["select_disk"]);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
         }        
     }
 
-     public function indexDropbox(){
+    public function indexDropbox(){
         try {
             $disk = Storage::disk('dropbox');
             $files = $disk->files('/Laravel/');
