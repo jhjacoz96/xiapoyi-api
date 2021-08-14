@@ -118,7 +118,7 @@ class BackupController extends Controller
 
     public function downloadDropbox($file_name) {
         try {
-            $file = 'dropbox' .'/Laravel/'. $file_name;
+            $file = 'Laravel/'. $file_name;
             $disk = Storage::disk('dropbox');
 
             if ($disk->exists($file)) {
