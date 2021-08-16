@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CauseMortalitySeeder::class);
         $this->call(ActivityEvolutionSeeder::class);
         $this->call(ContaminationSeeder::class);
+        $this->call(QualificationSeeder::class);
     }
 }

@@ -19,6 +19,9 @@ use DateTime;
 use App\Events\PostGlucoseEvent;
 use App\Events\TreatmentEvent;
 use App\Events\ActivityEvent;
+use App\QualificationQuestion;
+use App\QualificationLevel;
+use App\Qualification;
 
 class DiabeticPatientService {
 
@@ -402,6 +405,62 @@ class DiabeticPatientService {
             ->get();
             return $model;
         } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function indexQualification () {
+        try {
+            $patient = \Auth::user()->diabeticPatient;
+            if (!empty($patient->has("qualification")->first())) {
+                $model1 = QualificationQuestion::whereDoesntHave("qualifications", function($query)use($patient){
+                    $query->where("diabetic_patient_id", $patient->id);
+                })->get()->toArray();
+                $model = $patient->qualification->questions->toArray();
+                $model = collect([
+                    "method" => "update",
+                    "question" => collect(array_merge($model1, $model)),
+                ]);
+            } else {
+                $model = collect([
+                    "method" => "create",
+                    "question" => QualificationQuestion::All(),
+                ]);
+            }
+            return $model;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+    public function qualification ($data) {
+        try {
+            DB::beginTransaction();
+            $patient = \Auth::user()->diabeticPatient;
+            $id = null;
+            if (!empty($patient->has("qualification")->first())) {
+                $id = $patient->qualification->id;
+            }
+            $model = Qualification::updateOrCreate(
+                [
+                    "id" => $id,
+                ],
+                [
+                    "diabetic_patient_id" => $patient->id,
+                ]
+            );
+            $validar = $data["qualification"] ?? null;
+            if (!is_null($validar)) {
+                $qualifications = [];
+                foreach ($data["qualification"] as $item) {
+                    $qualifications[$item["id"]] = [ "qualification_level_id" => $item["level_id"]];
+                }
+                $model->questions()->sync($qualifications);
+            }
+            DB::commit();
+            return $model->questions;
+        } catch (\Exception $e) {
+            DB::rollback();
             return $e;
         }
     }

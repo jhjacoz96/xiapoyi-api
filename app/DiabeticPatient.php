@@ -21,6 +21,10 @@ class DiabeticPatient extends Model implements Auditable
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
+    public function qualification () {
+        return $this->hasOne('App\Qualification', 'diabetic_patient_id', 'id');
+    }
+
     public function medicines () {
         return  $this->belongsToMany('App\Medicine','patient_treatments', 'diabetic_patient_id','medicine_id')->withPivot('dosis', 'hora', 'measure_id', 'id');
     }

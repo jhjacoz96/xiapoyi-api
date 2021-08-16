@@ -113,6 +113,9 @@ Route::group([
       Route::ApiResource('resource', 'ResourceController');
       Route::ApiResource('publication', 'PublicationController');
       Route::ApiResource('carrusel', 'CarruselController');
+      Route::ApiResource('carrusel', 'CarruselController');
+      Route::ApiResource('qualification-level', 'QualificationLevelController');
+      Route::ApiResource('qualification-question', 'QualificationQuestionController');
 
       Route::prefix('control-diabetic')->group(function () {
             Route::get('', [
@@ -203,6 +206,14 @@ Route::group([
             Route::get('stadististic-weight', [
                 'uses' => 'DiabeticPatientController@stadististicWeight',
                 'as' => 'api.diabeticPatientController.stadististicWeight'
+            ]);
+            Route::get('qualification', [
+                'uses' => 'DiabeticPatientController@indexQualification',
+                'as' => 'api.diabeticPatientController.indexQualification'
+            ]);
+            Route::post('qualification', [
+                'uses' => 'DiabeticPatientController@qualification',
+                'as' => 'api.diabeticPatientController.qualification'
             ]);
             Route::prefix('/notification')->group(function () {
                 Route::patch('fcm-token', 'NotificationMovilController@updateToken');

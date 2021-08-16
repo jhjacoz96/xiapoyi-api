@@ -7,6 +7,7 @@ use App\Http\Requests\DiabeticPatientStoreRequest;
 use App\Http\Requests\DiabeticPatientUpdateRequest;
 use App\Http\Requests\RegisterGlucosaRequest;
 use App\Http\Requests\RegisterWeightRequest;
+use App\Http\Requests\QualificationRequest;
 use App\Utils\Enums\EnumResponse;
 use App\DiabeticPatient;
 use App\RegisterGlucose;
@@ -20,6 +21,8 @@ use App\Http\Resources\RegisterTreatmentResource;
 use App\Http\Resources\MemberDiabeticPatientResource;
 use App\Http\Resources\DiabeticPatientShowResource;
 use App\Http\Resources\MemberResource;
+use App\Http\Resources\QualificationResource;
+use App\Http\Resources\QualificationQuestionResource;
 use App\Services\DiabeticPatientService;
 use Carbon\Carbon;
 
@@ -360,6 +363,28 @@ class DiabeticPatientController extends Controller
             }
         } catch (\Exception $e) {
             return bodyResponseRequest(EnumResponse::ERROR, $e, [], self::class . '.store');
+        }
+    }
+
+    public function indexQualification()
+    {
+        try {
+            $model = $this->service->indexQualification();
+            $data = new QualificationResource($model);
+            return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+        } catch (\Exception $e) {
+            return  $e;
+        }
+    }
+
+    public function qualification (QualificationRequest $request) {
+        try {
+            $data = $request->validated();
+            $model = $this->service->qualification($data);
+            $data = QualificationQuestionResource::collection($model);
+            return bodyResponseRequest(EnumResponse::SUCCESS, $data);
+        } catch (\Exception $e) {
+            return  $e;
         }
     }
 
