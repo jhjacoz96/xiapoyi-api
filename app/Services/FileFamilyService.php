@@ -103,6 +103,8 @@ class FileFamilyService {
 
             $f = FileFamily::All()->count();
             $model = FileFamily::create([
+                "longitud" => $data["longitud"],
+                "latitud" => $data["latitud"],
                 "manzana" => $data["manzana"],
                 "direccion_habitual" => $data["direccion_habitual"],
                 "barrio" => $data["barrio"],
@@ -363,6 +365,8 @@ class FileFamilyService {
             if(!$model) return null;
 
             $model->update([
+                "longitud" => $data["longitud"],
+                "latitud" => $data["latitud"],
                 "manzana" => $data["manzana"],
                 "direccion_habitual" => $data["direccion_habitual"],
                 "barrio" => $data["barrio"],

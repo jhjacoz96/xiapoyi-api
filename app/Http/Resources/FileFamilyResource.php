@@ -21,6 +21,8 @@ class FileFamilyResource extends JsonResource
         $evaluations = RiskFileFamilyResource::collection($e);
          return [
             "id" => $this->id,
+            "longitud" => $this->longitud,
+            "latitud" => $this->latitud,
             "manzana" => $this->manzana,
             "direccion_habitual" => $this->direccion_habitual,
             "barrio" => $this->barrio,

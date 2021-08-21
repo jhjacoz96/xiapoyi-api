@@ -367,6 +367,9 @@ Route::group([
           Route::get('report-pathology', [
               'uses' => 'ReportStadisticController@reportPathology',
           ]);
+          Route::get('report-qualification', [
+              'uses' => 'ReportStadisticController@qualification',
+          ]);
        });
 
        Route::prefix('report-stadistic')->group(function () {
@@ -417,6 +420,9 @@ Route::group([
           ]);
           Route::post('mortality', [
               'uses' => 'ReportStadisticController@mortality',
+          ]);
+          Route::post('qualification', [
+              'uses' => 'ReportStadisticController@qualification',
           ]);
        });
 

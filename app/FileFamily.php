@@ -14,7 +14,7 @@ class FileFamily extends Model implements Auditable
 
     protected $fillable  = [
         'manzana', 'direccion_habitual', 'barrio', 'numero_familia', 'numero_historia', 'numero_telefono', 'numero_casa', 'total_risk', 'zone_id', 'level_total_id', 'cultural_group_id', 'created_at', 'telefono_celular_uno',
-            'telefono_celular_dos', 'correo'
+            'telefono_celular_dos', 'correo', 'latitud', 'longitud'
     ];
     
 

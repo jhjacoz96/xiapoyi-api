@@ -25,6 +25,9 @@ use App\Comment;
 use App\Medicine;
 use App\TypeComment;
 use App\FilterTwoPublication;
+use App\Qualification;
+use App\QualificationQuestion;
+use App\QualificationLevel;
 use App\Utils\CalAge;
 use Carbon\Carbon;
 
@@ -551,7 +554,7 @@ class ReportStadisticController extends Controller
                             $query->whereIn("zone_id", $request["zone"]);
                     });
                 }) : "";
-                !empty($request["startDate"]) && 
+                !empty($request["startDate"]) &&    
                 !empty($request["endDate"])          ? $result = $q->whereBetween("created_at", [$request["startDate"], $request["endDate"]]) : "";
                  $result = $q->get();
                  $cant[] = $result->count();
@@ -901,4 +904,29 @@ class ReportStadisticController extends Controller
             return $e;
         }
     }
+
+    public function qualification (Request $request) {
+        try {
+            $label = [];
+            $cant = [];
+            $model = QualificationLevel::All();
+            foreach ($model as $key => $value) {
+                $q = Qualification::All();
+                $q = Qualification::whereHas("questions", function($query) use($request, $value){
+                    $query->where("qualification_questions.id", $request["question"])->where("question_qualifications.qualification_level_id", $value["id"]);
+                })->count();
+                $cant[] = $q;
+                $label[] = $value["nombre"] . " " . "(" . $q .")";
+            }
+            $data = [
+                "label" => $label,
+                "data" => $cant,
+                "total" => array_sum($cant)
+            ];
+             return bodyResponseRequest( EnumResponse::ACCEPTED, $data);
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
 }
