@@ -17,7 +17,7 @@ class FileFamilyResource extends JsonResource
     public function toArray($request)
     {
         $risks = RiskFileFamilyResource::collection($this->risks);
-        $e = $this->risks()->wherePivot("level_risk_id","!=", 3)->get();
+        $e = $this->risks()->wherePivot("level_risk_id","!=", 1)->get();
         $evaluations = RiskFileFamilyResource::collection($e);
          return [
             "id" => $this->id,
