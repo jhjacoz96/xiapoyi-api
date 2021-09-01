@@ -411,8 +411,10 @@ class DiabeticPatientService {
 
     public function indexQualification () {
         try {
-            $patient = \Auth::user()->diabeticPatient;
-            if (!empty($patient->has("qualification")->first())) {
+            $model = DiabeticPatient::where('user_id', \Auth::user()->id);
+            $patient = $model->first();
+            $existPatient = $model->has("qualification")->first();
+            if (!empty($existPatient)) {
                 $model1 = QualificationQuestion::whereDoesntHave("qualifications", function($query)use($patient){
                     $query->where("diabetic_patient_id", $patient->id);
                 })->get()->toArray();
@@ -436,11 +438,10 @@ class DiabeticPatientService {
     public function qualification ($data) {
         try {
             DB::beginTransaction();
-            $patient = \Auth::user()->diabeticPatient;
-            $id = null;
-            if (!empty($patient->has("qualification")->first())) {
-                $id = $patient->qualification->id;
-            }
+            $model1 = DiabeticPatient::where('user_id', \Auth::user()->id);
+            $patient = $model1->first();
+            $existPatient = $model1->has("qualification")->first();
+            $id = !empty($existPatient) ? $patient->qualification->id : null;
             $model = Qualification::updateOrCreate(
                 [
                     "id" => $id,

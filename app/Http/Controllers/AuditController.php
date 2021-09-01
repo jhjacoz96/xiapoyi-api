@@ -19,7 +19,7 @@ class AuditController extends Controller
             !empty($request["user_id"]) ? $model = $q->where('user_id', $request["user_id"]) : "";
             !empty($request["date_start"]) &&
             !empty($request["date_start"]) ? $model = $q->whereBetween('created_at', [$request["date_start"], $request["date_end"]]) : "";
-            $model = $q->get();
+            $model = $q->orderBy('id', 'desc')->get();
             $data = AuditResource::collection($model);
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
