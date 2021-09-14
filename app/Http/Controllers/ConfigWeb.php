@@ -591,7 +591,7 @@ class ConfigWeb extends Controller
     public function downloadApk () {
          try {
             $dir = 'dropbox';
-            $file_name = 'app-debug.apk';
+            $file_name = 'app-debug.zip';
             $disk = Storage::disk($dir);
             $file = 'apk/'. $file_name;
             if ($disk->exists($file)) {
