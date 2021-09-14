@@ -19,6 +19,11 @@ use App\Http\Resources\OldAdultResource;
 use App\Http\Resources\PublicationAllResource;
 use App\Http\Resources\PublicationPaginateResource;
 use App\Http\Resources\ServicesAllWebResource;
+use Artisan;
+use Log;
+use Session;
+use Illuminate\Support\Facades\Storage;
+
 class ConfigWeb extends Controller
 {
     /**
@@ -580,6 +585,33 @@ class ConfigWeb extends Controller
             return bodyResponseRequest(EnumResponse::ACCEPTED, $data);
         } catch (Exception $e) {
             return $e;
+        }
+    }
+
+    public function downloadApk () {
+         try {
+            $dir = 'dropbox';
+            $file_name = 'app-debug.apk';
+            $disk = Storage::disk($dir);
+            $file = 'apk/'. $file_name;
+            if ($disk->exists($file)) {
+                $fs = Storage::disk($dir)->getDriver();
+                $stream = $fs->readStream($file);
+                return \Response::stream(function () use ($stream) {
+                    fpassthru($stream);
+                }, 200, [
+                    "Content-Type" => $fs->getMimetype($file),
+                    "Content-Length" => $fs->getSize($file),
+                    "Content-disposition" => "attachment; filename=\"" . basename($file) . "\"",
+                ]);
+            } else {
+                $data = [
+                    'message' => __('response.bad_request_long')
+                ];
+                return bodyResponseRequest(EnumResponse::NOT_FOUND, $data);
+            }   
+        } catch (Exception $e) {
+            return $e;   
         }
     }
 

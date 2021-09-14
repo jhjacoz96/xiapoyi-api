@@ -475,5 +475,6 @@ Route::group([
     Route::get('type-comment', 'TypeCommentController@index');
     Route::post('comment', 'CommentController@store');
     Route::post('suscription', 'SuscriptionController@store');
+    Route::get('download-apk', 'ConfigWeb@downloadApk');
   });
 
